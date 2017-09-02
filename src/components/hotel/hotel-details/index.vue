@@ -1,0 +1,131 @@
+<template>
+  <Scroll :data="[]" class="hotelDetailWrapper" >
+	<div class="hotel-details-page">
+		<div class="hotel-img-head">
+			<i class="iconfont icon-left_y" @click="back"></i>
+			<h3>希尔顿假日主题酒店</h3>
+		</div>
+		<split1></split1>
+		<hotelService></hotelService>
+		<split1></split1>
+		<div class="addr" @click="showMap(113.56372,22.270379)">
+			<span>地址：吉大景山路188号（景山路与吉大路交汇处）</span>
+			<span>地图 <i class="iconfont icon-right"></i></span>
+		</div>
+		<split1></split1>
+		<hotelBooking></hotelBooking>
+	</div>
+	<transition name="slide">
+		<div class="map" v-show="isshow">
+			<div id="allmap"></div>
+			<i class="iconfont icon-left_y" @click="isshow = !isshow"></i>
+		</div>
+	</transition>
+	
+  </Scroll>
+</template>
+<script>
+import split1 from '@/base/split1'
+import hotelService from 'components/hotel/hotel-details/hotel-service'
+import hotelBooking from 'components/hotel/hotel-details/hotel-booking'
+import Scroll from 'base/scroll/scroll'
+	export default{
+		data(){
+			return {
+				isshow:false
+			}
+		},
+	    methods:{
+	        back(){
+	            this.$router.back();
+
+	        },
+	        showMap(lng,lat){
+	        	this.isshow = true;
+	        	this.$nextTick(()=>{
+	        		this.initMap(lng,lat)
+	        	})
+	        	
+	        },
+	        initMap(lng,lat){
+	        	var map = new BMap.Map("allmap");
+				map.enableScrollWheelZoom(true);
+				var point = new BMap.Point(lng,lat);
+				map.centerAndZoom(point,16); 
+				function resetCenter(){
+				    map.setCenter(point)
+				    var marker = new BMap.Marker(point);           
+				    map.addOverlay(marker);
+				    map.panTo(point)
+				    map.removeEventListener("tilesloaded",resetCenter);
+				}
+				map.addEventListener("tilesloaded",resetCenter);
+				
+	        },
+	        
+	    },
+	    mounted(){
+	    },
+		components:{
+			split1,
+			hotelService,
+			hotelBooking,
+	  		Scroll
+		}
+	}
+</script>
+<style lang="scss" scoped>
+ @import '../../../common/style/base.scss';
+	.hotel-details-page{
+    background: #fff;
+		.hotel-img-head{
+			background: url('hotel-img-head.jpg') no-repeat center /cover;
+			height: pxToRem(185);
+			position: relative;
+			.iconfont{
+				position: absolute;
+				top: pxToRem(8);
+				left:pxToRem(15);
+				font-size: pxToRem(22);
+				color: #626477;
+			}
+			h3{
+				position: absolute;
+				bottom: pxToRem(11);
+				left: pxToRem(16);
+				color: #fff;
+			}
+		}
+		.addr{
+			display: flex;
+			justify-content:space-between;
+			font-size: pxToRem(11);
+			height: pxToRem(30);
+			line-height: pxToRem(30);
+			padding:0 pxToRem(6);
+			color: #646464;
+		}
+	}
+  .hotelDetailWrapper{
+    .seize-seat{
+      background: red;
+    }
+  }
+  .map{
+  	position:fixed;
+  	top: 0;
+  	left: 0;
+  	width: 100%;
+  	height: 100%;
+  	#allmap{
+  		height: 100%
+  	}
+  	.iconfont{
+  		position:absolute;
+  		top:pxToRem(14);
+  		left: pxToRem(14);
+  		font-size: pxToRem(22)
+  	}
+  }
+
+</style>

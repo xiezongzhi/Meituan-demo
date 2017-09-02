@@ -1,0 +1,251 @@
+/*
+flex布局
+*/
+
+[flex="true"] {
+    display: flex;
+}
+
+
+/*
+    左端对齐
+*/
+
+[flex="left"] {
+    display: flex;
+    justify-content: flex-start;
+}
+
+
+/*
+    水平居中
+*/
+
+[flex="horiz-center"] {
+    display: flex;
+    justify-content: center;
+}
+
+
+/*
+    右端对齐
+*/
+
+[flex="right"] {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+/*
+    两端对齐
+*/
+
+[flex="between"] {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/*
+    顶端两端对齐
+*/
+
+[flex="top-between"] {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/*
+    底端两端对齐
+*/
+
+[flex="bottom-between"] {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+[flex="between-v-center"] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/*
+    顶端对齐
+*/
+
+[flex="top"] {
+    display: flex;
+    align-items: flex-start;
+}
+
+
+/*
+    底端对齐
+*/
+
+[flex="bottom"] {
+    display: flex;
+    align-items: flex-end;
+}
+
+
+/*
+    垂直剧中
+*/
+
+[flex="v-center"] {
+    display: flex;
+    align-items: center;
+}
+
+
+/*
+    顶端居中
+*/
+
+[flex="top-h-center"] {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+
+/*
+    底端居中
+*/
+
+[flex="bottom-h-center"] {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+
+/*
+    左端剧中
+*/
+
+[flex="left-v-center"] {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+
+/*
+   右端剧中
+*/
+
+[flex="right-v-center"] {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+
+/*
+   左下角对起
+*/
+
+[flex="left-bottom"] {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+
+/*
+   右下角对起
+*/
+
+[flex="right-top"] {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+
+/*
+   左上角对起
+*/
+
+[flex="left-bottom"] {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+
+/*
+   右上角对起
+*/
+
+[flex="left-bottom"] {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+
+/*
+   中心对起
+*/
+
+[flex="center"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+[flex="1"] {
+    flex: 1;
+}
+
+[flex="2"] {
+    flex: 2;
+}
+
+[flex="3"] {
+    flex: 3;
+}
+
+[flex="4"] {
+    flex: 4;
+}
+
+[flex="5"] {
+    flex: 5;
+}
+
+[flex="6"] {
+    flex: 6;
+}
+
+[flex="7"] {
+    flex: 7;
+}
+
+[flex="8"] {
+    flex: 8;
+}
+
+[flex="9"] {
+    flex: 9;
+}
+
+[flex="10"] {
+    flex: 10;
+}
+
+[flex="11"] {
+    flex: 1;
+}
+
+[flex="12"] {
+    flex: 1;
+}
