@@ -1,81 +1,95 @@
 <template>
-  <div class="list-header":style="{'top':top/37.5+'rem'}" >
+  <div class="list-header">
     <div class="content">
-      <ul class="list">
-        <li class="item" v-for="(item,index) in titles" @click="toggle(index)" :class="{'line':isLine}">
-          {{item}} <span class="iconfont icon-bottom"></span>
+      <ul class="list" ref="listWrapper">
+        <li class="item" v-for="(item,index) in titles" @click="toggle(index)" :class="[{'line':isLine}]"
+            ref="itemWrapper">
+          <span class="title">{{item}}</span><span class="iconfont icon-bottom"></span>
         </li>
       </ul>
-      <div class="dropDown-area">
+      <div class="dropDown-area" ref="areaWrapper">
         <div class="spec"></div>
-      <slot></slot>
+        <slot></slot>
       </div>
     </div>
-    <div class="area-bg" v-show="isShow" @click.stop.prevent="_hide($event)"  @touchmove="touchMove($event)">
+    <div class="area-bg" v-show="isShow" @click="_hide($event)">
     </div>
   </div>
 </template>
 
 <script>
-  import $ from 'jquery';
-  let ICONCLASS_1='icon-bottom';
-  let ICONCLASS_2='icon-top';
+  import {hasClass, removeClass, addClass} from 'common/js/dom';
+  let ICONCLASS_1 = 'icon-bottom';
+  let ICONCLASS_2 = 'icon-top';
+  let ICON = 'iconfont';
   export default{
     data(){
-      return{
-        count:0,
-        flag:true,
-        isShow:false
+      return {
+        count: 0,
+        flag: true,
+        isShow: false,
+        currentIndex: -1
       }
     },
-    props:{
-      top:{
-        type:Number,
-        default:0
+    props: {
+      top: {
+        type: Number,
+        default: 0
       },
-      isLine:{
-        type:Boolean,
-        default:true
+      isLine: {
+        type: Boolean,
+        default: true
       },
-      titles:{
-        type:Array,
+      titles: {
+        type: Array,
         default(){
-          return [1,2,3,4]
+          return [1, 2, 3, 4]
         }
       }
     },
-    methods:{
-      touchMove(){
-        $('.list-header').removeClass('move-top');
-        $('.dropDown-area :not(.spec)').removeClass('show');
-        $('.item .iconfont').addClass(ICONCLASS_1);
-        this.isShow=false;
-      },
+    methods: {
       toggle(index){
-        let areaObj= $('.dropDown-area :not(.spec)');
-        let iconObj=$('.item .iconfont');
-        if(areaObj.eq(index).hasClass('show')){
-          areaObj.get(index).flag=false;
+        this.commonObj();
+        if (hasClass(this.areaObj[index], 'show')) {
+          this.areaObj[index].flag = false;
+          this.isShow = false;
         }
-        else{
-          areaObj.get(index).flag=true;
+        else {
+          this.areaObj[index].flag = true;
+          this.isShow = true;
         }
-        areaObj.siblings().removeClass('show');
-        iconObj.addClass(ICONCLASS_1);
-        $('.list-header').addClass('move-top');
-        if(areaObj.get(index).flag){
-          areaObj.eq(index).addClass('show');
-          iconObj.eq(index).addClass(ICONCLASS_2);
-          iconObj.eq(index).removeClass(ICONCLASS_1);
+        this.commonFor();
+        if (this.areaObj[index].flag) {
+          addClass(this.areaObj[index], 'show');
+          addClass(this.itemObj[index], 'active');
+          addClass(this.iconObj[index], ICONCLASS_2);
+          removeClass(this.iconObj[index], ICONCLASS_1);
         }
-        this.isShow=true;
-        this.$emit('goTop')
+
+        this.$emit('refresh', index);
       },
       _hide(){
-        $('.list-header').removeClass('move-top');
-        $('.dropDown-area :not(.spec)').removeClass('show');
-        $('.item .iconfont').addClass(ICONCLASS_1);
-        this.isShow=false;
+        this.commonObj();
+        this.commonFor();
+        this.isShow = false;
+        this.$emit('hide')
+      },
+      commonObj(){
+        this.areaObj = this.$refs.areaWrapper.getElementsByClassName('area-list');
+        this.iconObj = this.$refs.listWrapper.getElementsByClassName(ICON);
+        this.itemObj = this.$refs.listWrapper.getElementsByClassName('item');
+      },
+      commonFor(){
+        for (var i = 0, len = this.areaObj.length; i < len; i++) {
+          removeClass(this.areaObj[i], 'show');
+        }
+        for (var i = 0, len = this.itemObj.length; i < len; i++) {
+          removeClass(this.itemObj[i], 'active');
+        }
+        ;
+        for (var i = 0, len = this.iconObj.length; i < len; i++) {
+          addClass(this.iconObj[i], ICONCLASS_1);
+        }
       }
     }
   }
@@ -83,29 +97,47 @@
 
 <style lang="scss" scoped>
   @import '../../common/style/base.scss';
-  .list-header{
+
+  .list-header {
     z-index: 9;
     width: 100%;
+    top: pxToRem(50);
+    position: absolute;
     .content {
       position: relative;
-      top:0px;
+      top: 0px;
       width: 100%;
       z-index: 999;
       background: #fff;
       .list {
         position: relative;
-        padding: pxToRem(4) 0;
-        @include border-1px(1px, 0px, 1px, 0px);
         display: flex;
+        height: 1.06rem;
         justify-content: center;
         align-items: center;
+        @include border-1px(1px, 0px, 1px, 0px);
         .item {
-          flex: 1px;
+          flex: 1;
           position: relative;
-          padding: pxToRem(6) pxToRem(0);
           text-align: center;
           font-size: pxToRem(14);
           color: #969696;
+          &:last-child {
+            @include border-none();
+          }
+          .title {
+            display: inline-block;
+            height: pxToRem(16);
+            max-width: pxToRem(62);
+            vertical-align:bottom;
+            line-height: pxToRem(16);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          &.active {
+            color: $defaultColor;
+          }
         }
       }
     }
@@ -114,12 +146,13 @@
       color: #000;
       background: #fff;
       overflow: hidden;
-      * {
+      .area-list {
         display: none;
       }
     }
   }
-  .area-bg{
+
+  .area-bg {
     position: fixed;
     top: 0;
     left: 0;
@@ -127,16 +160,16 @@
     right: 0;
     width: 100%;
     height: 100%;
-    z-index:99;
+    z-index: 99;
     background: rgba(0, 0, 0, .7);
   }
-  .show{
+
+  .show {
     display: block !important;
   }
-  .line{
+
+  .line {
     @include border-1px(0px, 1px, px, 0px);
   }
-  .move-top{
-    position: fixed ;
-  }
+
 </style>

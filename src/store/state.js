@@ -1,6 +1,6 @@
 const state = {
-  singer: {},
+  foods: [],
   city:''
-}
+};
 
 export default state

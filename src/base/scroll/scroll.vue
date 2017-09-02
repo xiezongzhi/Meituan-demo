@@ -7,10 +7,10 @@
           <span class="tip-content">{{pulldownTip.text}}</span>
         </div>
         <div v-show="loadingStatus.showIcon || loadingStatus.status" class="loading-pos">
-            <div class="spinner"  v-show="loadingStatus.showIcon" >
-              <div class="double-bounce1"></div>
-              <div class="double-bounce2"></div>
-            </div>
+          <div class="spinner"  v-show="loadingStatus.showIcon" >
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
           <span class="loading-connecting">{{loadingStatus.status}}</span>
         </div>
       </div>
@@ -18,7 +18,6 @@
       <div v-show="scrollEnd" class="pullup-tip">
         <span class="tip-content">正在加载</span>
       </div>
-      <div class="seize-seat" v-show="isSeat">.</div>
     </div>
   </div>
 </template>
@@ -28,8 +27,8 @@
   export default {
     props: {
       isSeat:{
-          type:Boolean,
-          default:false
+        type:Boolean,
+        default:false
       },
       /**,
        * 1 滚动的时候会派发scroll事件，会截流。
@@ -38,7 +37,7 @@
        */
       probeType: {
         type: Number,
-        default: 1
+        default: 3
       },
       /**
        * 点击列表是否派发click事件
@@ -94,7 +93,7 @@
        */
       refreshDelay: {
         type: Number,
-        default: 20
+        default: 50
       },
       /**
        * 如果启用loading交互，传递loading的状态
@@ -139,14 +138,11 @@
     },
     mounted() {
       // 保证在DOM渲染完毕后初始化better-scroll
-      setTimeout(() => {
-        this._initScroll()
-
-      }, 20)
+      this._initScroll();
     },
     methods: {
-      goTop(){
-        this.scroll.scrollTo(0, 0, 500, {});
+      goTop(el){
+        this.scroll.scrollToElement(el,0);
       },
       onInfiniteDone(){
         this.scrollEnd = false;
@@ -161,7 +157,6 @@
           click: this.click,
           scrollX: this.scrollX
         });
-
         // 是否派发滚动事件
         if (this.listenScroll || this.pulldown || this.pullup) {
           let me = this;
@@ -173,7 +168,7 @@
             if (this.pulldown) {
               // 下拉动作
               if (pos.y > 50) {
-                  this.top=100;
+                this.top=100;
                 this.pulldownTip = {
                   text: '松开立即刷新',
                   rotate: 'icon-rotate'
@@ -187,7 +182,6 @@
             }
           })
         }
-
         // 是否派发滚动到底部事件，用于上拉加载
         if (this.pullup) {
           this.scroll.on('scrollEnd', () => {
@@ -211,7 +205,7 @@
                 }
               }, 600);
               this.$emit('pulldown');
-              }
+            }
           });
         }
 
@@ -228,6 +222,7 @@
       },
       enable() {
         // 代理better-scroll的enable方法
+
         this.scroll && this.scroll.enable();
       },
       refresh() {
@@ -268,6 +263,7 @@
   .better-scroll-root {
     position: fixed;
     top:0;
+    bottom:0;
     width: 100%;
     background-color: #fff;
     height: 100%;

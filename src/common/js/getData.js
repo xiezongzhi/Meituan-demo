@@ -14,18 +14,21 @@ export const locat_city = () => {
                   gc.getLocation(point, function(rs){
                      let addComp = rs.addressComponents;
                       // return addComp.city
-                      resolve([point,addComp])      
-       
+                      resolve([point,addComp])
                   });
-                  
           }
           else {
             alert('failed'+this.getStatus());
-          }       
+          }
         },{enableHighAccuracy: true})
 	})
-              
+
 }
+
+
+
+
+
 
 /**
  * 存储localStorage

@@ -1,2 +1,2 @@
-export const singer = state => state.singer
+export const foods = state => state.foods;
 
