@@ -1,3 +1,6 @@
+import jsonp from './jsonp'
+import {commonParams} from './config'
+
 /**
  * 获取当前定位经纬度、地址
  */
@@ -56,3 +59,17 @@ export const removeStore = name => {
 	if (!name) return;
 	window.localStorage.removeItem(name);
 }
+
+/**
+ * 获取酒店列表
+ */
+export const getHotelList=(param)=>{
+  const url='http://api.map.baidu.com/geosearch/v3/local';
+  const data=Object.assign({},commonParams,param);
+  return jsonp(url, data)
+};
+
+/**
+ * 获取首页信息
+ */
+

@@ -16,7 +16,19 @@
   import hotelHead from './hotel-head'
   import hotelFilter from './hotel-filter'
   import hotelListCon from './hotel-list-con'
+  import {getHotelList} from 'common/js/getData'
   export default{
+    created(){
+      getHotelList(
+        {
+          geotable_id:172120,
+          region:'珠海',
+          filter:'mer_id:[53,54,55]'
+        }
+      ).then((data)=>{
+        console.log(data)
+      })
+    },
     components:{
       hotelHead,
       hotelFilter,
