@@ -1,25 +1,22 @@
 <template>
   <div style="height: 100%;
     overflow: hidden;">
-    <div class="home-index">
-      <homeHeader @showCity="changeShow"></homeHeader>
-      <Scroll :data="discList" class="Scroll" :isSeat="true">
-        <homeBanner></homeBanner>
-        <split></split>
-        <homeNav></homeNav>
-        <split></split>
-        <homeNewAct></homeNewAct>
-        <split></split>
-        <homeActList></homeActList>
-        <split></split>
-        <homeLike></homeLike>
-      </Scroll>
-    </div>
-    <transition name="slideY">
-      <city v-if="isShow" @showCity="changeShow"></city>
-    </transition>
+      <div class="home-index" >
+        <homeHeader></homeHeader>
+        <Scroll :data="discList" class="Scroll" :isSeat="true">
+          <homeBanner></homeBanner>
+          <split></split>
+          <homeNav></homeNav>
+          <split></split>
+          <homeNewAct></homeNewAct>
+          <split></split>
+          <homeActList></homeActList>
+          <split></split>
+          <homeLike></homeLike>
+        </Scroll>
+      </div>
     <transition name="slide">
-      <router-view class="routerView"></router-view>
+      <router-view class="routerView"> </router-view>
     </transition>
   </div>
 
@@ -41,39 +38,55 @@
   import city from 'base/city/city'
   import {locat_city} from 'common/js/getData'
 
-  export default {
+  export default{
     data() {
       return {
-        discList: this.singer,
-        loadingStatus: {
+        discList:'',
+        loadingStatus:{
           showIcon: true,
         },
-        img: '',
-        isShow: false,
-        changeCity: ''
+        img:'',
+        isShow:false,
+        currentCity:''
       }
     },
-    beforeMount() {
-      if (!this.$route.query.city) {
-        this.setCity()
-      } else {
-        this.changeCity = this.$route.query.city
-      }
+    
+    created(){ 
+      if(!this.$route.query.city){
+            this.currentCity = '珠海'
+        }else{
+            this.currentCity = this.$route.query.city
+        }
+      this.baiduGetData()
+        
     },
-    mounted() {
-
+    beforeMount(){
+        this.setCity()    
     },
-    methods: {
-      changeShow() {
-        this.isShow = !this.isShow;
+    mounted(){
+  
+        
+    },
+    methods:{
+      async setCity(){
+          let city = (await locat_city())[1].city.replace('市','')
+          this.$store.commit('SET_CITY',city)
       },
-      async setCity() {
-        let city = (await locat_city())[1].city.replace('市', '');
-        this.$store.commit('SET_CITY', city)
-      }
+      baiduGetData(){ 
 
+        let url = `http://api.map.baidu.com/geosearch/v3/local?ak=H8L6uIttz0p18ZXYuxkk8TUGTPYKrXXP&geotable_id=172120&region=${this.currentCity}&filter=audit_status:1|status:1`;
+        this.Jsonp(url, function (err, data) {
+          if (err) {
+              console.error(err.data);
+            } else {
+              // this.$store.commit('SET_CITY',data.contents)
+
+            }
+        });
+      }
+      
     },
-    components: {
+    components:{
       homeHeader,
       homeBanner,
       homeNav,
@@ -83,22 +96,24 @@
       homeLike,
       Scroll,
       city
-    }
+    },
+
   }
 </script>
 
 <style lang="scss" scoped>
   @import '../../common/style/base.scss';
-
-  .home-index {
+  .home-index{
     width: 100%;
     height: 100%;
     overflow: hidden;
+
   }
 
-  .Scroll {
+  .Scroll{
     margin-top: pxToRem(45);
     width: 100%;
+
   }
 
 </style>

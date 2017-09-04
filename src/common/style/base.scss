@@ -99,3 +99,9 @@ $defaultColor:#ff9d00;
 .slide-enter,.slide-leave-to{
   transform: translate3d(100%, 0, 0)
 }
+.slideY-enter-active,.slideY-leave-active{
+  transition: all 0.3s
+}
+.slideY-enter,.slideY-leave-to{
+  transform: translate3d(0, 100%, 0)
+}

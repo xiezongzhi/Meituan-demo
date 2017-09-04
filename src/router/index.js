@@ -10,6 +10,7 @@ import Hotel from 'components/hotel/hotel-booking-index/index.vue';
 import HotelList from 'components/hotel/hotel-list/index.vue';
 import HotelDetails from 'components/hotel/hotel-details/index.vue';
 import GoodsDetail from 'components/food/food-rating/index.vue';
+import City from 'base/city/city';
 
 Vue.use(Router);
 export default new Router({
@@ -46,7 +47,8 @@ export default new Router({
               ]
             }
           ]
-        }
+        },
+        
       ]
     },
     {
@@ -64,7 +66,13 @@ export default new Router({
     {
       path: '/user',
       component: User
-    }
+    },
+    {
+        path: '/city',
+        component: City,
+        meta: { keepAlive: true }
+     }
+   
   ],
   base:'meituan',
   linkActiveClass: 'active'

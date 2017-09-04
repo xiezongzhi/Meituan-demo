@@ -9,7 +9,6 @@ export const locat_city = () => {
 		let geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function(r){
           if(this.getStatus() == BMAP_STATUS_SUCCESS){
-            	console.log(r)
             // alert('您的位置：'+r.point.lng+','+r.point.lat);
             let point = new BMap.Point(r.point.lng,r.point.lat);
             //用所定位的经纬度查找所在地省市街道等信息
@@ -27,9 +26,6 @@ export const locat_city = () => {
 	})
 
 }
-
-
-
 
 
 
