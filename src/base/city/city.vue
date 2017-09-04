@@ -1,90 +1,90 @@
 <template>
 	<div class="city"  ref="cityWrapper">
-	<div class="city-wrapper">
-		<div class="back">
-		    <div class="content">
-		      <div class="icon"@click="back">
-		        <span class="iconfont icon-left"></span>
-		      </div>
-		      <div class="title">
-		        选择城市
-		      </div>
-		    </div>
-		</div>
-		<div class="cityBox">
-			<div class="location-city box">
-				定位城市：<span class="city-name">{{city}}</span>	
+		<div class="city-wrapper">
+			<div class="back">
+			    <div class="content">
+			      <div class="icon" @click="back">
+			        <span class="iconfont icon-left"></span>
+			      </div>
+			      <div class="title">
+			        选择城市
+			      </div>
+			    </div>
 			</div>
-			<div class="s-type">
-				<h3>最近访问</h3>
-				<div class="type-item box">
-					<ul class="table">
-						<li>
-							<a href="#">珠海</a>
-						</li>
-						<li>
-							<a href="#">珠海</a>
-						</li>
-						<li>
-							<a href="#">珠海</a>
-						</li>
-						<li>
-							<a href="#">珠海</a>
-						</li>
-					</ul>
+			<div class="cityBox">
+				<div class="location-city box">
+					定位城市：<span class="city-name">{{city}}</span>	
 				</div>
-			</div>
-			<div class="s-type">
-				<h3>热门城市</h3>
-				<div class="type-item box">
-					<ul class="table">
-						<li>
-							<a href="#">珠海</a>
-						</li>
-						<li>
-							<a href="#">珠海</a>
-						</li>
-						<li>
-							<a href="#">珠海</a>
-						</li>
-						<li>
-							<a href="#">珠海</a>
-						</li>
-						<li>
-							<a href="#">珠海</a>
-						</li>
-						<li>
-							<a href="#">珠海</a>
-						</li>
-						<li>
-							<a href="#">珠海</a>
-						</li>
-					</ul>
+				<div class="s-type">
+					<h3>最近访问</h3>
+					<div class="type-item box">
+						<ul class="table">
+							<li>
+								<a href="#">珠海</a>
+							</li>
+							<li>
+								<a href="#">珠海</a>
+							</li>
+							<li>
+								<a href="#">珠海</a>
+							</li>
+							<li>
+								<a href="#">珠海</a>
+							</li>
+						</ul>
+					</div>
 				</div>
-			</div>
-			<div class="s-type">
-				<h3>全部城市</h3>
-				<div class="type-item box charlist">
-					<ul class="table">
-						<li v-for="(letter,index) in letters" @click="seleccity(index)">
-							<a href="javascript:;">{{letter}}</a>
-						</li>
-						
-					</ul>
+				<div class="s-type">
+					<h3>热门城市</h3>
+					<div class="type-item box">
+						<ul class="table">
+							<li>
+								<a href="#">珠海</a>
+							</li>
+							<li>
+								<a href="#">珠海</a>
+							</li>
+							<li>
+								<a href="#">珠海</a>
+							</li>
+							<li>
+								<a href="#">珠海</a>
+							</li>
+							<li>
+								<a href="#">珠海</a>
+							</li>
+							<li>
+								<a href="#">珠海</a>
+							</li>
+							<li>
+								<a href="#">珠海</a>
+							</li>
+						</ul>
+					</div>
 				</div>
-				<div class="type-item box all-city">
-					<ul class="table">
-						<h4 id="A">A</h4>
-						<li v-for="city in cityList">
-							<a href="javascript:;" @click="select(city.name)">{{city.name}}</a>
-						</li>
-					</ul>
+				<div class="s-type">
+					<h3>全部城市</h3>
+					<div class="type-item box charlist">
+						<ul class="table">
+							<li v-for="(letter,index) in letters" @click="seleccity(index)">
+								<a href="javascript:;">{{letter}}</a>
+							</li>
+							
+						</ul>
+					</div>
+					<div class="type-item box all-city">
+						<ul class="table">
+							<h4 id="A">A</h4>
+							<li v-for="city in cityList">
+								<a href="javascript:;" @click="select(city.name)">{{city.name}}</a>
+							</li>
+						</ul>
+					</div>
+					
 				</div>
-				
-			</div>
 
+			</div>
 		</div>
-	</div>
 		
 	</div>
 </template>
@@ -120,12 +120,11 @@ import { mapState } from 'vuex'
 				let select = this.$refs.cityWrapper.getElementsByClassName('all-city')
 				this.cscroll.scrollToElement(select[index], 300);
 			},
-			back(){
-				this.$emit('showCity')
-			},
+			 back(){
+        		 this.$router.back()
+            },
 	        select(city){
 	        	this.$router.push({path:'/home', query:{city}});
-	        	this.$emit('showCity')
 	        }
 		},
 		mounted(){

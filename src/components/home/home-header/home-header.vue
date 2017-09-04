@@ -1,6 +1,8 @@
 <template>
   <div class="home-header">
-    <div class="header-city" @click="showCity">{{h_city}} <span class="iconfont icon-bottom"></span></div>
+    <router-link to="/city">
+      <div class="header-city">{{h_city}} <span class="iconfont icon-bottom"></span></div>
+    </router-link>
     <div class="header-search"><a href="#" class="rect"><span class="iconfont icon-fangdajing"></span>输入商户名，地名或菜名</a></div>
     <div class="header-user">消息</div>
   </div>
@@ -21,9 +23,6 @@ import { mapState } from 'vuex'
 
       },
       methods:{
-        showCity(){
-            this.$emit('showCity')
-        }
       },
       computed:{
         ...mapState({
@@ -59,6 +58,7 @@ import { mapState } from 'vuex'
     background: #0f121f;
     .header-city{
       width: pxToRem(85);
+      color: #d7d7d7;
     }
     .header-search{
       flex:1;

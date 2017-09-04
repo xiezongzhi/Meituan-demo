@@ -2,7 +2,7 @@
   <div style="height: 100%;
     overflow: hidden;">
       <div class="home-index" >
-        <homeHeader @showCity="changeShow"></homeHeader>
+        <homeHeader></homeHeader>
         <Scroll :data="discList" class="Scroll" :isSeat="true">
           <homeBanner></homeBanner>
           <split></split>
@@ -15,9 +15,6 @@
           <homeLike></homeLike>
         </Scroll>
       </div>
-      <transition name="slideY">
-        <city v-if="isShow" @showCity="changeShow" ></city>
-      </transition>
     <transition name="slide">
       <router-view class="routerView"> </router-view>
     </transition>
@@ -42,40 +39,50 @@
   import {locat_city} from 'common/js/getData'
 
   export default{
-    computed: {
-      ...mapGetters([
-        'singer'
-      ])
-    },
     data() {
       return {
-        discList: this.singer,
+        // discList: ,
         loadingStatus:{
           showIcon: true,
         },
         img:'',
         isShow:false,
-        changeCity:''
+        currentCity:''
       }
     },
-    beforeMount(){
-        if(!this.$route.query.city){
-            this.setCity()
+    
+    created(){ 
+      if(!this.$route.query.city){
+            this.currentCity = '珠海'
         }else{
-            this.changeCity = this.$route.query.city
+            this.currentCity = this.$route.query.city
         }
+      this.baiduGetData()
+        
+    },
+    beforeMount(){
+        this.setCity()    
     },
     mounted(){
-        
+  
         
     },
     methods:{
-      changeShow(){
-        this.isShow = !this.isShow;
-      },
       async setCity(){
           let city = (await locat_city())[1].city.replace('市','')
           this.$store.commit('SET_CITY',city)
+      },
+      baiduGetData(){ 
+
+        let url = `http://api.map.baidu.com/geosearch/v3/local?ak=H8L6uIttz0p18ZXYuxkk8TUGTPYKrXXP&geotable_id=172120&region=${this.currentCity}&filter=audit_status:1|status:1`;
+        this.Jsonp(url, function (err, data) {
+          if (err) {
+              console.error(err.data);
+            } else {
+              this.$store.commit('SHOP',data.contents)
+
+            }
+        });
       }
       
     },
@@ -89,7 +96,8 @@
       homeLike,
       Scroll,
       city
-    }
+    },
+
   }
 </script>
 
