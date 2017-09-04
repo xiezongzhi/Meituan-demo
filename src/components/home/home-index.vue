@@ -41,7 +41,7 @@
   export default{
     data() {
       return {
-        // discList: ,
+        discList:'',
         loadingStatus:{
           showIcon: true,
         },
@@ -79,7 +79,7 @@
           if (err) {
               console.error(err.data);
             } else {
-              this.$store.commit('SHOP',data.contents)
+              // this.$store.commit('SET_CITY',data.contents)
 
             }
         });

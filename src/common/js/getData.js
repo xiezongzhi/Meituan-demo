@@ -56,13 +56,3 @@ export const removeStore = name => {
 	window.localStorage.removeItem(name);
 }
 
-/**
- * 获取首页商家列表
- */
-
- // export const groupcity = () => Vue.Jsonp('http://api.map.baidu.com/geosearch/v3/local?ak=H8L6uIttz0p18ZXYuxkk8TUGTPYKrXXP&geotable_id=172120&region=珠海&filter=audit_status:1|status:1', function (err, data) {
- //        if (err) {
- //          console.error(err.data);
- //        } else {
- //          console.log(data);
- //        }

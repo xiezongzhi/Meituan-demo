@@ -68,10 +68,10 @@ export default new Router({
       component: User
     },
     {
-          path: '/city',
-          component: City,
-          meta: { keepAlive: true }
-        }
+        path: '/city',
+        component: City,
+        meta: { keepAlive: true }
+     }
    
   ],
   base:'meituan',
