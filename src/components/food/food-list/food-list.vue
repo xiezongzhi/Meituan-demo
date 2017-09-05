@@ -26,7 +26,7 @@
                 class="yuan1">￥</i>{{item.oldPrice}}</span>
               </div>
               <div class="rang">
-                <span class="num"><{{item.rang}}</span>
+                <span class="num"><{{item.dis}}</span>
               </div>
             </div>
           </div>
@@ -39,6 +39,7 @@
   import BScroll from 'better-scroll';
   import {mapMutations} from 'vuex';
   import listHeader from "base/list-header/list-header.vue";
+  import {root} from 'common/js/config';
   import {getGoodsList,getDistance} from "common/js/getData";
   export default{
     props: {
@@ -46,7 +47,7 @@
     },
     data(){
       return {
-        rootImg:'http://s-381329.gotocdn.com/meituan/Public/uploads/food_merchants/',
+        rootImg:root+'/Public/uploads/food_merchants/',
         goodsList:[],
         names: ['全部', '附近', '智能排序', '筛选'],
         currentIndex: '',
@@ -151,9 +152,7 @@
       ).then((data)=>{
         if(data.status===0){
           this.goodsList=data.contents;
-          getDistance(this.goodsList[0].location).then((res)=>{
-
-          });
+          this._getDistance(this.goodsList);
           this.setGoods(this.goodsList);
         }
       });
@@ -164,6 +163,14 @@
       }
     },
     methods: {
+      _getDistance(goodsList){
+        for(let i=0,len=goodsList.length;i<len;i++){
+          getDistance(goodsList[i].location).then((data)=>{
+            goodsList[i].dis=data;
+            console.log(goodsList);
+          });
+        }
+      },
       ...mapMutations({
         setGoods: 'SET_GOODS'
       }),

@@ -15,6 +15,9 @@
         </div>
       </div>
       <slot></slot>
+      <div class="seize-seat" v-show="isSeat">
+
+      </div>
       <div v-show="scrollEnd" class="pullup-tip">
         <span class="tip-content">正在加载</span>
       </div>
@@ -94,6 +97,10 @@
       refreshDelay: {
         type: Number,
         default: 50
+      },
+      isSeat:{
+        type:Boolean,
+        default:false
       },
       /**
        * 如果启用loading交互，传递loading的状态
