@@ -28,6 +28,22 @@ export const locat_city = () => {
 }
 
 
+/**
+ * 两地之间的距离
+ */
+export const getDistance=(pointArray)=>{
+ return new Promise(function(resolve){
+    locat_city().then((res)=>{
+      let map = new BMap.Map();
+      let lng = res[0].lng;
+      let lat = res[0].lat;
+      let point1 = new BMap.Point(pointArray[0], pointArray[1]);
+      let point2 = new BMap.Point(lng,lat);
+      let dis = map.getDistance(point1, point2).toFixed(0);
+      resolve (dis>1000?(dis/1000).toFixed(1)+'km':dis+'m');
+    })
+  });
+};
 
 /**
  * 存储localStorage
@@ -66,6 +82,11 @@ export const getHotelList=(param)=>{
 };
 
 /**
- * 获取首页信息
+ * 获取美食首页商家列表
  */
+export const getGoodsList=(param)=>{
+  const url='http://api.map.baidu.com/geosearch/v3/local';
+  const data=Object.assign({},commonParams,param);
+  return jsonp(url, data)
+};
 

@@ -1,2 +1,2 @@
-export const foods = state => state.foods;
+export const goods = state => state.goods;
 

@@ -9,20 +9,20 @@
         </ul>
       </div>
       <router-link to="/home/food/goodsDetail">
-        <div class="list" v-for="item in foods">
+        <div class="list" v-for="item in goodsList">
           <div class="item">
             <div class="image-wrapper">
-              <img :src="item.image" alt="">
+              <img v-lazy="rootImg+item.img" alt="">
             </div>
             <div class="content">
               <div class="item-name">
-                {{item.name}}
+                {{item.title}}
               </div>
               <div class="item-desc">
-                {{item.desc}}
+                {{item.cate_name}}
               </div>
               <div class="price">
-                <span class="new"><i class="yuan">￥</i>{{item.newPrice}}</span><span class="old"><i
+                <span class="new"><i class="yuan">￥</i>{{item.price}}</span><span class="old" v-show="item.oldPrice"><i
                 class="yuan1">￥</i>{{item.oldPrice}}</span>
               </div>
               <div class="rang">
@@ -39,12 +39,15 @@
   import BScroll from 'better-scroll';
   import {mapMutations} from 'vuex';
   import listHeader from "base/list-header/list-header.vue";
+  import {getGoodsList,getDistance} from "common/js/getData";
   export default{
     props: {
       goods: this.foods
     },
     data(){
       return {
+        rootImg:'http://s-381329.gotocdn.com/meituan/Public/uploads/food_merchants/',
+        goodsList:[],
         names: ['全部', '附近', '智能排序', '筛选'],
         currentIndex: '',
         foods: [
@@ -137,7 +140,23 @@
       }
     },
     created(){
-      this.setFoods(this.foods);
+      getGoodsList(
+        {
+          geotable_id:172120,
+          region:'珠海',
+          filter:'audit_status:1|status:1',
+          parent_id:1,
+          cate_id:2
+        }
+      ).then((data)=>{
+        if(data.status===0){
+          this.goodsList=data.contents;
+          getDistance(this.goodsList[0].location).then((res)=>{
+
+          });
+          this.setGoods(this.goodsList);
+        }
+      });
     },
     watch: {
       names(newValue){
@@ -146,7 +165,7 @@
     },
     methods: {
       ...mapMutations({
-        setFoods: 'SET_FOODS'
+        setGoods: 'SET_GOODS'
       }),
       changName(name){
         this.names = name.slice(0, 5);
@@ -220,7 +239,8 @@
           padding: pxToRem(12) 0;
           @include border-1px(0px, 0px, 1px, 0px);
           .image-wrapper {
-            width: pxToRem(76);
+            width: pxToRem(80);
+            height: pxToRem(80);
             margin-right: pxToRem(10);
             img {
               display: block;
