@@ -4,10 +4,10 @@
       <span><img src="./line.png" alt=""></span >   <span class="text">猜你喜欢  </span> <span><img src="./line.png" alt=""></span>
     </h3>
     <div class="like-content">
-      <div class="like-list">
+      <div class="like-list" v-for="shop in shoplist">
         <div class="list-item">
           <div class="image-wrapper">
-            <img src="./like_1.jpg" alt="" >
+            <img :src="imgUrl+shop.img" alt="" >
           </div>
           <div class="content">
             <div class="item-name">
@@ -26,70 +26,34 @@
           </div>
         </div>
       </div>
-      <div class="like-list">
-        <div class="list-item">
-          <div class="image-wrapper">
-            <img src="./like_1.jpg" alt="" >
-          </div>
-          <div class="content">
-            <div class="item-name">
-              奈九居酒屋
-            </div>
-            <div class="item-desc">
-              [乐士文化区]100元超级代金券
-            </div>
-            <div class="price">
-              <span class="new"><i class="yuan">￥</i>12 </span><span class="old"><i
-              class="yuan1">￥</i>12</span>
-            </div>
-            <div class="rang">
-              <span class="num">2.3km</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="like-list">
-        <div class="list-item">
-          <div class="image-wrapper">
-            <img src="./like_1.jpg" alt="" >
-          </div>
-          <div class="content">
-            <div class="item-name">
-              奈九居酒屋
-            </div>
-            <div class="item-desc">
-              [乐士文化区]100元超级代金券
-            </div>
-            <div class="price">
-              <span class="new"><i class="yuan">￥</i>12 </span><span class="old"><i
-              class="yuan1">￥</i>12</span>
-            </div>
-            <div class="rang">
-              <span class="num">2.3km</span>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </template>
 
 <script>
   import {mapMutations} from 'vuex';
+  import { mapGetters } from 'vuex'
+  import {root} from 'common/js/config';
   export default{
-      data(){
-          return {
-              singer:[1,2,3]
-          }
-      },
+    data(){
+        return {
+           imgUrl:root+'/Public/uploads/food_merchants/',
+        }
+    },
     created(){
 
     },
-    methods:{
-      ...mapMutations({
+    computed:{
+      // ...mapGetters([
+      //       'shoplist'
 
-      })
+      //   ]),
+      shoplist(){
+        return this.$store.getters.shoplist
+      }
     }
+   
   }
 </script>
 
@@ -120,7 +84,8 @@
           padding: pxToRem(12) 0;
           @include border-1px(0px,0px,1px,0px);
           .image-wrapper{
-            width:pxToRem(76);
+            width:pxToRem(80);
+            height: pxToRem(80);
             margin-right: pxToRem(10);
             img{
               display: block;

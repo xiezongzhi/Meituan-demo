@@ -6,6 +6,9 @@ const mutations = {
   },
   [types.SET_FOODS](state, FOODS) {
     state.foods = FOODS
+  },
+  [types.GET_SHOPLIST_INDEX](state, SHOPLIST) {
+    state.shoplist = SHOPLIST
   }
 };
 

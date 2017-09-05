@@ -36,12 +36,12 @@
   import homeLike from "./home-like/home-like.vue";
   import {mapGetters} from 'vuex'
   import city from 'base/city/city'
-  import {locat_city} from 'common/js/getData'
+  import {locat_city,getHotelList} from 'common/js/getData'
 
   export default{
     data() {
       return {
-        discList:'',
+        discList:[],
         loadingStatus:{
           showIcon: true,
         },
@@ -73,16 +73,15 @@
           this.$store.commit('SET_CITY',city)
       },
       baiduGetData(){ 
+        let param = {geotable_id:172120,region:this.currentCity,filter:'audit_status:1|status:1'}
+          getHotelList(param).then(data=>{
+            this.discList = data.contents
+            this.$store.commit('GET_SHOPLIST_INDEX',data.contents)
 
-        let url = `http://api.map.baidu.com/geosearch/v3/local?ak=H8L6uIttz0p18ZXYuxkk8TUGTPYKrXXP&geotable_id=172120&region=${this.currentCity}&filter=audit_status:1|status:1`;
-        this.Jsonp(url, function (err, data) {
-          if (err) {
-              console.error(err.data);
-            } else {
-              // this.$store.commit('SET_CITY',data.contents)
-
-            }
-        });
+          })
+        
+       
+   
       }
       
     },
