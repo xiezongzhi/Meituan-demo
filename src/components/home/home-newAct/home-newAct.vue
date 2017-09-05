@@ -27,7 +27,7 @@
           notNextTick: false,
           autoplay: 3500,
           autoHeight: true,
-          loop: true,
+          onlyExternal : true,
           direction: 'vertical',
           autoplayDisableOnInteraction: false,
           pagination: '.swiper-pagination',

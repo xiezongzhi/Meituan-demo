@@ -1,5 +1,5 @@
 const state = {
-  foods: [],
+  goods: [],
   city:''
 };
 

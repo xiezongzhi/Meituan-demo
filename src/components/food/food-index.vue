@@ -92,7 +92,7 @@
           </div>
         </div>
       </listHeader>
-      <Scroll :data="foods" class="scroll" :listenScroll="true" @scroll="scroll">
+      <Scroll :data="goods" class="scroll" :listenScroll="true" @scroll="scroll">
         <div class="wrapper">
           <foodBanner></foodBanner>
           <split></split>
@@ -124,7 +124,7 @@
   export default{
     computed: {
       ...mapGetters([
-        'foods'
+        'goods'
       ])
     },
     data() {

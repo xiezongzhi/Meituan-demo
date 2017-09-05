@@ -50,29 +50,29 @@
         currentCity:''
       }
     },
-    
-    created(){ 
+
+    created(){
       if(!this.$route.query.city){
             this.currentCity = '珠海'
         }else{
             this.currentCity = this.$route.query.city
         }
       this.baiduGetData()
-        
+
     },
     beforeMount(){
-        this.setCity()    
+        this.setCity()
     },
     mounted(){
-  
-        
+
+
     },
     methods:{
       async setCity(){
           let city = (await locat_city())[1].city.replace('市','')
           this.$store.commit('SET_CITY',city)
       },
-      baiduGetData(){ 
+      baiduGetData(){
         let param = {geotable_id:172120,region:this.currentCity,filter:'audit_status:1|status:1'}
           getHotelList(param).then(data=>{
             this.discList = data.contents
@@ -83,7 +83,7 @@
        
    
       }
-      
+
     },
     components:{
       homeHeader,

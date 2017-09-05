@@ -9,24 +9,24 @@
         </ul>
       </div>
       <router-link to="/home/food/goodsDetail">
-        <div class="list" v-for="item in foods">
+        <div class="list" v-for="item in goodsList">
           <div class="item">
             <div class="image-wrapper">
-              <img :src="item.image" alt="">
+              <img v-lazy="rootImg+item.img" alt="">
             </div>
             <div class="content">
               <div class="item-name">
-                {{item.name}}
+                {{item.title}}
               </div>
               <div class="item-desc">
-                {{item.desc}}
+                {{item.cate_name}}
               </div>
               <div class="price">
-                <span class="new"><i class="yuan">￥</i>{{item.newPrice}}</span><span class="old"><i
+                <span class="new"><i class="yuan">￥</i>{{item.price}}</span><span class="old" v-show="item.oldPrice"><i
                 class="yuan1">￥</i>{{item.oldPrice}}</span>
               </div>
               <div class="rang">
-                <span class="num"><{{item.rang}}</span>
+                <span class="num"><{{item.dis}}</span>
               </div>
             </div>
           </div>
@@ -39,105 +39,36 @@
   import BScroll from 'better-scroll';
   import {mapMutations} from 'vuex';
   import listHeader from "base/list-header/list-header.vue";
+  import {root} from 'common/js/config';
+  import {getGoodsList,getDistance} from "common/js/getData";
   export default{
     props: {
       goods: this.foods
     },
     data(){
       return {
+        rootImg:root+'/Public/uploads/food_merchants/',
+        goodsList:[],
         names: ['全部', '附近', '智能排序', '筛选'],
         currentIndex: '',
-        foods: [
-          {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }
-        ],
       }
     },
     created(){
-      this.setFoods(this.foods);
+      getGoodsList(
+        {
+          geotable_id:172120,
+          region:'珠海',
+          filter:'audit_status:1|status:1',
+          parent_id:1,
+          cate_id:2
+        }
+      ).then((data)=>{
+        if(data.status===0){
+          this.goodsList=data.contents;
+          this._getDistance(this.goodsList);
+          this.setGoods(this.goodsList);
+        }
+      });
     },
     watch: {
       names(newValue){
@@ -145,8 +76,15 @@
       }
     },
     methods: {
+      _getDistance(goodsList){
+        for(let i=0,len=goodsList.length;i<len;i++){
+          getDistance(goodsList[i].location).then((data)=>{
+            goodsList[i].dis=data;
+          });
+        }
+      },
       ...mapMutations({
-        setFoods: 'SET_FOODS'
+        setGoods: 'SET_GOODS'
       }),
       changName(name){
         this.names = name.slice(0, 5);
@@ -220,7 +158,8 @@
           padding: pxToRem(12) 0;
           @include border-1px(0px, 0px, 1px, 0px);
           .image-wrapper {
-            width: pxToRem(76);
+            width: pxToRem(80);
+            height: pxToRem(80);
             margin-right: pxToRem(10);
             img {
               display: block;
