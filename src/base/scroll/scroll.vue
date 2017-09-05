@@ -16,7 +16,6 @@
       </div>
       <slot></slot>
       <div class="seize-seat" v-show="isSeat">
-
       </div>
       <div v-show="scrollEnd" class="pullup-tip">
         <span class="tip-content">正在加载</span>

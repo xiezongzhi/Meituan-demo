@@ -3,7 +3,7 @@
     overflow: hidden;">
       <div class="home-index" >
         <homeHeader></homeHeader>
-        <Scroll :data="goods" class="Scroll" :isSeat="true">
+        <Scroll :data="discList" class="Scroll" :isSeat="true">
           <homeBanner></homeBanner>
           <split></split>
           <homeNav></homeNav>
@@ -34,15 +34,11 @@
   import homeNewAct from "./home-newAct/home-newAct.vue";
   import homeActList from "./home-actList/home-actList.vue";
   import homeLike from "./home-like/home-like.vue";
+  import {mapGetters} from 'vuex'
   import city from 'base/city/city'
   import {locat_city} from 'common/js/getData'
-  import {mapGetters} from 'vuex';
+
   export default{
-    computed:{
-      ...mapGetters([
-        'goods'
-      ])
-    },
     data() {
       return {
         discList:'',
@@ -117,6 +113,7 @@
   .Scroll{
     margin-top: pxToRem(45);
     width: 100%;
+
   }
 
 </style>

@@ -51,93 +51,6 @@
         goodsList:[],
         names: ['全部', '附近', '智能排序', '筛选'],
         currentIndex: '',
-        foods: [
-          {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }, {
-            image: "http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750",
-            name: '奈九居酒屋',
-            desc: '[乐士文化区]100元超级代金券,',
-            newPrice: 12,
-            oldPrice: 10,
-            rang: '2.3km'
-          }
-        ],
       }
     },
     created(){
@@ -167,7 +80,6 @@
         for(let i=0,len=goodsList.length;i<len;i++){
           getDistance(goodsList[i].location).then((data)=>{
             goodsList[i].dis=data;
-            console.log(goodsList);
           });
         }
       },
