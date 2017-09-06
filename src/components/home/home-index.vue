@@ -24,7 +24,7 @@
 </template>
 
 <script>
-
+  import Vue from 'vue';
   import Scroll from 'base/scroll/scroll';
   import BScroll from 'better-scroll';
   import split from 'base/split/split';
@@ -36,8 +36,8 @@
   import homeLike from "./home-like/home-like.vue";
   import {mapGetters} from 'vuex'
   import city from 'base/city/city'
-  import {locat_city,getHotelList} from 'common/js/getData'
-
+  import {locat_city,getHotelList,initCity} from 'common/js/getData'
+  import {getDistance } from 'common/js/getData'
   export default{
     data() {
       return {
@@ -57,10 +57,11 @@
         }else{
             this.currentCity = this.$route.query.city
         }
-      this.baiduGetData()
+      
 
     },
     beforeMount(){
+
         this.setCity()
     },
     mounted(){
@@ -68,21 +69,34 @@
 
     },
     methods:{
-      async setCity(){
-          let city = (await locat_city())[1].city.replace('市','')
-          this.$store.commit('SET_CITY',city)
-      },
-      baiduGetData(){
-        let param = {geotable_id:172120,region:this.currentCity,filter:'audit_status:1|status:1'}
-          getHotelList(param).then(data=>{
-            this.discList = data.contents
-            this.$store.commit('GET_SHOPLIST_INDEX',data.contents)
-
+       setCity(){
+          initCity().then((res)=>{
+            let city = res.data.body.replace('市','')
+            this.$store.commit('SET_CITY',city)
           })
+         
+      },
+      // async baiduGetData(){
+      //   let param = {geotable_id:172120,region:this.currentCity,filter:'audit_status:1|status:1'}
+
+      //     getHotelList(param).then(data=>{
+      //       this.discList = data.contents;
+
+      //       for(let i=0;i<this.discList.length;i++){
+      //         getDistance(this.discList[i].location).then((data)=>{
+                
+      //           Vue.set(this.discList[i],'dis',data)
+      //         })
+      //       }
+      //        this.$store.dispatch('setShopList', this.discList)
+
+      //     })
+
+
         
        
    
-      }
+      // }
 
     },
     components:{
