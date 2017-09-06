@@ -8,67 +8,57 @@
           </li>
         </ul>
       </div>
-      <router-link to="/home/food/goodsDetail">
-        <div class="list" v-for="item in goodsList">
-          <div class="item">
-            <div class="image-wrapper">
-              <img v-lazy="rootImg+item.img" alt="">
+
+      <div class="list" v-for="item in goodsList"  @click="_getGoodDetail(item.mer_id,item.cate_id)">
+        <div class="item">
+          <div class="image-wrapper">
+            <img v-lazy="goodsListImgUrl+item.img" alt="">
+          </div>
+          <div class="content">
+            <div class="item-name">
+              {{item.title}}
             </div>
-            <div class="content">
-              <div class="item-name">
-                {{item.title}}
-              </div>
-              <div class="item-desc">
-                {{item.cate_name}}
-              </div>
-              <div class="price">
-                <span class="new"><i class="yuan">￥</i>{{item.price}}</span><span class="old" v-show="item.oldPrice"><i
-                class="yuan1">￥</i>{{item.oldPrice}}</span>
-              </div>
-              <div class="rang">
-                <span class="num"><{{item.dis}}</span>
-              </div>
+            <div class="item-desc">
+              {{item.district}} [{{item.introduce}}]
+            </div>
+            <div class="price">
+              <span class="new"><i class="yuan">￥</i>{{item.price}}</span><span class="old" v-show="item.oldPrice"><i
+              class="yuan1">￥</i>{{item.oldPrice}}</span>
+            </div>
+            <div class="rang">
+              <span class="num">{{item.distance }}</span>
             </div>
           </div>
         </div>
-      </router-link>
+      </div>
     </div>
   </div>
 </template>
 <script>
+  import Vue from 'vue'
   import BScroll from 'better-scroll';
   import {mapMutations} from 'vuex';
   import listHeader from "base/list-header/list-header.vue";
   import {root} from 'common/js/config';
-  import {getGoodsList,getDistance} from "common/js/getData";
+  import {getGoodsListRound,getDistance,getFoodBanner,getGoodsListLocal} from "common/js/getData";
   export default{
     props: {
       goods: this.foods
     },
     data(){
       return {
-        rootImg:root+'/Public/uploads/food_merchants/',
+        food:{},
+        foodBanners:[],
+        goodsListImgUrl:root+'/Public/uploads/food_merchants/',
         goodsList:[],
         names: ['全部', '附近', '智能排序', '筛选'],
         currentIndex: '',
       }
     },
     created(){
-      getGoodsList(
-        {
-          geotable_id:172120,
-          region:'珠海',
-          filter:'audit_status:1|status:1',
-          parent_id:1,
-          cate_id:2
-        }
-      ).then((data)=>{
-        if(data.status===0){
-          this.goodsList=data.contents;
-          this._getDistance(this.goodsList);
-          this.setGoods(this.goodsList);
-        }
-      });
+//      this._getGoodsListRound();
+      this._getGoodsListLocal()
+      this._getFoodBanner();
     },
     watch: {
       names(newValue){
@@ -76,16 +66,57 @@
       }
     },
     methods: {
-      _getDistance(goodsList){
-        for(let i=0,len=goodsList.length;i<len;i++){
-          getDistance(goodsList[i].location).then((data)=>{
-            goodsList[i].dis=data;
-          });
+      _getFoodBanner(){
+        getFoodBanner(2).then((data)=>{
+          this.foodBanners=data;
+        })
+      },
+      _getGoodDetail(mer_id,cate_id){
+        if (!mer_id) {
+          this.$router.push('/home/food');
+          return
+        }
+        else{
+          this.$router.push({
+            path: `/home/food/goodsDetail/?mer_id=${mer_id}&cate_id=${cate_id}`
+          })
         }
       },
+      _getGoodsListRound(){
+        getGoodsListRound(
+          {
+            geotable_id:172120,
+            region:'珠海',
+            filter:'audit_status:1|status:1',
+            parent_id:1,
+            cate_id:2
+          }
+        ).then((data)=>{
+          if(data.status===0){
+            this.goodsList=data.contents;
+            this.setGoods(this.goodsList);
+          }
+        });
+      },
+      _getGoodsListLocal(){
+        getGoodsListLocal(
+          {
+            region:""
+          }
+        ).then((data)=>{
+          this.goodsList=data;
+          this.setGoods(this.goodsList);
+//          if(data.status===0){
+//            console.log(data)
+//            this.goodsList=data.contents;
+//            this.setGoods(this.goodsList);
+//          }
+        });
+      },
       ...mapMutations({
-        setGoods: 'SET_GOODS'
-      }),
+          setGoods:'SET_GOODS'
+        }
+      ),
       changName(name){
         this.names = name.slice(0, 5);
       },

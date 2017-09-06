@@ -79,9 +79,9 @@
             this.$store.commit('GET_SHOPLIST_INDEX',data.contents)
 
           })
-        
-       
-   
+
+
+
       }
 
     },

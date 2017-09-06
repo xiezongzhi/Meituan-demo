@@ -41,14 +41,14 @@ export default new Router({
               component:HotelList,
               children:[
                 {
-                  path:'/home/hotel/hotelList/hotelDetails',
+                  path:'/home/hotel/hotelList/hotelDetails:id',
                   component:HotelDetails
                 }
               ]
             }
           ]
         },
-        
+
       ]
     },
     {
@@ -72,7 +72,7 @@ export default new Router({
         component: City,
         meta: { keepAlive: true }
      }
-   
+
   ],
   base:'meituan',
   linkActiveClass: 'active'

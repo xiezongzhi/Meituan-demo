@@ -53,7 +53,7 @@
         return this.$store.getters.shoplist
       }
     }
-   
+
   }
 </script>
 

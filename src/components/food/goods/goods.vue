@@ -55,6 +55,7 @@
 
 <script>
   import BScroll from 'better-scroll';
+  import {getGoodsDetail} from "common/js/getData";
   //    import support from '../support/support';
   import shopcart from './shopcart/shopcart';
   import cartcontrol from './cartcontrol/cartcontrol';
@@ -122,6 +123,9 @@
       }
     },
     created() {
+      getGoodsDetail(this.$route.query).then((data)=>{
+        console.log(data);
+      });
       this.goods = require('./data.json').goods;
       this.$nextTick(() => {
         this._initScroll();

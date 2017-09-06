@@ -106,6 +106,7 @@
     <transition name="slide">
       <router-view class="routerView"></router-view>
     </transition>
+
   </div>
 </template>
 
