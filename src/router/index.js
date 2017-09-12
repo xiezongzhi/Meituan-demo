@@ -11,6 +11,7 @@ import HotelList from 'components/hotel/hotel-list/index.vue';
 import HotelDetails from 'components/hotel/hotel-details/index.vue';
 import GoodsDetail from 'components/food/food-rating/index.vue';
 import City from 'base/city/city';
+import Search from 'base/search/search';
 
 Vue.use(Router);
 export default new Router({
@@ -41,7 +42,7 @@ export default new Router({
               component:HotelList,
               children:[
                 {
-                  path:'/home/hotel/hotelList/hotelDetails',
+                  path:'/home/hotel/hotelDetails',
                   component:HotelDetails
                 }
               ]
@@ -70,8 +71,13 @@ export default new Router({
     {
         path: '/city',
         component: City,
+        meta: { keepAlive: false }
+     },
+    {
+        path: '/search',
+        component: Search,
         meta: { keepAlive: true }
-     }
+    }
    
   ],
   base:'meituan',

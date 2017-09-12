@@ -1,6 +1,9 @@
 const state = {
   goods: [],
-  city:''
+  city:'',
+  shopList:[],
+  load:null,
+  hotelDate:[]
 };
 
 export default state

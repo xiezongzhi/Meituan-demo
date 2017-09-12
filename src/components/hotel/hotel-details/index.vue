@@ -29,11 +29,18 @@ import split1 from '@/base/split1'
 import hotelService from 'components/hotel/hotel-details/hotel-service'
 import hotelBooking from 'components/hotel/hotel-details/hotel-booking'
 import Scroll from 'base/scroll/scroll'
+import {getHotelDetail} from '../../../common/js/getData'
+import {root} from '../../../common/js/config';
 	export default{
 		data(){
 			return {
-				isshow:false
+				isshow:false,
+				imgUrl:'',
+				HotelDetail:{}
 			}
+		},
+		created(){
+			this.getHotel()
 		},
 	    methods:{
 	        back(){
@@ -62,6 +69,11 @@ import Scroll from 'base/scroll/scroll'
 				map.addEventListener("tilesloaded",resetCenter);
 				
 	        },
+	        getHotel(){
+	        	getHotelDetail(this.$route.query.mer_id).then((res)=>{
+	        		console.log(res.data)
+	        	})
+	        }
 	        
 	    },
 	    mounted(){

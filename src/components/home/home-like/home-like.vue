@@ -3,31 +3,32 @@
     <h3 class="title" >
       <span><img src="./line.png" alt=""></span >   <span class="text">猜你喜欢  </span> <span><img src="./line.png" alt=""></span>
     </h3>
-    <div class="like-content">
-      <div class="like-list" v-for="shop in shoplist">
+    <div class="like-content" v-if="shopList.length!==0">
+
+      <div class="like-list" v-for="shop in shopList" @click="">
         <div class="list-item">
           <div class="image-wrapper">
             <img :src="imgUrl+shop.img" alt="" >
           </div>
           <div class="content">
             <div class="item-name">
-              奈九居酒屋
+              {{shop.title}}
             </div>
             <div class="item-desc">
-              [乐士文化区]100元超级代金券
+              [{{shop.district}}]{{shop.introduce}}
             </div>
             <div class="price">
-              <span class="new"><i class="yuan">￥</i>12 </span><span class="old"><i
+              <span class="new"><i class="yuan">￥</i>{{shop.price}} </span><span class="old"><i
               class="yuan1">￥</i>12</span>
             </div>
             <div class="rang">
-              <span class="num">2.3km</span>
+              <span class="num">{{shop.distance}}</span>
             </div>
           </div>
         </div>
       </div>
-
     </div>
+    <div class="zanwu" v-else>暂无数据</div>
   </div>
 </template>
 
@@ -39,20 +40,30 @@
     data(){
         return {
            imgUrl:root+'/Public/uploads/food_merchants/',
+           
+           
+           
         }
     },
     created(){
-
+      
+    },
+    methods:{
+     
+       
+      
     },
     computed:{
-      // ...mapGetters([
-      //       'shoplist'
+      ...mapGetters([
+            'shopList'
 
-      //   ]),
-      shoplist(){
-        return this.$store.getters.shoplist
-      }
-    }
+        ]),
+
+    
+
+    },
+
+
    
   }
 </script>
@@ -90,6 +101,7 @@
             img{
               display: block;
               width: 100%;
+              height: 100%;
             }
           }
           .content{
@@ -140,6 +152,9 @@
           }
         }
       }
+    }
+    .zanwu{
+      text-align: center
     }
   }
 </style>

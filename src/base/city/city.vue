@@ -19,17 +19,8 @@
 					<h3>最近访问</h3>
 					<div class="type-item box">
 						<ul class="table">
-							<li>
-								<a href="#">珠海</a>
-							</li>
-							<li>
-								<a href="#">珠海</a>
-							</li>
-							<li>
-								<a href="#">珠海</a>
-							</li>
-							<li>
-								<a href="#">珠海</a>
+							<li v-for="item in placeRecord" @click="selected(item)">
+								<a href="#">{{item}}</a>
 							</li>
 						</ul>
 					</div>
@@ -66,17 +57,17 @@
 					<h3>全部城市</h3>
 					<div class="type-item box charlist">
 						<ul class="table">
-							<li v-for="(letter,index) in letters" @click="seleccity(index)">
+							<li v-for="(letter,index) in letters" @click="seleccity(index)" >
 								<a href="javascript:;">{{letter}}</a>
 							</li>
 							
 						</ul>
 					</div>
-					<div class="type-item box all-city">
+					<div class="type-item box all-city" v-for="cityItem in cityList">
 						<ul class="table">
-							<h4 id="A">A</h4>
-							<li v-for="city in cityList">
-								<a href="javascript:;" @click="select(city.name)">{{city.name}}</a>
+							<h4 id="A">{{cityItem.letter}}</h4>
+							<li v-for="cityname in cityItem.list">
+								<a href="javascript:;" @click="selected(cityname)">{{cityname}}</a>
 							</li>
 						</ul>
 					</div>
@@ -92,28 +83,23 @@
 import mHeader from 'base/m-header/m-header'
 import BScroll from 'better-scroll'
 import { mapState } from 'vuex'
+import {getHotelList,getCityList,getStore,setStore,initCity} from 'common/js/getData'
+import {change} from 'common/js/pinying'
 	export default{
 		data(){
 			return{
 				letters:['A','B','C','D','E','F','G','H','J','K','L','M','N','P','Q','R','S','T','W','X','Y','Z'],
 				cityList:[
-					{
-						id:1,
-						name:'珠海',
-						point:[]
-					},
-					{
-						id:2,
-						name:'广州',
-						point:[]
-					},
-					{
-						id:3,
-						name:'北京',
-						point:[]
-					}
-				]
+					
+				],
+				placeRecord:[],
+				localcity:''
 			}
+		},
+		created(){
+			this.$store.commit('SET_LOADING',true)
+			this.setCity()
+			this.initRecord()
 		},
 		methods:{
 			seleccity(index){
@@ -123,8 +109,49 @@ import { mapState } from 'vuex'
 			 back(){
         		 this.$router.back()
             },
-	        select(city){
+	        selected(city){
+	        	let history = getStore('placerecord');
+                let choosePlace = city;
+                if (history) {
+                    let checkrepeat = false;
+                    this.placeRecord = JSON.parse(history);
+                    this.placeRecord.forEach(item => {
+                        if (item == city) {
+                            checkrepeat = true;
+                        }
+                    })
+                    if (!checkrepeat) {
+                        this.placeRecord.push(choosePlace)
+                    }
+                }else {
+                	this.placeRecord = [];
+                    this.placeRecord.push(choosePlace)
+                }
+                setStore('placerecord',this.placeRecord)
 	        	this.$router.push({path:'/home', query:{city}});
+	        },
+	        setCity(){
+	        	initCity().then((res)=>{
+	              this.localcity = res.data.body.replace('市','')
+	            })
+
+	        	getCityList().then((res)=>{
+	        		let list =res.data.body;
+	        		
+	        		 this.cityList=change(list)
+	        		 this.$store.commit('SET_LOADING',false)
+	        		 
+
+
+	        	})
+
+	        },
+	        initRecord(){
+	        	if (getStore('placerecord')) {
+                    this.placeRecord = JSON.parse(getStore('placerecord'));
+                }else{
+                    this.placeRecord = ['无记录'];
+                }
 	        }
 		},
 		mounted(){
@@ -133,10 +160,22 @@ import { mapState } from 'vuex'
 			})
 		},
 		computed:{
-	        ...mapState({
-	            city: state => state.city?state.city:'定位中',
+	        // ...mapState({
+	        //     city: state => state.city?state.city:'定位中',
 
-	        })
+	        // })
+	        city(){
+	        	let localcity=this.localcity?this.localcity:'定位中';
+	        	return localcity
+	        }
+     	},
+     	watch:{
+     		cityList(){
+     			this.$nextTick(()=>{
+     				this.cscroll.refresh()
+     			})
+
+     		}
      	},
 		components:{
 			mHeader
@@ -149,7 +188,7 @@ import { mapState } from 'vuex'
 		position: fixed;
 		top: 0;
 		left:0;
-		z-index: 999999;
+		z-index: 999;
 		width: 100%;
 		background:#f0efed;
 		color: #333;
@@ -224,8 +263,12 @@ import { mapState } from 'vuex'
 							@include border-1px(0,1px,1px,0);
 							position: relative;
 							color: #333;
+
 							a{
 								display: block;
+								overflow: hidden;
+								white-space:nowrap;
+								text-overflow: ellipsis;
 
 							}
 						}

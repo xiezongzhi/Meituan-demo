@@ -1,11 +1,8 @@
 <template>
   <div class="home-banner">
     <swiper :options="swiperOption" ref="mySwiper">
-      <swiper-slide>
-        <img src="./index_banner.jpg" alt="">
-      </swiper-slide>
-      <swiper-slide>
-        <img src="./index_banner.jpg" alt="">
+      <swiper-slide v-for="img in bannerList">
+        <img :src="bannerUrl+img.img" alt="">
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
@@ -14,6 +11,8 @@
 </template>
 
 <script>
+import {root} from 'common/js/config';
+import {getBanner} from 'common/js/getData'
   export default {
     data() {
       return {
@@ -22,21 +21,22 @@
           autoplay: 3000,
           autoplayDisableOnInteraction : false,
           pagination: '.swiper-pagination',
-        }
+        },
+        bannerUrl:[root+'/Public/uploads/banner/'],
+        bannerList:[]
       }
     },
     created() {
-      this._test();
+      this.setBanner()
     },
     methods: {
-      _test() {
-        this.test=[
-          {
-            picUrl: "http://localhost/images/index_banner.jpg"
-          }, {
-            picUrl: "http://localhost/images/index_banner.jpg"
-          }
-        ]
+      
+       setBanner(){
+          let _this = this
+          getBanner().then((res)=>{
+            _this.bannerList = res.data.body
+             // _this.banner +=  res.data.body.img
+          })
       }
     },
     components: {

@@ -13,6 +13,11 @@
     <!--<food></food>-->
     <!--<goods></goods>-->
     <!--<hotel></hotel>-->
+      <transition name="fade">
+        <div class="loading" v-if="load">
+          <pulse-loader :loading="loading" :color="color" :size="size"></pulse-loader>
+        </div>
+      </transition>
   </div>
 
 </template>
@@ -25,14 +30,27 @@ import food from "components/food/food-index.vue";
 import goods from "components/food/goods/goods.vue";
 import scrollDemo from "components/scroll-demo/scroll-demo.vue";
 import listHeader from "base/list-header/list-header.vue";
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import {mapGetters} from 'vuex'
 //import hotel from "components/hotel/hotel-booking-index/index.vue";
   export default{
     data(){
         return{
-
+          loading:true,
+          color:'#ff9d00',
+          size:'15px',
         }
     },
     created(){
+
+    },
+    computed:{
+      ...mapGetters([
+            'load'
+
+        ]),
+
+    
 
     },
     components:{
@@ -42,7 +60,8 @@ import listHeader from "base/list-header/list-header.vue";
       scrollDemo,
       listHeader,
       food,
-      goods
+      goods,
+      PulseLoader
     }
   }
 </script>

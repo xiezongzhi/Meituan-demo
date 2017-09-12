@@ -1,9 +1,9 @@
 <template>
   <div class="home-header">
     <router-link to="/city">
-      <div class="header-city">{{h_city}} <span class="iconfont icon-bottom"></span></div>
+      <div class="header-city">{{h_city}}<span class="iconfont icon-bottom"></span></div>
     </router-link>
-    <div class="header-search"><a href="#" class="rect"><span class="iconfont icon-fangdajing"></span>输入商户名，地名或菜名</a></div>
+    <div class="header-search"><router-link to="/search" class="rect"><span class="iconfont icon-fangdajing"></span> 输入商户名称 </router-link></div>
     <div class="header-user">消息</div>
   </div>
 </template>
@@ -26,7 +26,7 @@ import { mapState } from 'vuex'
       },
       computed:{
         ...mapState({
-            city: state => state.city?state.city:'定位中',
+            city: state => state.city?state.city:'定位中'
 
         }),
         h_city(){
@@ -36,7 +36,7 @@ import { mapState } from 'vuex'
             }else{
                 h_city = this.$route.query.city
             }
-            return h_city
+            return h_city.substr(0,4)
         }
       }
   }
@@ -57,8 +57,10 @@ import { mapState } from 'vuex'
     position: fixed;
     background: #0f121f;
     .header-city{
-      width: pxToRem(85);
+      margin-right: pxToRem(8);
       color: #d7d7d7;
+      font-size: pxToRem(14);
+      text-align: center;
     }
     .header-search{
       flex:1;
@@ -78,7 +80,8 @@ import { mapState } from 'vuex'
       }
     }
     .header-user{
-      width: pxToRem(68);
+      width: pxToRem(50);
+      font-size: pxToRem(14)
     }
   }
 </style>

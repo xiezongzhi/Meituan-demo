@@ -10,10 +10,10 @@
 					<!-- <div class="tab-item">钟点</div> -->
 				</div>
 				<div class="booking-form-list">
-					<div class="form-item city">
+					<div class="form-item city" @click="showCity">
 						<i class="iconfont icon-map"></i>
 						<div class="item-left">
-							<span>珠海</span>
+							<span>{{city}}</span>
 							<i class="iconfont icon-right"></i>
 						</div>
 					</div>
@@ -21,8 +21,8 @@
 						<i class="iconfont icon-date"></i>
 						<div class="item-left">
 							<div class="date-box">
-								<p>{{this.calendar4.display[0]}}<span>入住</span><span v-show="istrue1">明年</span></p>
-								<p>{{this.calendar4.display[1]}}<span>离店</span> <em>共{{days}}晚</em> <span v-show="istrue2">明年</span></p>
+								<p>{{this.calendar4.display[0]|formatDate}}<span>入住</span><span v-show="istrue1">明年</span></p>
+								<p>{{this.calendar4.display[1]|formatDate}}<span>离店</span> <em>共{{days}}晚</em> <span v-show="istrue2">明年</span></p>
 							</div>
 							<i class="iconfont icon-right"></i>
 						</div>
@@ -32,7 +32,7 @@
 						<i class="iconfont icon-date"></i>
 						<div class="item-left">
 							<div class="date-box">
-								<p>{{this.calendar2.display[0]}}<span>入住</span></p>
+								<p>{{this.calendar2.display[0]|formatDate}}<span>入住</span></p>
 							</div>
 							<i class="iconfont icon-right"></i>
 						</div>
@@ -45,9 +45,12 @@
 						</div>
 					</div>
 					<div class="search">
-            <router-link to="/home/hotel/hotelList" >
-						<subButton>开始搜索</subButton>
-            </router-link>
+			           <!--  <router-link :to="'/home/hotel/hotelList?city='city" >
+									<subButton>开始搜索</subButton>
+			            </router-link> -->
+			             <router-link :to="{path:'/home/hotel/hotelList',query:{city:city,hour_room:hour_room}}" >
+									<subButton>开始搜索</subButton>
+			            </router-link>
 					</div>
 				</div>
 			</div>
@@ -76,10 +79,13 @@
 		        </div>
 		    </div>
 	    </transition>
+	    <transition name="fade" >
+	    	<city @hideCity='hideCity' v-show='isCityShow' ref="cityf"></city>
+	    </transition>
 
 	</div>
     <transition name="slide">
-    <router-view class="routerView"></router-view>
+    	<router-view class="routerView"></router-view>
     </transition>
   </div>
 </template>
@@ -88,6 +94,8 @@ import mHeader from 'base/m-header/m-header'
 import subButton from 'base/sub-button/sub-button'
 import advert from 'base/advert/advert'
 import calendar from 'base/calendar/calendar.vue'
+import city from './city.vue'
+import {mapState} from 'vuex'
 	export default{
 		data(){
 			return{
@@ -104,7 +112,8 @@ import calendar from 'base/calendar/calendar.vue'
 	                    // this.calendar4.show=false;
 
 	                    this.calendar4.value=[begin,end];
-	                    this.calendar4.display=[this.formatDate(begin),this.formatDate(end)];
+	                    // console.log(begin)
+	                    this.calendar4.display=[begin,end];
 	                    if(parseInt(begin[0])>parseInt(this.calendar4.begin[0])){
 	                    	this.istrue1 = true;
 	                    }
@@ -126,16 +135,24 @@ import calendar from 'base/calendar/calendar.vue'
 	                select:(value)=>{
 	                    // this.calendar2.show=false;
 	                    this.calendar2.value=value;
-	                    this.calendar2.display=[this.formatDate(value)];
+	                    this.calendar2.display=[value];
 	                }
 	            },
 	            tabs:['国内','钟点'],
 	            nowIndex:0,
 	            istrue1:false,
-	            istrue2:false
+	            istrue2:false,
+	            isCityShow:false,
+	            selectCity:''
 			}
 		},
 		computed:{
+			...mapState({
+	            city(state){
+		        	return this.selectCity?this.selectCity:state.city
+		        }
+	        }),
+
 			days(){
 				let s1 = this.calendar4.value[0];
 				let s2 = this.calendar4.value[1];
@@ -144,7 +161,15 @@ import calendar from 'base/calendar/calendar.vue'
 				let days = s2.getTime() - s1.getTime();
 				let time = parseInt(days / (1000 * 60 * 60 * 24));
 				return time
+			},
+			hour_room(){
+				if(this.nowIndex==0){
+					return 2
+				}else{
+					return 1
+				}
 			}
+			
 		},
 		methods:{
 			change(index){
@@ -163,20 +188,23 @@ import calendar from 'base/calendar/calendar.vue'
 	        	data_t.setDate(data_t.getDate()+AddDayCount)
 		    	let y = data_t.getFullYear();
 				let m = data_t.getMonth()+1;
+				if(m<10){
+					m="0"+m;
+				}
 				let d = data_t.getDate();
 				return [y,m,d]
 	        },
-	        haszero(str){//月份去0
-	        	if(str.substr(0,1)==0){
-	        		return str.substr(1)
-	        	}else{
-	        		return str
-	        	}
-	        },
-	        formatDate(date){//格式化日期6月06日
-	        	let result = `${this.haszero(date[1].toString())}月${date[2].toString()}日`
-	        	return result
-	        },
+	        // haszero(str){//月份去0
+	        // 	if(str.substr(0,1)==0){
+	        // 		return str.substr(1)
+	        // 	}else{
+	        // 		return str
+	        // 	}
+	        // },
+	        // formatDate(date){//格式化日期6月06日
+	        // 	let result = `${this.haszero(date[1].toString())}月${date[2].toString()}日`
+	        // 	return result
+	        // },
 	        setToday(calendar){//设置当前日历选择为今天~明天
 	        	let today = this.getDate(0);
 		    	let tomorrow = this.getDate(1);
@@ -186,25 +214,55 @@ import calendar from 'base/calendar/calendar.vue'
 		    		calendar.display = calendar.value;
 		    		let aa = calendar.display[0];
 			    	let bb = calendar.display[1];
-			    	calendar.display=[this.formatDate(aa),this.formatDate(bb)]
+			    	calendar.display=[aa,bb]
 	        	}else{
 	        		calendar.display = [today];
 	        		let cc = calendar.display[0];
-	        		calendar.display=[this.formatDate(cc)]
+	        		calendar.display=[cc]
 
 	        	}
 
+	        },
+	        showCity(){
+	        	this.isCityShow = true;
+	        	this.$refs.cityf.initScroll()
+	        },
+	        hideCity(city){
+
+	        	this.isCityShow = false;
+	        	this.selectCity = city
+
 	        }
+
 	    },
 	    created(){
 	    	this.setToday(this.calendar4);
 	    	this.setToday(this.calendar2);
 	    },
+	    filters:{
+	    	formatDate(value){
+	    		if (!value) return '';
+
+	    		let result = `${value[1].toString()}月${value[2].toString()}日`
+	        	return result
+
+	    	}
+	    },
+	    watch:{
+	    	'calendar4.display':{
+	    		handler:function(val){
+	    			this.$store.commit('SET_HOTEL_DATE',val)
+	    		},
+	    		deep: true
+	    	}
+	    	
+	    },
 		components:{
 			mHeader,
 			subButton,
 			advert,
-			calendar
+			calendar,
+			city
 		}
 	}
 </script>

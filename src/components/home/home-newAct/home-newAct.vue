@@ -6,11 +6,8 @@
     <div class="right">
       <p class="desc">
         <swiper :options="swiperOption" ref="mySwiper" class="swiperWrapper">
-          <swiper-slide class="swiperSlider">
-            <span>美食六月特惠，口碑报表等你来试！</span>
-          </swiper-slide>
-          <swiper-slide class="swiperSlider">
-            <span>美食六月特惠，口碑报表等你来试！</span>
+          <swiper-slide class="swiperSlider" v-for="newItem in newList">
+            <span>{{newItem}}</span>
           </swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
@@ -20,6 +17,7 @@
 </template>
 
 <script>
+import {getNews} from 'common/js/getData'
   export default {
     data() {
       return {
@@ -31,9 +29,20 @@
           direction: 'vertical',
           autoplayDisableOnInteraction: false,
           pagination: '.swiper-pagination',
-        }
+        },
+        newList:[]
       }
     },
+    created(){
+      this.setNews()
+    },
+    methods:{
+      setNews(){
+        getNews().then((res)=>{
+           this.newList = res.data.body
+         })
+      }
+    }
   }
 </script>
 

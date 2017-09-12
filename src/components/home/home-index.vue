@@ -15,6 +15,8 @@
           <homeLike></homeLike>
         </Scroll>
       </div>
+      
+      
     <transition name="slide">
       <router-view class="routerView"> </router-view>
     </transition>
@@ -36,8 +38,8 @@
   import homeLike from "./home-like/home-like.vue";
   import {mapGetters} from 'vuex'
   import city from 'base/city/city'
-  import {locat_city,getHotelList,initCity} from 'common/js/getData'
-  import {getDistance } from 'common/js/getData'
+
+  import {locat_city,getHotelList,initCity,getshopList} from 'common/js/getData'
   export default{
     data() {
       return {
@@ -45,59 +47,50 @@
         loadingStatus:{
           showIcon: true,
         },
-        img:'',
-        isShow:false,
-        currentCity:''
+        city:'',
+        
+        
+        
       }
     },
 
     created(){
-      if(!this.$route.query.city){
-            this.currentCity = '珠海'
-        }else{
-            this.currentCity = this.$route.query.city
-        }
-      
-
+      this.$store.commit('SET_LOADING',true)
+      this.setCity()
     },
-    beforeMount(){
 
-        this.setCity()
-    },
-    mounted(){
-
-
-    },
     methods:{
-       setCity(){
-          initCity().then((res)=>{
-            let city = res.data.body.replace('市','')
-            this.$store.commit('SET_CITY',city)
-          })
-         
+      setCity(){
+          let _this = this
+          if(this.$route.query.city){
+            this.city = this.$route.query.city 
+            this.$store.commit('SET_CITY',_this.city)
+          }else{
+              initCity().then((res)=>{
+              _this.city = res.data.body.replace('市','')
+              _this.$store.commit('SET_CITY',_this.city)
+            })
+
+          }
+          
       },
-      // async baiduGetData(){
-      //   let param = {geotable_id:172120,region:this.currentCity,filter:'audit_status:1|status:1'}
+      
+      setShopList(city){
+          let _this = this
+          getshopList(city).then((res)=>{
+            let shopList = res.data.body
+            _this.discList = shopList
+            this.$store.commit('GET_SHOPLIST_INDEX',shopList)
+            this.$store.commit('SET_LOADING',false)
+          })
+      },
 
-      //     getHotelList(param).then(data=>{
-      //       this.discList = data.contents;
-
-      //       for(let i=0;i<this.discList.length;i++){
-      //         getDistance(this.discList[i].location).then((data)=>{
-                
-      //           Vue.set(this.discList[i],'dis',data)
-      //         })
-      //       }
-      //        this.$store.dispatch('setShopList', this.discList)
-
-      //     })
-
-
-        
-       
-   
-      // }
-
+    },
+    watch:{
+      city(){
+        let _this = this
+         this.setShopList(_this.city)
+      }
     },
     components:{
       homeHeader,
@@ -108,7 +101,7 @@
       homeActList,
       homeLike,
       Scroll,
-      city
+      city,
     },
 
   }
@@ -128,5 +121,9 @@
     width: 100%;
 
   }
+
+    
+  
+  
 
 </style>

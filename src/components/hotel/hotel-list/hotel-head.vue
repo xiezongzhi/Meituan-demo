@@ -2,12 +2,12 @@
   <div class="hotel-head">
     <div class="head-top">
       <a class="icon-left iconfont" @click="back"></a>
-      <span>珠海 <i class="iconfont icon-bottom"></i></span>
+      <span>{{$route.query.city}} <i class="iconfont icon-bottom"></i></span>
     </div>
     <div class="hotel-search">
       <a href="javascript:;" class="hotel-date" @click="openByDialog(calendar4)" :value="calendar4.display">
-        <span>06-28住</span>
-        <span>06-29退</span>
+        <span>{{hotelDate[0]|formatDate}}住</span>
+        <span>{{hotelDate[1]|formatDate}}退</span>
       </a>
       <span class="search-icon">
  				<i class="iconfont icon-fangdajing"></i>
@@ -75,6 +75,21 @@
         return result
       },
     },
+    computed:{
+      
+      hotelDate () {
+        return this.$store.getters.hotelDate
+      }
+    },
+    filters:{
+        formatDate(value){
+          if (!value) return '';
+
+          let result = `${value[1].toString()}-${value[2].toString()}`
+            return result
+
+        }
+      },
     components: {
       calendar
     }

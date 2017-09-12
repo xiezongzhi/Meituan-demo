@@ -1,166 +1,62 @@
 <template>
   <div class="hotel-list-wrapper" ref="wrapper">
-    <div class="hotel-list-con">
-      <router-link to="/home/hotel/hotelList/hotelDetails">
-        <div class="list-item" v-for="item in hotel.items">
+    <div class="hotel-list-con" v-if="hotelList.length!==0">
+      <router-link  v-for="item in hotelList" :to="{path:'/home/hotel/hotelDetails',query:{mer_id:item.mer_id}}">
+        <div class="list-item"  >
           <div class="hotel-img">
-            <img :src="item.img">
+            <img :src="imgUrl+item.img">
           </div>
           <div class="hotel-details" >
             <h3 class="title">{{item.title}}</h3>
-            <p class="ratings"><span>{{item.ratings.score}}分</span><span>{{item.ratings.comment}}条评论</span><span>{{item.ratings.star}}</span></p>
+            <p class="ratings"><span>4.8分</span><span>548条评论</span><span>三星级</span></p>
             <p class="adr">{{item.adr}}</p>
-            <p class="price"><em>￥{{item.price}}</em>起 <i><span class="iconfont icon-left"></span>{{distance(item.location)}}</i></p>
+            <p class="price"><em>￥{{item.price}}</em>起 <i><span class="iconfont icon-left"></span>{{item.distance}}</i></p>
           </div>
         </div>
       </router-link>
     </div>
+    <div class="zan" v-else>暂无数据</div>
   </div>
 </template>
 <script>
   import BScroll from 'better-scroll'
+  import {getHotelList} from '../../../common/js/getData'
+  import {root} from '../../../common/js/config';
+
   export default{
     data(){
       return{
-        hotel:{
-          items:[
-            {
-              img:require('./hotel-img.jpg'),
-              title:'维也纳大酒店',
-              ratings:{
-                score:4.8,
-                comment:548,
-                star:'三星级'
-              },
-              adr:'香洲总站附近',
-              price:208,
-              location:[113.528066,22.27196]
-
-            },
-            {
-              img:require('./hotel-img.jpg'),
-              title:'维也纳大酒店',
-              ratings:{
-                score:4.8,
-                comment:548,
-                star:'三星级'
-              },
-              adr:'香洲总站附近',
-              price:208,
-              location:[113.572755,22.284674]
-
-            },
-            {
-              img:require('./hotel-img.jpg'),
-              title:'维也纳大酒店',
-              ratings:{
-                score:4.8,
-                comment:548,
-                star:'三星级'
-              },
-              adr:'香洲总站附近',
-              price:208,
-              location:[113.572755,22.284674]
-
-            },
-            {
-              img:require('./hotel-img.jpg'),
-              title:'维也纳大酒店',
-              ratings:{
-                score:4.8,
-                comment:548,
-                star:'三星级'
-              },
-              adr:'香洲总站附近',
-              price:208,
-              location:[113.572755,22.284674]
-
-            },
-            {
-              img:require('./hotel-img.jpg'),
-              title:'维也纳大酒店',
-              ratings:{
-                score:4.8,
-                comment:548,
-                star:'三星级'
-              },
-              adr:'香洲总站附近',
-              price:208,
-              location:[113.572755,22.284674]
-
-            },
-            {
-              img:require('./hotel-img.jpg'),
-              title:'维也纳大酒店',
-              ratings:{
-                score:4.8,
-                comment:548,
-                star:'三星级'
-              },
-              adr:'香洲总站附近',
-              price:208,
-              location:[113.572755,22.284674]
-
-            },
-            {
-              img:require('./hotel-img.jpg'),
-              title:'维也纳大酒店',
-              ratings:{
-                score:4.8,
-                comment:548,
-                star:'三星级'
-              },
-              adr:'香洲总站附近',
-              price:208,
-              location:[113.572755,22.284674]
-
-            }
-          ],
-          dd:''
-        }
+        hotelList:[],
+        imgUrl:root+'/Public/uploads/food_merchants/',
+        mer_id:''
       }
     },
+    created(){
+      this.initHotelList()
+    },
     computed:{
-      //
+      hotelDate () {
+        return this.$store.getters.hotelDate
+      }
     },
     methods:{
-      getLocation(){
-        let _this = this;
-        var geolocation = new BMap.Geolocation();
-        geolocation.getCurrentPosition(function(r){
-          if(this.getStatus() == BMAP_STATUS_SUCCESS){
-            _this.hotel.dd =r.point;
-            // alert('您的位置：'+r.point.lng+','+r.point.lat);
-            // var point = new BMap.Point(r.point.lng,r.point.lat);
-            //用所定位的经纬度查找所在地省市街道等信息
-            // var gc = new BMap.Geocoder();
-            // gc.getLocation(point, function(rs){
-            //    var addComp = rs.addressComponents;
-            //    alert(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);//弹出所在地址
+      initHotelList(){
+        let parm = {
+          geotable_id:175512,
+          region:this.$route.query.city,
+          filter:`parent_id:2|hour_room:${this.$route.query.hour_room}`
 
-            // });
-
-          }
-          else {
-            alert('failed'+this.getStatus());
-          }
-        },{enableHighAccuracy: true})
-      },
-      getDistance(array){
-        let map = new BMap.Map();
-        let lng = this.hotel.dd.lng;
-        let lat = this.hotel.dd.lat;
-        let point1 = new BMap.Point(array[0], array[1]);
-        let point2 = new BMap.Point(lng,lat);
-        let dis = map.getDistance(point1, point2).toFixed(0);
-        return dis>1000?(dis/1000).toFixed(1)+'km':dis+'m'
+        }
+        getHotelList(parm).then((res)=>{
+            this.hotelList =res.contents
+        })
       }
     },
     mounted(){
       let _this = this;
       this.$nextTick(()=>{
         this.scroll = new BScroll(this.$refs.wrapper,{click:true});
-        this.getLocation()
+        
 
 
       })
@@ -176,7 +72,7 @@
   .hotel-list-wrapper{
     overflow:hidden;
     position:absolute;
-    top: pxToRem(120);
+    top: pxToRem(127);
     bottom: 0px;
     width: 100%;
     .hotel-list-con{
@@ -234,6 +130,10 @@
 
         }
       }
+    }
+    .zan{
+      text-align: center;
+      margin-top: pxToRem(30)
     }
   }
 </style>

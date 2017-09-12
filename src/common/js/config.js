@@ -1,5 +1,5 @@
 export const commonParams = {
-  ak:'H8L6uIttz0p18ZXYuxkk8TUGTPYKrXXP'
+  ak:'B4grdSbwiGzyuUVNPAqjUFlPufjcAGSO'
 };
 
 
