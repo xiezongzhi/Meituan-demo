@@ -1,22 +1,20 @@
 <template>
   <div class="food-banner">
     <swiper :options="swiperOption" ref="mySwiper">
-      <swiper-slide>
-        <img src="./index_banner.jpg" alt="">
-      </swiper-slide>
-      <swiper-slide>
+      <swiper-slide v-for="item in foodBanners" :key="item.id">
         <img src="./index_banner.jpg" alt="">
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
   </div>
-
 </template>
 
 <script>
+  import {getFoodBanner} from 'common/js/getData'
   export default {
     data() {
       return {
+        foodBanners:[],
         swiperOption: {
           notNextTick: true,
           autoplay: 3000,
@@ -25,19 +23,15 @@
       }
     },
     created() {
-      this._test();
+      this._getFoodBanner();
     },
     methods: {
-      _test() {
-          this.test=[
-            {
-              picUrl: "http://localhost/images/index_banner.jpg"
-            }, {
-              picUrl: "http://localhost/images/index_banner.jpg"
-            }
-          ]
+      _getFoodBanner() {
+        getFoodBanner(2).then((data) => {
+          this.foodBanners = data;
+        })
       }
-      },
+    },
     components: {
 
     }

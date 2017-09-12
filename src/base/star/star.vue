@@ -37,20 +37,19 @@
   };
 </script>
 
-<style lang="scss" >
-
+<style lang="scss" scoped>
+  @import '../../common/style/base.scss';
   .star{
      font-size: 0;
     .star-item{
       display: inline-block;
       background-repeat: no-repeat;
     }
-
     .star-item{
-      width: 15px;
-      height: 15px;
-      margin-right: 6px;
-      background-size: 15px 15px;
+      width: pxToRem(15);
+      height:pxToRem(15);
+      margin-right:pxToRem(5);
+      background-size: pxToRem(15) pxToRem(15);
       &:last-child{
         margin-right: 0;
       }
@@ -67,5 +66,5 @@
 
 
   }
-   
+
 </style>

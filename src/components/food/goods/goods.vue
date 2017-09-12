@@ -3,7 +3,7 @@
     <div class="goods" flex="true">
       <div class="menu-wrapper" ref="menuWrapper">
         <ul>
-          <li v-for="(item,index) in goods" class="menu-item  "
+          <li v-for="(item,index) in merchants.cate" class="menu-item  "
               :class="[{'current': cur==index},{'prev':cur1==index},{'next':cur2==index}]"
               @click="currentSelect(index,$event)">
             <span class="text ">{{item.name}}</span>
@@ -11,13 +11,12 @@
           </li>
         </ul>
         <div class="fill">
-
         </div>
       </div>
 
       <div class="foods-wrapper" ref="foodsWrapper" flex="1">
         <ul>
-          <li v-for="item in goods" class="food-list food-list-hook">
+          <li v-for="item in merchants.goods" class="food-list food-list-hook">
             <h1 class="title">{{item.name}}</h1>
             <ul>
               <li v-for="food in item.foods" class="food-item " flex="true" @click="selectFood(food,$event)">
@@ -60,11 +59,13 @@
   import shopcart from './shopcart/shopcart';
   import cartcontrol from './cartcontrol/cartcontrol';
   //    import food from '../food/food';
+  import Vue from 'vue'
   let FLAG = true;
   export default {
     data() {
       return {
         goods: [],
+        merchants:{},
         listHeight: [],
         scrollY: 0,
         selectedFood: {},
@@ -124,9 +125,14 @@
     },
     created() {
       getGoodsDetail(this.$route.query).then((data)=>{
-        console.log(data);
+        this.merchants=data;
+        console.log(data)
+        this.merchants.goods.forEach((item)=>{
+//          Vue.$set('item',)
+        })
       });
       this.goods = require('./data.json').goods;
+      console.log(this.goods);
       this.$nextTick(() => {
         this._initScroll();
         this.calculateHeight();

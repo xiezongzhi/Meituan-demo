@@ -782,21 +782,7 @@
         }
       }
     }
-    .all-list {
-      .all-item {
-        display: flex;
-        position: relative;
-        padding: 0px pxToRem(15);
-        justify-content: space-between;
-        height: pxToRem(44);
-        line-height: pxToRem(44);
-        @include border-1px(0, 0, 1px, 0);
-        &.active {
-          color: $defaultColor;
-          background: #f2f2f2;
-        }
-      }
-    }
+
     &.all {
       overflow-y: auto;
       overflow-x: hidden;
@@ -808,6 +794,21 @@
       .iconfont {
         position: absolute;
         left: pxToRem(15);
+      }
+      .all-list {
+        .all-item {
+          display: flex;
+          position: relative;
+          padding: 0px pxToRem(15);
+          justify-content: space-between;
+          height: pxToRem(44);
+          line-height: pxToRem(44);
+          @include border-1px(0, 0, 1px, 0);
+          &.active {
+            color: $defaultColor;
+            background: #f2f2f2;
+          }
+        }
       }
     }
   }

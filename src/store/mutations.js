@@ -5,9 +5,9 @@ const mutations = {
     state.city = city
   },
   [types.SET_GOODS](state, goods) {
-    state.goods =goods;
+    state.goods = goods;
   },
-  [types.GET_SHOPLIST_INDEX](state, SHOPLIST) {
+  [types.GET_SHOPLIST_INDEX](state, SHOPLIST){
     state.shoplist = SHOPLIST
   }
 };

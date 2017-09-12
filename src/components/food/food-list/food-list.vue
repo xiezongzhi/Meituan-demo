@@ -9,7 +9,7 @@
         </ul>
       </div>
 
-      <div class="list" v-for="item in goodsList"  @click="_getGoodDetail(item.mer_id,item.cate_id)">
+      <div class="list" v-for="item in goodsList"  @click="_getGoodDetail(item.mer_id)">
         <div class="item">
           <div class="image-wrapper">
             <img v-lazy="goodsListImgUrl+item.img" alt="">
@@ -26,7 +26,7 @@
               class="yuan1">￥</i>{{item.oldPrice}}</span>
             </div>
             <div class="rang">
-              <span class="num">{{item.distance }}</span>
+              <span class="num">{{item.distance | filterDis }}</span>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@
 <script>
   import Vue from 'vue'
   import BScroll from 'better-scroll';
-  import {mapMutations} from 'vuex';
+  import {mapMutations,mapGetters} from 'vuex';
   import listHeader from "base/list-header/list-header.vue";
   import {root} from 'common/js/config';
   import {getGoodsListRound,getDistance,getFoodBanner,getGoodsListLocal} from "common/js/getData";
@@ -45,10 +45,15 @@
     props: {
       goods: this.foods
     },
+    computed: {
+      ...mapGetters([
+        'city'
+      ])
+    },
     data(){
       return {
+        region:'',
         food:{},
-        foodBanners:[],
         goodsListImgUrl:root+'/Public/uploads/food_merchants/',
         goodsList:[],
         names: ['全部', '附近', '智能排序', '筛选'],
@@ -58,59 +63,52 @@
     created(){
 //      this._getGoodsListRound();
       this._getGoodsListLocal()
-      this._getFoodBanner();
     },
     watch: {
       names(newValue){
         this.names = newValue;
       }
     },
+    filters:{
+      filterDis(value){
+        let len=value.toString().length;
+        let distance=len>3?(value/1000).toFixed(1)+'km':value+'m';
+        return distance;
+      }
+    },
     methods: {
-      _getFoodBanner(){
-        getFoodBanner(2).then((data)=>{
-          this.foodBanners=data;
-        })
-      },
-      _getGoodDetail(mer_id,cate_id){
+
+      _getGoodDetail(mer_id){
         if (!mer_id) {
           this.$router.push('/home/food');
           return
         }
         else{
           this.$router.push({
-            path: `/home/food/goodsDetail/?mer_id=${mer_id}&cate_id=${cate_id}`
+            path: `/home/food/goodsDetail/?mer_id=${mer_id}&cate_id= `
           })
         }
       },
       _getGoodsListRound(){
         getGoodsListRound(
-          {
-            geotable_id:172120,
-            region:'珠海',
-            filter:'audit_status:1|status:1',
-            parent_id:1,
-            cate_id:2
-          }
         ).then((data)=>{
           if(data.status===0){
-            this.goodsList=data.contents;
+            this.goodsList=data.body;
             this.setGoods(this.goodsList);
           }
         });
       },
       _getGoodsListLocal(){
+        this.region=this.city;
         getGoodsListLocal(
           {
-            region:""
+            region:this.region
           }
         ).then((data)=>{
-          this.goodsList=data;
-          this.setGoods(this.goodsList);
-//          if(data.status===0){
-//            console.log(data)
-//            this.goodsList=data.contents;
-//            this.setGoods(this.goodsList);
-//          }
+          if(data.flag===1){
+            this.goodsList=data.body;
+            this.setGoods(this.goodsList);
+          }
         });
       },
       ...mapMutations({
@@ -195,6 +193,7 @@
             img {
               display: block;
               width: 100%;
+              height: 100%;
             }
           }
           .content {
