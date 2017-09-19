@@ -1,7 +1,7 @@
 <template>
   <div class="food-list" ref="foodList">
     <div class="food-content">
-      <div class="nav">
+      <div class="nav" ref="nav">
         <ul class="nav-list">
           <li class="nav-item" v-for="(item,index) in names" @click="goTop(index)">
             <span class="nav-title">{{item}}</span><span class="iconfont icon-bottom"></span>
@@ -43,7 +43,9 @@
   import {getGoodsListRound,getDistance,getFoodBanner,getGoodsListLocal} from "common/js/getData";
   export default{
     props: {
-      goods: this.foods
+      goodsList:{
+        type:Array
+      }
     },
     computed: {
       ...mapGetters([
@@ -55,14 +57,9 @@
         region:'',
         food:{},
         goodsListImgUrl:root+'/Public/uploads/food_merchants/',
-        goodsList:[],
         names: ['全部', '附近', '智能排序', '筛选'],
         currentIndex: '',
       }
-    },
-    created(){
-//      this._getGoodsListRound();
-      this._getGoodsListLocal()
     },
     watch: {
       names(newValue){
@@ -77,7 +74,6 @@
       }
     },
     methods: {
-
       _getGoodDetail(mer_id){
         if (!mer_id) {
           this.$router.push('/home/food');
@@ -98,28 +94,19 @@
           }
         });
       },
-      _getGoodsListLocal(){
-        this.region=this.city;
-        getGoodsListLocal(
-          {
-            region:this.region
-          }
-        ).then((data)=>{
-          if(data.flag===1){
-            this.goodsList=data.body;
-            this.setGoods(this.goodsList);
-          }
-        });
-      },
       ...mapMutations({
           setGoods:'SET_GOODS'
         }
       ),
       changName(name){
         this.names = name.slice(0, 5);
+        this._goTop();
+      },
+      _goTop(){
+        this.$parent.goTop(this.$refs.foodList,this.$refs.nav.clientHeight);
       },
       goTop(index){
-        this.$parent.goTop(this.$refs.foodList);
+        this.$parent.goTop(this.$refs.foodList,this.$refs.nav.clientHeight);
         this.$emit('goTop', index);
       },
     },

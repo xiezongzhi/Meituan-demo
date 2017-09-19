@@ -3,17 +3,19 @@
     <div class="form">
       <div class="form-item ">
         <div class="left"><span class="iconfont icon-phone"></span></div>
-        <div class="right"><input type="text" class="phone" placeholder="请输入手机号"></div>
+        <div class="right"><input type="text" class="username" placeholder="请输入用户名" v-model="username"
+        ></div>
       </div>
       <div class="form-item ">
         <div class="left"><span class="iconfont icon-lock"></span></div>
-        <div class="right"><input type="password" class="pass" placeholder="请输入密码"></div>
+        <div class="right"><input type="password" class="pass" placeholder="请输入密码" v-model="password"
+        ></div>
       </div>
       <div class="other-login">
         <span class="left">其他登陆方式</span>
         <span class="right">注册 | 忘记密码</span>
       </div>
-      <div class="sub">
+      <div class="sub" @click="submit">
         <subButton>
           登陆
         </subButton>
@@ -21,10 +23,12 @@
     </div>
     <div class="third-login">
       <div class="title">
-        <div class="line left"></div><p class="text">第三方登陆</p><div class="line right"></div>
+        <div class="line left"></div>
+        <p class="text">第三方登陆</p>
+        <div class="line right"></div>
       </div>
       <div class="third-login-list">
-        <span class="third-login-item iconfont icon-wechat" ></span>
+        <span class="third-login-item iconfont icon-wechat"></span>
         <span class="third-login-item iconfont icon-qq"></span>
         <span class="third-login-item iconfont icon-xinlang"></span>
       </div>
@@ -33,9 +37,87 @@
 </template>
 
 <script>
-  import subButton from 'base/sub-button/sub-button.vue'
+  import subButton from 'base/sub-button/sub-button.vue';
+  import {trim, _mm} from 'common/js/util';
+  import {login} from 'common/js/getData';
+  import {mapMutations} from 'vuex';
+
   export default {
-    components:{
+    data() {
+      return {
+        username: '',
+        password: '',
+        formError: '',
+        token: null,
+        timer: ''
+      }
+    },
+    methods: {
+      alert() {
+        this.$vux.alert.show({
+          content: this.formError,
+        });
+      },
+      submit() {
+        let formData = {
+          phone: trim(this.username),
+          password: trim(this.password)
+        };
+        let validResult = this.valid(formData);
+        if (validResult.status) {
+          this._login(formData);
+        }
+        else {
+          this.formError=validResult.msg;
+         this.alert();
+        }
+      },
+      valid(formData) {
+        var result = {
+          status: false,
+          msg: ''
+        };
+        if (!_mm.validate(formData.phone, 'require')) {
+          result.msg = '用户名不能为空';
+          return result;
+        }
+        if (!_mm.validate(formData.password, 'require')) {
+          result.msg = '密码不能为空';
+          return result;
+        }
+        result.status = true;
+        result.msg = '验证成功';
+        return result;
+      },
+      _login(formData) {
+        login(formData).then((res) => {
+          if (res.flag === 1) {
+            if (res.body.username) {
+              this.setLoginStatus(true)
+            }
+          }
+          if (res.flag === 2) {
+            if (res.msg === 'e_100002') {
+              this.formError = '账号或密码有误！'
+            }
+            else if (res.msg === 'e_100007') {
+              this.formError = '账号被禁用，请联系管理员！'
+            }
+            else if (res.msg === 'e_100010') {
+              this.formError = '账号未激活！'
+            }
+            else {
+              this.formError = '服务器繁忙，请重新试下！'
+            }
+            this.alert();
+          }
+        })
+      },
+      ...mapMutations({
+        setLoginStatus: 'SET_LOGINSTAUTS'
+      })
+    },
+    components: {
       subButton
     }
   }
@@ -43,15 +125,16 @@
 
 <style lang="scss" scoped>
   @import '../../common/style/base.scss';
-  .login-index{
+
+  .login-index {
     display: flex;
-    flex-direction:  column;
+    flex-direction: column;
     height: 100%;
     width: 100%;
     justify-content: center;
     align-items: center;
     color: #9e9e9c;
-    .form{
+    .form {
       .form-item {
         display: flex;
         justify-content: flex-start;
@@ -71,66 +154,68 @@
           outline: none;
           border-bottom: 1px solid #ddd;
           color: #9e9e9c;
-          &::-webkit-input-placeholder{
-            color: #9e9e9c;opacity:1;
+          &::-webkit-input-placeholder {
+            color: #9e9e9c;
+            opacity: 1;
           }
         }
       }
-      .other-login{
+      .other-login {
         display: flex;
         width: pxToRem(273);
         margin-top: pxToRem(15);
         margin-left: pxToRem(26);
-        justify-content:space-between ;
+        justify-content: space-between;
         align-items: center;
         font-size: pxToRem(14);
-        .left{
+        .left {
           color: $defaultColor;
         }
       }
-      .sub{
+      .sub {
         margin-top: pxToRem(36);
       }
     }
-    .third-login{
+    .third-login {
       margin-top: pxToRem(60);
       width: 100%;
-      .title{
+      .title {
         display: flex;
         height: pxToRem(20);
         justify-content: space-between;
         align-items: center;
         font-size: pxToRem(13);
         overflow: hidden;
-        .text{
+        .text {
           text-align: center;
-          flex:0 0 pxToRem(100);
+          flex: 0 0 pxToRem(100);
         }
-        .line{
+        .line {
           height: pxToRem(1);
           background: #ddd;
           flex: 1;
         }
       }
-      .third-login-list{
+      .third-login-list {
         display: flex;
         margin-top: pxToRem(14);
         justify-content: center;
         align-items: center;
-        .third-login-item{
+        .third-login-item {
           padding: 0 pxToRem(5);
           font-size: pxToRem(30);
-          &.icon-wechat{
+          &.icon-wechat {
             color: #62b900;
           }
-          &.icon-qq{
+          &.icon-qq {
             color: #68bef8;
           }
-          &.icon-xinlang{
+          &.icon-xinlang {
             color: #ec5641;
           }
         }
       }
     }
   }
+
 </style>

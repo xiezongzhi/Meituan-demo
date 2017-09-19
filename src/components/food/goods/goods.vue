@@ -3,7 +3,7 @@
     <div class="goods" flex="true">
       <div class="menu-wrapper" ref="menuWrapper">
         <ul>
-          <li v-for="(item,index) in merchants.cate" class="menu-item  "
+          <li v-for="(item,index) in goods" class="menu-item  "
               :class="[{'current': cur==index},{'prev':cur1==index},{'next':cur2==index}]"
               @click="currentSelect(index,$event)">
             <span class="text ">{{item.name}}</span>
@@ -16,12 +16,12 @@
 
       <div class="foods-wrapper" ref="foodsWrapper" flex="1">
         <ul>
-          <li v-for="item in merchants.goods" class="food-list food-list-hook">
+          <li v-for="item in goods" class="food-list food-list-hook">
             <h1 class="title">{{item.name}}</h1>
             <ul>
-              <li v-for="food in item.foods" class="food-item " flex="true" @click="selectFood(food,$event)">
+              <li v-for="food in item.foods" class="food-item " flex="true">
                 <div class="icon">
-                  <img v-lazy="food.icon" alt="">
+                  <img v-lazy="imgUrl+food.img" alt="">
                 </div>
                 <div class="content" flex="1">
                   <h2 class="name">{{food.name}}</h2>
@@ -34,7 +34,8 @@
                     class="yuan">￥</i>{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-Wrapper">
-                    <cartcontrol :food="food" @add="addFood" :fo="item"></cartcontrol>
+                    <cartcontrol :food="food"  :id="food.goods_id" :goods="goods" @add="addFood" @decreaseCart="decreaseFood" :fo="item"
+                                 :goodsArr="goodsArr"></cartcontrol>
                   </div>
                 </div>
               </li>
@@ -43,10 +44,9 @@
           </li>
         </ul>
       </div>
-
     </div>
     <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" :pay="seller.pay"
-              :selectFoods="selectFoods" ref="shopcart" :selectFo="selectFo"></shopcart>
+              :selectFoods="selectFoods" ref="shopcart" :selectFo="selectFo" :orderData="orderData"></shopcart>
   </div>
 
 
@@ -54,18 +54,23 @@
 
 <script>
   import BScroll from 'better-scroll';
-  import {getGoodsDetail} from "common/js/getData";
-  //    import support from '../support/support';
   import shopcart from './shopcart/shopcart';
+  import {getGoodsDetail, getShopCart} from "common/js/getData";
   import cartcontrol from './cartcontrol/cartcontrol';
-  //    import food from '../food/food';
-  import Vue from 'vue'
+  import {root} from 'common/js/config'
+
   let FLAG = true;
   export default {
     data() {
       return {
+        imgUrl: root + '/Public/uploads/food_goods/',
+        merchants: {},
+        selectFoods: [],
+        arr: [],
+        orderData: {},
         goods: [],
-        merchants:{},
+        goodsArr: [],
+        good: [],
         listHeight: [],
         scrollY: 0,
         selectedFood: {},
@@ -78,11 +83,11 @@
       }
     },
     watch: {
-      scrollY(newValue){
+      scrollY(newValue) {
         for (let i = 0, listHeightLen = this.listHeight.length; i < listHeightLen; i++) {
           let height_1 = this.listHeight[i];
           let height_2 = this.listHeight[i + 1];
-          if (((newValue >= height_1 && newValue < height_2) || !height_2) && (i < 9)) {
+          if (((newValue >= height_1 && newValue < height_2) || !height_2) && (i < 2)) {
             if (FLAG) {
               this.cur = i;
               this.cur1 = i - 1;
@@ -93,67 +98,84 @@
       }
     },
     computed: {
-      selectFoods() {
-        let foods = [];
-        this.goods.forEach((good) => {
-          good.foods.forEach((food, index) => {
-            if (food.count) {
-              food.parent = good;
-              foods.push(food);
-            }
-          })
-        });
-        return foods;
-      },
+//      selectFot() {
+//        let foods = [];
+//        this.goods.forEach((good) => {
+//          good.foods.forEach((food, index) => {
+//            if (food.count) {
+//              food.parent = good;
+//              foods.push(food);
+//            }
+//          });
+//        });
+//        return foods;
+//      },
+//        getShopCart({
+//          mer_id: this.$route.query
+//        }).then((res) => {
+//          console.log(res)
+//        });
+//        return foods;
+//      },
       selectFo() {
         let fo = [];
         this.goods.forEach((good) => {
           if (good.count > 0) {
             fo.push(good);
           }
-
-        });
-        return fo;
-      },
-      fo() {
-        let fo = [];
-        this.goods.forEach((good) => {
-          fo.push(good);
         });
         return fo;
       }
     },
     created() {
-      getGoodsDetail(this.$route.query).then((data)=>{
-        this.merchants=data;
-        console.log(data)
-        this.merchants.goods.forEach((item)=>{
-//          Vue.$set('item',)
+      this._getCartList();
+      getGoodsDetail(this.$route.query).then((data) => {
+        var arr = data.goods;
+        var map = {};
+        this.goodsArr = arr;
+        var dest = [];
+        for (var i = 0; i < arr.length; i++) {
+          var ai = arr[i];
+          if (!map[ai.cate_name]) {
+            dest.push({
+              name: ai.cate_name,
+              foods: [ai],
+              mer_id: this.$route.query.mer_id
+            });
+            map[ai.cate_name] = ai;
+          } else {
+            for (var j = 0; j < dest.length; j++) {
+              var dj = dest[j];
+              if (dj.name == ai.cate_name) {
+                dj.foods.push(ai);
+                break;
+              }
+            }
+          }
+        }
+        this.goods = dest;
+        this.$nextTick(() => {
+          this._initScroll();
+          this.calculateHeight();
         })
       });
-      this.goods = require('./data.json').goods;
-      console.log(this.goods);
-      this.$nextTick(() => {
-        this._initScroll();
-        this.calculateHeight();
-      })
-//      this.$http.get('/api/goods').then((responsive) => {
-//        var responsive = responsive.data
-//        if (responsive.errno == 0) {
-//          this.goods = responsive.data;
-//          this.$nextTick(() => {
-//            this._initScroll();
-//            this.calculateHeight();
-//          })
-//        }
-//      });
-      this.seller = require('./data.json').seller;
-//      this.$http.get('/api/seller').then((responsive) => {
-//        var responsive = responsive.data;
-//          this.seller== responsive.data;
-//      })
+
     },
     methods: {
+      _getCartList() {
+        let cartArray = [];
+        getShopCart({}).then((res) => {
+          for (var i in res) {
+            cartArray.push({
+              count: res[i].goods_num,
+              name: res[i].goods_name,
+              price: res[i].goods_price,
+              goods_id: res[i].goods_id
+            });
+          }
+          this.selectFoods = cartArray;
+        });
+      },
       _initScroll() {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
           click: true
@@ -161,7 +183,6 @@
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
           probeType: 3,
           click: true
-
         });
         this.foodsScroll.on('scroll', (pos) => {
           this.scrollY = Math.abs(Math.round(pos.y));
@@ -189,8 +210,17 @@
         let el = foodList[index];
         this.foodsScroll.scrollToElement(el, 300);
       },
-      addFood(target) {
+      addFood(target, obj) {
         this._drop(target);
+//        if (this.arr.indexOf(obj) > -1) {
+//          this.arr = this.arr.splice(1, 1)
+//        }
+//        this.arr.push(obj);
+//        this.selectFoods = this.arr;
+        this._getCartList()
+      },
+      decreaseFood() {
+
       },
       _drop(target) {
         this.$nextTick(() => {
@@ -198,8 +228,8 @@
         })
 
       },
-      selectFood(food, event) {
-        console.log(food)
+      selectFood(obj) {
+
       }
     },
     components: {
@@ -212,6 +242,7 @@
 
 <style lang="scss" scoped>
   @import '../../../common/style/base.scss';
+
   .goods {
     position: fixed;
     top: pxToRem(253);
@@ -238,7 +269,7 @@
         line-height: pxToRem(14);
         text-align: center;
         color: #646464;
-        @include border-1px(0,0,1px,0);
+        @include border-1px(0, 0, 1px, 0);
         .num {
           position: absolute;
           right: 0px;

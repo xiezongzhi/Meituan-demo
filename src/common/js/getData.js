@@ -1,6 +1,7 @@
 import jsonp from './jsonp'
 import {commonParams,root} from './config'
 import axios from 'axios'
+import Qs from 'qs'
 
 
 function param(data) {
@@ -49,17 +50,19 @@ export const getHotelList=(param)=>{
   const data=Object.assign({},commonParams,param);
   return jsonp(url, data)
 };
+
 /**
  * 获取城市列表
  */
 export const getCityList=()=> axios.get('/Home/Index/getCity');
+
 /**
  * 获取定位
  */
 export const initCity=()=> axios.get('/Home/Index/glocate');
 
 /**
- * 获取美食首页商家列表（周边）
+ * 获取美食首页商家列表（周边检索）
  */
 export const getGoodsListRound=(par)=>{
   const url='Home/Food/getMerchantsIndexNearby?'+param(par);
@@ -102,6 +105,69 @@ export const getGoodsDetail=(par)=>{
   return new Promise(function(resolve){
     axios.get(url).then((res)=>{
       resolve(res.data.body)
+    })
+  })
+};
+
+/**
+ * 获取团购订单信息
+ */
+export const getOrder=axios.get('/Home/GetGoodsDetailed/getOrderMessage');
+
+/**
+ * 提交订单
+ */
+export const addOrder=(par)=>{
+  const url='/Home/FoodOrder/addOrder?'+param(par);
+  return new Promise(function(resolve){
+    axios.get(url).then((res)=>{
+      resolve(res.data.body)
+    })
+  })
+};
+
+/**
+ * 获取购物车信息
+ */
+export const getShopCart=(par)=>{
+  const url='/Home/shopCart/shop_cart?'+param(par);
+  return new Promise(function(resolve){
+    axios.get(url).then((res)=>{
+      resolve(res.data.body)
+    })
+  })
+};
+
+/**
+ *用户注册
+ */
+export const register=(par)=>{
+    const url='/Home/Member/register';
+    return new Promise(function(resolve){
+      axios.post(url,Qs.stringify(par), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+        ).then((res)=>{
+        resolve(res.data)
+      })
+    })
+  };
+
+/**
+ *用户登陆
+ */
+export const login=(par)=>{
+  const url='/Home/Member/login';
+  return new Promise(function(resolve){
+    axios.post(url,Qs.stringify(par), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }
+    ).then((res)=>{
+      resolve(res.data)
     })
   })
 };

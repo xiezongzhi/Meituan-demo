@@ -59,6 +59,7 @@
 
 <script>
   import MHeader from "base/m-header/m-header";
+  import {getOrder} from "common/js/getData"
   export default{
     data(){
       return {
@@ -83,6 +84,9 @@
       }
     },
     created(){
+      getOrder.then((res)=>{
+        console.log(res);
+      });
       this.normalOrderList=this.orderList;
     },
     methods:{

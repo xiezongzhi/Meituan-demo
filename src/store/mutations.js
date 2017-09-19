@@ -9,6 +9,9 @@ const mutations = {
   },
   [types.GET_SHOPLIST_INDEX](state, SHOPLIST){
     state.shoplist = SHOPLIST
+  },
+  [types.SET_LOGINSTAUTS](state, loginStatus){
+    state.loginStatus = loginStatus;
   }
 };
 

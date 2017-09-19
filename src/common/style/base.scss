@@ -105,3 +105,11 @@ $defaultColor:#ff9d00;
 .slideY-enter,.slideY-leave-to{
   transform: translate3d(0, 100%, 0)
 }
+
+.weui-dialog__btn_primary {
+  color: $defaultColor !important;
+  font-size: pxToRem(13)  !important;
+}
+.weui-dialog__bd{
+  font-size: pxToRem(13) !important;
+}

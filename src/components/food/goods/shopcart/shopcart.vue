@@ -45,7 +45,7 @@
                 <div class="price"><span>￥{{food.price * food.count}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food" :fo="food.parent"></cartcontrol>
+                  <cartcontrol :food="food" ></cartcontrol>
                 </div>
               </li>
             </ul>
@@ -62,8 +62,12 @@
 <script>
   import cartcontrol from '../cartcontrol/cartcontrol';
   import BScroll from 'better-scroll';
+  import {addOrder} from 'common/js/getData'
   export default {
     props: {
+      orderData:{
+        type:Object
+      },
       selectFoods: {
         type: Array,
         default () {
@@ -123,14 +127,7 @@
         return total;
       },
       payDesc() {
-        if (this.totalPrice === 0) {
-          return `￥${this.minPrice}元起送`;
-        } else if (this.totalPrice < this.minPrice) {
-          let diff = this.minPrice - this.totalPrice;
-          return `差￥${diff}元起送`;
-        } else {
           return '去结算'
-        }
       },
       totalCount() {
         let count = 0;
@@ -140,10 +137,10 @@
         return count;
       },
       isEnough() {
-        if (this.totalPrice < this.minPrice || this.totalPrice === 0) {
-          return false;
-        } else {
+        if (this.totalPrice > 0) {
           return true;
+        } else {
+          return false;
         }
       },
       listShow() {
@@ -223,7 +220,7 @@
       },
       _initScoll() {
         this.listScoll = new BScroll(this.$refs.listWrapper, {
-          click: true
+          click: true,
         })
       },
       emptyList() {
@@ -241,6 +238,11 @@
         this.flod = true;
       },
       payMoney() {
+        addOrder(
+          this.orderData
+        ).then(()=>{
+          console.log(this.orderData)
+        });
         if (this.totalPrice >= this.minPrice) {
           alert('需支付' + this.totalPrice + '元')
         }

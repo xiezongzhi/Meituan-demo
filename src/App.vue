@@ -1,10 +1,10 @@
 <template>
   <div id="app" >
-    <keep-alive>
-      <router-view v-if="$route.meta.keepAlive"></router-view>
-    </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"></router-view>
-<mainFooter></mainFooter>
+    <!--<keep-alive>-->
+      <!--<router-view v-if="$route.meta.keepAlive"></router-view>-->
+    <!--</keep-alive>-->
+    <!--<router-view v-if="!$route.meta.keepAlive"></router-view>-->
+<!--<mainFooter></mainFooter>-->
     <!--<subOrder></subOrder>-->
     <!--<payType></payType>-->
     <!--<listHeader></listHeader>-->
@@ -13,7 +13,7 @@
     <!--<goods></goods>-->
     <!--<hotel></hotel>-->
           <!--<login></login>-->
-    <!--<register></register>-->
+    <register></register>
     <!--<user></user>-->
     <!--<leisure></leisure>-->
     <!--<leisureClass></leisureClass>-->
