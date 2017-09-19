@@ -169,7 +169,7 @@
   }
 
   .line {
-    @include border-1px(0px, 1px, px, 0px);
+    @include border-1px(0px, 1px, 0px, 0px);
   }
 
 </style>

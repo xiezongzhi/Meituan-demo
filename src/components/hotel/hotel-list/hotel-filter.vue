@@ -71,21 +71,14 @@
             <div class="title">酒店类型</div>
             <div class="item-wrapper" ref="hotelItemWrapper">
               <span class="item" v-for="(item,index) in filter.hotelType"
-                    @click="selectHotelType(index)"><a href="javascript:">{{item.type}}</a></span>
+                    @click="selectHotelType(index,item.id)"><a href="javascript:">{{item.name}}</a></span>
             </div>
           </li>
           <li class="item-2">
-            <div class="title">房型</div>
+            <div class="title">酒店设施</div>
             <div class="item-wrapper " ref="homeItemWrapper">
-              <span class="item" v-for="(item,index) in filter.homeType"
-                    @click="selectHomeType(index)"><a href="javascript:">{{item.type}}</a></span>
-            </div>
-          </li>
-          <li class="item-2">
-            <div class="title">房型</div>
-            <div class="item-wrapper " ref="brandItemWrapper">
-              <span class="item" v-for="(item,index) in filter.brandType"
-                    @click="selectBrandType(index)"><a href="javascript:">{{item.type}}</a></span>
+              <span class="item" v-for="(item,index) in filter.facilities"
+                    @click="selectHomeType(index,item.id)"><a href="javascript:">{{item.name}}</a></span>
             </div>
           </li>
         </ul>
@@ -105,13 +98,15 @@
 <script>
   import listHeader from "base/list-header/list-header.vue";
   import {hasClass, removeClass, addClass} from 'common/js/dom';
-
+  import {getHotelFilter,getHotelFilterId} from 'common/js/getData';
   export default {
     data() {
       return {
         homeTypeIndex: '',
         hotelTypeIndex: '',
-        brandTypeIndex: '',
+        hotelType_select_id:[],//所有的酒店类型id以及选中状态
+        facilities_select_id:[],//所有的酒店设施id以及选中状态
+        selected_id:[],//选中的id
         levelIndex: '',
         priceIndex: 6,
         areaTitleIndex: '',
@@ -225,76 +220,17 @@
         },
         filter: {
           hotelType: [
-            {
-              type: '经济型酒店'
-            },
-            {
-              type: '快捷连锁'
-            },
-            {
-              type: '主题酒店'
-            },
-            {
-              type: '商务酒店'
-            },
-            {
-              type: '公寓'
-            },
-            {
-              type: '豪华酒店'
-            }
+            
           ],
-          homeType: [
-            {
-              type: '单人房'
-            },
-            {
-              type: '大床房'
-            },
-            {
-              type: '双床房'
-            },
-            {
-              type: '三人间'
-            },
-            {
-              type: '床位'
-            }
-          ],
-          brandType: [
-            {
-              type: '7天'
-            },
-            {
-              type: '汉庭'
-            },
-            {
-              type: '双床房'
-            },
-            {
-              type: '格林豪泰'
-            },
-            {
-              type: '速8'
-            },
-            {
-              type: '速8'
-            },
-            {
-              type: '速8'
-            },
-            {
-              type: '速8'
-            },
-            {
-              type: '速8'
-            }
+          facilities: [
+            
           ],
         },
       }
     },
     created() {
-      this.areaTitleIndex = this.localCity.areaTitle.length - 1
+      this.areaTitleIndex = this.localCity.areaTitle.length - 1;
+      this.initfilter()
     },
     watch: {
       names(newValue) {
@@ -305,17 +241,22 @@
       }
     },
     methods: {
-      selectBrandType(index) {
-        let brandTypeItem = this.$refs.brandItemWrapper.getElementsByClassName('item');
-        if (hasClass(brandTypeItem[index], 'selected')) {
-          removeClass(brandTypeItem[index], 'selected');
-        }
-        else {
-          addClass(brandTypeItem[index], 'selected');
-        }
-        this.brandTypeIndex = index;
+      initfilter(){
+        getHotelFilter(1).then((res)=>{
+          this.filter.hotelType = res.data.body
+          this.filter.hotelType.forEach((item, index)=>{
+              this.hotelType_select_id[index] = {status: false, id: item.id};
+          })
+          
+        })
+        getHotelFilter(2).then((res)=>{
+          this.filter.facilities = res.data.body
+          this.filter.facilities.forEach((item, index)=>{
+              this.facilities_select_id[index] = {status: false, id: item.id};
+          })
+        })
       },
-      selectHomeType(index) {
+      selectHomeType(index,id) {
         let homeTypeItem = this.$refs.homeItemWrapper.getElementsByClassName('item');
         if (hasClass(homeTypeItem[index], 'selected')) {
           removeClass(homeTypeItem[index], 'selected');
@@ -323,9 +264,10 @@
         else {
           addClass(homeTypeItem[index], 'selected');
         }
+        this.facilities_select_id.splice(index, 1, {status: !this.facilities_select_id[index].status, id});
         this.homeTypeIndex = index;
       },
-      selectHotelType(index) {
+      selectHotelType(index,id) {
         let hotelTypeItem = this.$refs.hotelItemWrapper.getElementsByClassName('item');
         if (hasClass(hotelTypeItem[index], 'selected')) {
           removeClass(hotelTypeItem[index], 'selected');
@@ -333,6 +275,7 @@
         else {
           addClass(hotelTypeItem[index], 'selected');
         }
+        this.hotelType_select_id.splice(index, 1, {status: !this.hotelType_select_id[index].status, id});
         this.hotelTypeIndex = index;
       },
       reset(e) {
@@ -345,15 +288,37 @@
           for (var i = 0, len = itemType.length; i < len; i++) {
             removeClass(itemType[i], 'selected');
           }
+          this.hotelType_select_id.forEach((item)=>{
+              item.status = false
+          })
+          this.facilities_select_id.forEach((item)=>{
+              item.status = false
+          })
         }
       },
       finish(e) {
+        let _this = this
         if (e.currentTarget.getAttribute('type') === 'priceLevel') {
 
         }
         else if (e.currentTarget.getAttribute('type') === 'filter') {
+            _this.selected_id = [];
+            let all_select = this.hotelType_select_id.concat(this.facilities_select_id)
+            all_select.forEach((item)=>{//将选中的类型和设施遍历出来
+                if(item.status){
+                   _this.selected_id.push(item.id)
+                }
+            })
 
+            let selected_id_str = JSON.stringify(this.selected_id);
+            getHotelFilterId(selected_id_str).then((res)=>{//根据选中的类型请求获取筛选的酒店ID
+                let filterId =res.data.body
+                this.$store.commit('SET_FILTERID',{filterId:filterId,selected_id:_this.selected_id})
+                this.$store.commit('SET_CONFIRMSTATUS')//触发提交状态
+            })
+            
         }
+        
         this.$refs.listHeaderWrapper._hide();
       },
       selectLevel(index) {

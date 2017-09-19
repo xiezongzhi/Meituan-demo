@@ -1,7 +1,7 @@
 <template>
   <div class="home-banner">
     <swiper :options="swiperOption" ref="mySwiper">
-      <swiper-slide v-for="img in bannerList">
+      <swiper-slide v-for="(img,index) in bannerList"  :key="index">
         <img :src="bannerUrl+img.img" alt="">
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
@@ -27,6 +27,7 @@ import {getBanner} from 'common/js/getData'
       }
     },
     created() {
+      
       this.setBanner()
     },
     methods: {
@@ -35,6 +36,7 @@ import {getBanner} from 'common/js/getData'
           let _this = this
           getBanner().then((res)=>{
             _this.bannerList = res.data.body
+            this.$store.commit('SET_LOADING',false)
              // _this.banner +=  res.data.body.img
           })
       }

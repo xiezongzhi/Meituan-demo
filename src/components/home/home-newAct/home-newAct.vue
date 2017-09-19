@@ -6,7 +6,7 @@
     <div class="right">
       <p class="desc">
         <swiper :options="swiperOption" ref="mySwiper" class="swiperWrapper">
-          <swiper-slide class="swiperSlider" v-for="newItem in newList">
+          <swiper-slide class="swiperSlider" v-for="(newItem,index) in newList" :key="index">
             <span>{{newItem}}</span>
           </swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>

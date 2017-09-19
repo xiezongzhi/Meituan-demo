@@ -1,9 +1,13 @@
 const state = {
   goods: [],
-  city:'',
+  currentCity:'',
+  selectCity:'',
   shopList:[],
   load:null,
-  hotelDate:[]
+  hotelDate:[],
+  filterId:'',
+  selected_id:'',
+  confirmStatus:false
 };
 
 export default state

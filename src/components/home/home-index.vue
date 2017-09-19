@@ -1,22 +1,22 @@
 <template>
   <div style="height: 100%;
     overflow: hidden;">
-      <div class="home-index" >
-        <homeHeader></homeHeader>
-        <Scroll :data="discList" class="Scroll" :isSeat="true">
-          <homeBanner></homeBanner>
-          <split></split>
-          <homeNav></homeNav>
-          <split></split>
-          <homeNewAct></homeNewAct>
-          <split></split>
-          <homeActList></homeActList>
-          <split></split>
-          <homeLike></homeLike>
-        </Scroll>
-      </div>
-      
-      
+    <div class="home-index" >
+      <homeHeader></homeHeader>
+      <Scroll :data="discList" class="Scroll" :isSeat="true">
+        <homeBanner></homeBanner>
+        <split></split>
+        <homeNav></homeNav>
+        <split></split>
+        <homeNewAct></homeNewAct>
+        <split></split>
+        <homeActList></homeActList>
+        <split></split>
+        <homeLike></homeLike>
+      </Scroll>
+    </div>
+     
+      <mainFooter></mainFooter>
     <transition name="slide">
       <router-view class="routerView"> </router-view>
     </transition>
@@ -27,6 +27,7 @@
 
 <script>
   import Vue from 'vue';
+  import mainFooter from "components/main-footer/main-footer.vue";
   import Scroll from 'base/scroll/scroll';
   import BScroll from 'better-scroll';
   import split from 'base/split/split';
@@ -38,38 +39,34 @@
   import homeLike from "./home-like/home-like.vue";
   import {mapGetters} from 'vuex'
   import city from 'base/city/city'
-
   import {locat_city,getHotelList,initCity,getshopList} from 'common/js/getData'
-  export default{
+  export default {
     data() {
       return {
-        discList:[],
-        loadingStatus:{
+        discList: [],
+        loadingStatus: {
           showIcon: true,
         },
         city:'',
-        
-        
-        
       }
     },
-
-    created(){
+    beforeCreate(){
       this.$store.commit('SET_LOADING',true)
-      this.setCity()
     },
+    created(){
+      
+      this.setCity()
 
+    },
     methods:{
       setCity(){
-          let _this = this
           if(this.$route.query.city){
             this.city = this.$route.query.city 
-            this.$store.commit('SET_CITY',_this.city)
+            this.$store.commit('SET_SELECT_CITY',this.$route.query.city)
           }else{
-              initCity().then((res)=>{
-              _this.city = res.data.body.replace('市','')
-              _this.$store.commit('SET_CITY',_this.city)
-            })
+              this.city = this.currentCity
+              this.setShopList(this.city)
+            
 
           }
           
@@ -81,15 +78,20 @@
             let shopList = res.data.body
             _this.discList = shopList
             this.$store.commit('GET_SHOPLIST_INDEX',shopList)
-            this.$store.commit('SET_LOADING',false)
+            
           })
-      },
+      }
 
     },
+    computed:{
+        ...mapGetters([
+           'selectCity',
+           'currentCity'
+        ])
+    },
     watch:{
-      city(){
-        let _this = this
-         this.setShopList(_this.city)
+      selectCity(){
+         this.setShopList(this.selectCity)
       }
     },
     components:{
@@ -102,6 +104,7 @@
       homeLike,
       Scroll,
       city,
+      mainFooter
     },
 
   }

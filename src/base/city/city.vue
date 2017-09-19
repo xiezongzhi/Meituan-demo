@@ -13,14 +13,14 @@
 			</div>
 			<div class="cityBox">
 				<div class="location-city box">
-					定位城市：<span class="city-name">{{city}}</span>	
+					定位城市：<span class="city-name">{{currentCity}}</span>	
 				</div>
 				<div class="s-type">
 					<h3>最近访问</h3>
 					<div class="type-item box">
 						<ul class="table">
 							<li v-for="item in placeRecord" @click="selected(item)">
-								<a href="#">{{item}}</a>
+								<a href="javascript:;">{{item}}</a>
 							</li>
 						</ul>
 					</div>
@@ -82,7 +82,7 @@
 <script>
 import mHeader from 'base/m-header/m-header'
 import BScroll from 'better-scroll'
-import { mapState } from 'vuex'
+import { mapState ,mapGetters} from 'vuex'
 import {getHotelList,getCityList,getStore,setStore,initCity} from 'common/js/getData'
 import {change} from 'common/js/pinying'
 	export default{
@@ -98,7 +98,7 @@ import {change} from 'common/js/pinying'
 		},
 		created(){
 			this.$store.commit('SET_LOADING',true)
-			this.setCity()
+			this.getCity()
 			this.initRecord()
 		},
 		methods:{
@@ -128,12 +128,13 @@ import {change} from 'common/js/pinying'
                     this.placeRecord.push(choosePlace)
                 }
                 setStore('placerecord',this.placeRecord)
-	        	this.$router.push({path:'/home', query:{city}});
+	        	this.$router.push({path:'/home'});
+	        	this.$store.commit('SET_SELECT_CITY',city)
 	        },
-	        setCity(){
-	        	initCity().then((res)=>{
-	              this.localcity = res.data.body.replace('市','')
-	            })
+	        getCity(){
+	        	// initCity().then((res)=>{
+	         //      this.localcity = res.data.body.replace('市','')
+	         //    })
 
 	        	getCityList().then((res)=>{
 	        		let list =res.data.body;
@@ -160,14 +161,10 @@ import {change} from 'common/js/pinying'
 			})
 		},
 		computed:{
-	        // ...mapState({
-	        //     city: state => state.city?state.city:'定位中',
+	        ...mapGetters([
+	           'currentCity'
 
-	        // })
-	        city(){
-	        	let localcity=this.localcity?this.localcity:'定位中';
-	        	return localcity
-	        }
+	        ])
      	},
      	watch:{
      		cityList(){

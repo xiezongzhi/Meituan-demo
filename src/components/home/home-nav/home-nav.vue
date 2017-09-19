@@ -4,7 +4,7 @@
       <swiper-slide>
         <ul class="list">
           <li class="list-item">
-            <router-link to="/home/food">
+            <router-link to="/food">
               <div class="img-wrapper">
                 <img src="./index_1.png" alt="">
               </div>
@@ -20,7 +20,7 @@
             </a>
           </li>
           <li class="list-item">
-            <router-link to="/home/hotel">
+            <router-link to="/hotel">
               <div class="img-wrapper">
                 <img src="./index_3.png" alt="">
               </div>
@@ -28,12 +28,12 @@
             </router-link >
           </li>
           <li class="list-item">
-            <a href="#">
+            <router-link to="/home/leisure">
               <div class="img-wrapper">
                 <img src="./index_4.png" alt="">
               </div>
               <span class="title">休闲娱乐</span>
-            </a>
+             </router-link >
           </li>
           <li class="list-item">
             <a href="#">

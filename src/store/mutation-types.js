@@ -1,5 +1,8 @@
-export const SET_CITY = 'SET_CITY';
+export const SET_CURRENT_CITY = 'SET_CURRENT_CITY';
+export const SET_SELECT_CITY = 'SET_SELECT_CITY';
 export const SET_GOODS = 'SET_GOODS';
 export const GET_SHOPLIST_INDEX = 'GET_SHOPLIST_INDEX'
 export const SET_LOADING = 'SET_LOADING'
 export const SET_HOTEL_DATE = 'SET_HOTEL_DATE'
+export const SET_FILTERID = 'SET_FILTERID'
+export const SET_CONFIRMSTATUS = 'SET_CONFIRMSTATUS'

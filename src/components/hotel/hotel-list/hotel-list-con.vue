@@ -1,7 +1,7 @@
 <template>
   <div class="hotel-list-wrapper" ref="wrapper">
     <div class="hotel-list-con" v-if="hotelList.length!==0">
-      <router-link  v-for="item in hotelList" :to="{path:'/home/hotel/hotelDetails',query:{mer_id:item.mer_id}}">
+      <router-link  v-for="(item,index) in hotelList" :key="index" :to="{path:'/hotel/hotelDetails',query:{mer_id:item.mer_id}}">
         <div class="list-item"  >
           <div class="hotel-img">
             <img :src="imgUrl+item.img">
@@ -22,6 +22,7 @@
   import BScroll from 'better-scroll'
   import {getHotelList} from '../../../common/js/getData'
   import {root} from '../../../common/js/config';
+  import {mapGetters} from 'vuex';
 
   export default{
     data(){
@@ -35,16 +36,27 @@
       this.initHotelList()
     },
     computed:{
-      hotelDate () {
-        return this.$store.getters.hotelDate
-      }
+      ...mapGetters([
+            'hotelDate',
+            'filterId',
+            'selected_id',
+            'confirmStatus'
+        ])
     },
     methods:{
       initHotelList(){
+        let mer_id =null;
+        if(!this.selected_id.length){//如果没有选择酒店设施和类型请求参数就为空
+            mer_id = ''
+        }else{
+          mer_id = `mer_id:${this.filterId}`
+        }
+       
+    
         let parm = {
           geotable_id:175512,
           region:this.$route.query.city,
-          filter:`parent_id:2|hour_room:${this.$route.query.hour_room}`
+          filter:`parent_id:2|hour_room:${this.$route.query.hour_room}|${mer_id}`
 
         }
         getHotelList(parm).then((res)=>{
@@ -61,6 +73,15 @@
 
       })
     },
+    watch:{
+      confirmStatus(){
+          this.initHotelList()
+      },
+      $route(){
+          this.initHotelList()
+      }
+
+    }
 
 
 

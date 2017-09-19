@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height:100%">
 	<div class="hotel-booking-index">
 		<mHeader>酒店预订</mHeader>
 		<div class="wrapper">
@@ -48,7 +48,7 @@
 			           <!--  <router-link :to="'/home/hotel/hotelList?city='city" >
 									<subButton>开始搜索</subButton>
 			            </router-link> -->
-			             <router-link :to="{path:'/home/hotel/hotelList',query:{city:city,hour_room:hour_room}}" >
+			             <router-link :to="{path:'/hotel/hotelList',query:{city:city,hour_room:hour_room}}" >
 									<subButton>开始搜索</subButton>
 			            </router-link>
 					</div>
@@ -95,7 +95,7 @@ import subButton from 'base/sub-button/sub-button'
 import advert from 'base/advert/advert'
 import calendar from 'base/calendar/calendar.vue'
 import city from './city.vue'
-import {mapState} from 'vuex'
+import {mapState,mapGetters} from 'vuex'
 	export default{
 		data(){
 			return{
@@ -143,15 +143,25 @@ import {mapState} from 'vuex'
 	            istrue1:false,
 	            istrue2:false,
 	            isCityShow:false,
-	            selectCity:''
+	            booking_city:''
 			}
 		},
 		computed:{
-			...mapState({
-	            city(state){
-		        	return this.selectCity?this.selectCity:state.city
-		        }
-	        }),
+	        ...mapGetters([
+	             'selectCity',
+	             'currentCity'
+
+	        ]),
+	        city(){
+	        	if(this.booking_city){
+	        		return this.booking_city
+	        	}else if(this.selectCity){
+	        		return this.selectCity
+	        	}else{
+	        		return this.currentCity
+	        	}
+	        	
+	        },
 
 			days(){
 				let s1 = this.calendar4.value[0];
@@ -230,7 +240,7 @@ import {mapState} from 'vuex'
 	        hideCity(city){
 
 	        	this.isCityShow = false;
-	        	this.selectCity = city
+	        	this.booking_city = city
 
 	        }
 

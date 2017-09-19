@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState,mapGetters } from 'vuex'
   export default{
       data(){
           return{
@@ -26,15 +26,22 @@ import { mapState } from 'vuex'
       },
       computed:{
         ...mapState({
-            city: state => state.city?state.city:'定位中'
-
+            currentCity: state => state.currentCity?state.currentCity:'定位中'
         }),
+        ...mapGetters([
+            'selectCity'
+        ]),
         h_city(){
             let h_city = '';
-            if(!this.$route.query.city){
-                h_city = this.city
+            // if(!this.$route.query.city){
+            //     h_city = this.currentCity
+            // }else{
+            //     h_city = this.$route.query.city
+            // }
+            if(this.selectCity){
+              h_city = this.selectCity
             }else{
-                h_city = this.$route.query.city
+              h_city = this.currentCity
             }
             return h_city.substr(0,4)
         }

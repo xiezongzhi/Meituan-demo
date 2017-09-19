@@ -434,7 +434,7 @@
           .cartcontrol-wrapper {
             position: absolute;
             right: 0px;
-            bottom: pxToRem(15);
+            bottom: pxToRem(13);
           }
         }
       }

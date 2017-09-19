@@ -1,13 +1,13 @@
 <template>
 	<div class="hotel-service">
-		<div class="hotel-service-left">
-			<span><i class="wifi icon"></i>无线网络</span>
-			<span><i class="park icon"></i>停车服务</span>
+		<div class="hotel-service-left" v-if="hotelDetail">
+			<span v-for="(value,key) in hotelDetail.hotel_f"><i class="icon" :class="key"></i>{{value}}</span>
+			<!-- <span><i class="park icon"></i>停车服务</span>
 			<span><i class="restaurant icon"></i>餐饮服务</span>
 			<span><i class="clock icon"></i>叫醒服务</span>
 			<span><i class="laundry icon"></i>洗衣服务</span>
 			<span><i class="aircraft icon"></i>接机服务</span>
-			<span><i class="luggage icon"></i>行李寄存</span>
+			<span><i class="luggage icon"></i>行李寄存</span> -->
 		</div>
 		<div class="hotel-service-right">
 			<span class="score">4.9分</span>
@@ -16,7 +16,13 @@
 	</div>
 </template>
 <script>
-	export default{}
+	export default{
+		props:{
+			hotelDetail:{
+				type:Object
+			}
+		}
+	}
 </script>
 <style lang="scss" scoped>
  @import '../../../common/style/base.scss';

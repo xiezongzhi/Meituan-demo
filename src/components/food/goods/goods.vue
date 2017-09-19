@@ -11,7 +11,6 @@
           </li>
         </ul>
         <div class="fill">
-
         </div>
       </div>
 
@@ -55,15 +54,18 @@
 
 <script>
   import BScroll from 'better-scroll';
+  import {getGoodsDetail} from "common/js/getData";
   //    import support from '../support/support';
   import shopcart from './shopcart/shopcart';
   import cartcontrol from './cartcontrol/cartcontrol';
   //    import food from '../food/food';
+  import Vue from 'vue'
   let FLAG = true;
   export default {
     data() {
       return {
         goods: [],
+        merchants:{},
         listHeight: [],
         scrollY: 0,
         selectedFood: {},
@@ -122,7 +124,15 @@
       }
     },
     created() {
+//       getGoodsDetail(this.$route.query).then((data)=>{
+//         this.merchants=data;
+//         console.log(data)
+//         this.merchants.goods.forEach((item)=>{
+// //          Vue.$set('item',)
+//         })
+//       });
       this.goods = require('./data.json').goods;
+      console.log(this.goods);
       this.$nextTick(() => {
         this._initScroll();
         this.calculateHeight();
