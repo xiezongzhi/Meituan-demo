@@ -3,6 +3,7 @@ const state = {
   city:'',
   shopList:[],
   loginStatus:false,
+  foodActList:[],
   currentCity:'',
   selectCity:'',
   load:null,

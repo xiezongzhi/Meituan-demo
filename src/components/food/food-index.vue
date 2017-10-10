@@ -88,7 +88,7 @@
           </div>
         </div>
       </listHeader>
-      <Scroll :data="goodsList" class="scroll" :listenScroll="true" @scroll="scroll">
+      <Scroll :data="goodsList" class="scroll" :listenScroll="true" @scroll="scroll" ref="scrollWrapper">
         <div class="wrapper">
           <foodBanner></foodBanner>
           <split></split>
@@ -101,7 +101,6 @@
     </div>
     <transition name="slide">
       <router-view class="routerView"></router-view>
-
     </transition>
 
   </div>
@@ -118,7 +117,6 @@
   import foodNav from "./food-nav/food-nav.vue";
   import foodList from "./food-list/food-list.vue";
   import {mapGetters} from 'vuex'
-  import BScroll from 'better-scroll';
   import {getGoodsListRound, getDistance, getFoodBanner, getGoodsListLocal} from "common/js/getData";
 
   export default {
@@ -435,11 +433,7 @@
 
     },
     created() {
-
       this._getGoodsListLocal();
-    },
-    mounted() {
-
     },
     methods: {
       reset() {
@@ -528,7 +522,7 @@
         this.flag = true;
       },
       scroll(pos) {
-        var pos = pos || 0;
+        var pos = pos ;
         var wrapper = document.getElementsByClassName('wrapper')[0];
         if ((Math.abs(pos.y) - wrapper.clientHeight) > 0) {
           this.flag = true;
@@ -548,15 +542,6 @@
           })
         }
       },
-//        _getGoodsListRound(){
-//          getGoodsListRound(
-//          ).then((data)=>{
-//            if(data.status===0){
-//              this.goodsList=data.body;
-//              this.setGoods(this.goodsList);
-//            }
-//          });
-//        },
       _getGoodsListLocal(param) {
         this.region = this.currentCity;
         var paramObj = Object.assign({
@@ -581,8 +566,7 @@
       foodActList,
       foodNav,
       Scroll,
-      listHeader,
-      BScroll
+      listHeader
     }
   }
 
@@ -840,5 +824,4 @@
   .wrapper {
     padding-bottom: pxToRem(15);
   }
-
 </style>

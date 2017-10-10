@@ -13,6 +13,12 @@ import Router from 'vue-router';
 // import Leisure from 'components/leisure/leisure-index';
 // import City from 'base/city/city';
 // import Search from 'base/search/search';
+// import MyRating from 'components/user/my-rating/my-rating.vue';
+// import MyShare from 'components/user/my-share/my-share.vue';
+// import Setting from 'components/user/setting/setting.vue';
+// import PersonalData from 'components/user/personal-data/personal-data.vue';
+// import Invite from 'components/user/invite-friends/invite-friends.vue';
+// import Login from 'components/login/login-index.vue';
 
 
 const Shop = r => require.ensure([], () => r(require('components/shop/shop-index.vue')), 'Shop')
@@ -34,6 +40,12 @@ const Register = r => require.ensure([], () => r(require('components/register/re
 const Refund = r => require.ensure([], () => r(require('components/order/refund/refund-index')), 'Refund')
 const RefundDetails = r => require.ensure([], () => r(require('components/order/refund/refund-details')), 'RefundDetails')
 const Collection = r => require.ensure([], () => r(require('components/user/collection/index')), 'Collection')
+const myRating = r => require.ensure([], () => r(require('components/user/my-rating/my-rating')), 'myRating')
+const myShare = r => require.ensure([], () => r(require('components/user/my-share/my-share')), 'myShare')
+const invite = r => require.ensure([], () => r(require('components/user/invite-friends/invite-friends')), 'invite')
+const setting  = r => require.ensure([], () => r(require('components/user/setting/setting')), 'setting')
+
+
 
 Vue.use(Router);
 export default new Router({
@@ -130,9 +142,25 @@ export default new Router({
     },
     {
       
-        path:'/refundDetails',
-        component: RefundDetails,
+      path:'/refundDetails',
+      component: RefundDetails,
       
+    },
+    {
+      path:'/myRating',
+      component:myRating
+    },
+    {
+      path:'/myShare',
+      component:myShare
+    },
+    {
+      path:'/invite',
+      component:invite
+    },
+    {
+      path:'/setting',
+      component:setting
     },
 
   ],

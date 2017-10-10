@@ -99,6 +99,7 @@
       top: 0;
       text-align: center;
       background: $defaultColor;
+      z-index:99;
       .icon {
         position: absolute;
         left: 0;

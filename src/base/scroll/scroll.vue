@@ -145,6 +145,8 @@
     },
     mounted() {
       // 保证在DOM渲染完毕后初始化better-scroll
+//    let length=this.data.length;
+//    console.log(this.data[length])
       setTimeout(() => {
         this._initScroll();
       }, 20)

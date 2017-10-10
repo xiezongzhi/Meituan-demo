@@ -92,7 +92,10 @@ export const initCity=()=> axios.get(root+'/Home/Index/glocate');
  * 获取首页最新资讯
  */
   export const getNews=()=> axios.get(root+'/Home/Index/getNws');
-
+  /**
+ * 我的评价
+ */
+  export const getMyrating=()=> axios.get(root+'/Home/Comment/getComm');
 
 /**
  * 获取美食首页轮播图
@@ -152,9 +155,11 @@ export const addOrder=(par)=>{
  * 获取购物车信息
  */
 export const getShopCart=(par)=>{
-  const url=root+'/Home/shopCart/shop_cart?'+param(par);
+  const url=root+'/Home/shopCart/shop_cart';
   return new Promise(function(resolve){
-    axios.get(url).then((res)=>{
+    axios.get(url,{
+      params:par
+    }).then((res)=>{
       resolve(res.data.body)
     })
   })

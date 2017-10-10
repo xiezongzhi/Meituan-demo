@@ -2,7 +2,7 @@
   <div class="home-footer">
     <div class="nav-content">
       <ul class="list">
-        <router-link  to="/home" class="item">
+        <router-link  to="home" class="item">
           <p class="iconfont icon-home icon"></p>
           <span class="text">首页</span>
         </router-link>
@@ -18,7 +18,7 @@
           <p class="iconfont icon-order icon"></p>
           <span class="text">订单</span>
         </router-link>
-        <router-link to="user" class="item">
+        <router-link to="/user" class="item">
           <p class="iconfont icon-user icon"></p>
           <span class="text">我的</span>
         </router-link>
