@@ -1,5 +1,5 @@
 <template>
-  <div class="list-header">
+  <div class="list-header" ref="listHeaderWrapper">
     <div class="content">
       <ul class="list" ref="listWrapper">
         <li class="item" v-for="(item,index) in titles" @click="toggle(index)" :class="[{'line':isLine}]"
@@ -72,6 +72,7 @@
         this.commonObj();
         this.commonFor();
         this.isShow = false;
+//        this.$refs.listHeaderWrapper.style.display='none';
         this.$emit('hide')
       },
       commonObj(){

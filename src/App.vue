@@ -81,3 +81,4 @@ import {initCity} from 'common/js/getData'
   }
 
 </style>
+

@@ -42,6 +42,7 @@ import {root} from '../../../common/js/config';
 			}
 		},
 		created(){
+			this.$store.commit('SET_LOADING',true)
 			this.getHotel()
 		},
 	    methods:{
@@ -74,7 +75,7 @@ import {root} from '../../../common/js/config';
 	        getHotel(){
 	        	getHotelDetail(this.$route.query.mer_id).then((res)=>{
 	        		this.hotelDetail = res.data.body
-	        		console.log(res)
+	        		this.$store.commit('SET_LOADING',false)
 	        	})
 	        }
 	        

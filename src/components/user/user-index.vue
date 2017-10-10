@@ -50,7 +50,7 @@
               <img src="./ach.png" alt="" class="responsive">
             </div>
             <p class="text">
-              自我评价
+              我的评价
             </p>
           </div>
           <div class="function-item">

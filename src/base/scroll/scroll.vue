@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapper" class="better-scroll-root" >  <!--该节点需要定位，内容以此节点的盒模型为基础滚动。另外，该节点的背景色配合上拉加载、下拉刷新的UI，正常情况下不可作它用。-->
+  <div ref="wrapper" class="better-scroll-root">  <!--该节点需要定位，内容以此节点的盒模型为基础滚动。另外，该节点的背景色配合上拉加载、下拉刷新的UI，正常情况下不可作它用。-->
     <div class="content-bg better-scroll-container">  <!--如果需要调滚动内容的背景色，则改该节点的背景色-->
       <div>
         <div v-if="pulldownUI" class="pulldown-tip">
@@ -7,7 +7,7 @@
           <span class="tip-content">{{pulldownTip.text}}</span>
         </div>
         <div v-show="loadingStatus.showIcon || loadingStatus.status" class="loading-pos">
-          <div class="spinner"  v-show="loadingStatus.showIcon" >
+          <div class="spinner" v-show="loadingStatus.showIcon">
             <div class="double-bounce1"></div>
             <div class="double-bounce2"></div>
           </div>
@@ -26,11 +26,12 @@
 <script>
   import BScroll from 'better-scroll';
   import Loading from 'base/loading/loading'
+
   export default {
     props: {
-      isSeat:{
-        type:Boolean,
-        default:false
+      isSeat: {
+        type: Boolean,
+        default: false
       },
       /**,
        * 1 滚动的时候会派发scroll事件，会截流。
@@ -97,9 +98,9 @@
         type: Number,
         default: 100
       },
-      isSeat:{
-        type:Boolean,
-        default:false
+      isSeat: {
+        type: Boolean,
+        default: false
       },
       /**
        * 如果启用loading交互，传递loading的状态
@@ -139,21 +140,21 @@
           rotate: ''    // icon-rotate
         },
         scrollEnd: false,
-        top:0
+        top: 0
       };
     },
     mounted() {
       // 保证在DOM渲染完毕后初始化better-scroll
-      setTimeout(()=>{
+      setTimeout(() => {
         this._initScroll();
-      },20)
+      }, 20)
 
     },
     methods: {
-      goTop(el){
-        this.scroll.scrollToElement(el,0);
+      goTop(el, h) {
+        this.scroll.scrollToElement(el, 0, 0, -h - 9, {});
       },
-      onInfiniteDone(){
+      onInfiniteDone() {
         this.scrollEnd = false;
       },
       _initScroll() {
@@ -177,7 +178,7 @@
             if (this.pulldown) {
               // 下拉动作
               if (pos.y > 50) {
-                this.top=100;
+                this.top = 100;
                 this.pulldownTip = {
                   text: '松开立即刷新',
                   rotate: 'icon-rotate'
@@ -250,12 +251,14 @@
     watch: {
       // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
       data() {
-        setTimeout(() => {
-
-          this.refresh();
-        }, this.refreshDelay);
+        this.$nextTick(function(){
+             setTimeout(() => {
+              this.refresh();
+            }, this.refreshDelay);
+        })
+       
       },
-      scrollEnd(){
+      scrollEnd() {
         setTimeout(() => {
           this.refresh();
         }, this.refreshDelay);
@@ -272,8 +275,8 @@
   $cube-size: pxToRem(50);
   .better-scroll-root {
     position: fixed;
-    top:0;
-    bottom:0;
+    top: 0;
+    bottom: 0;
     width: 100%;
     background-color: #fff;
     height: 100%;
@@ -334,6 +337,7 @@
     visibility: hidden;
     height: pxToRem(150);
   }
+
   .spinner {
     width: 60px;
     height: 60px;
@@ -362,17 +366,22 @@
   }
 
   @-webkit-keyframes bounce {
-    0%, 100% { -webkit-transform: scale(0.0) }
-    50% { -webkit-transform: scale(1.0) }
+    0%, 100% {
+      -webkit-transform: scale(0.0)
+    }
+    50% {
+      -webkit-transform: scale(1.0)
+    }
   }
 
   @keyframes bounce {
     0%, 100% {
       transform: scale(0.0);
       -webkit-transform: scale(0.0);
-    } 50% {
-        transform: scale(1.0);
-        -webkit-transform: scale(1.0);
-      }
+    }
+    50% {
+      transform: scale(1.0);
+      -webkit-transform: scale(1.0);
+    }
   }
 </style>

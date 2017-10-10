@@ -1,8 +1,10 @@
 const state = {
   goods: [],
+  city:'',
+  shopList:[],
+  loginStatus:false,
   currentCity:'',
   selectCity:'',
-  shopList:[],
   load:null,
   hotelDate:[],
   filterId:'',

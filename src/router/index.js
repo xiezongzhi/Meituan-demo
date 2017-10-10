@@ -28,6 +28,12 @@ const GoodsDetail = r => require.ensure([], () => r(require('components/food/foo
 const Leisure = r => require.ensure([], () => r(require('components/leisure/leisure-index')), 'Leisure')
 const City = r => require.ensure([], () => r(require('base/city/city')), 'City')
 const Search = r => require.ensure([], () => r(require('base/search/search')), 'Search')
+const Login = r => require.ensure([], () => r(require('components/login/login-index')), 'Login')
+const Register = r => require.ensure([], () => r(require('components/register/register-index')), 'Register')
+
+const Refund = r => require.ensure([], () => r(require('components/order/refund/refund-index')), 'Refund')
+const RefundDetails = r => require.ensure([], () => r(require('components/order/refund/refund-details')), 'RefundDetails')
+const Collection = r => require.ensure([], () => r(require('components/user/collection/index')), 'Collection')
 
 Vue.use(Router);
 export default new Router({
@@ -40,16 +46,7 @@ export default new Router({
       component: Home,
       meta: { keepAlive: true },
       children: [
-        {
-          path:'/home/food',
-          component: Food,
-          children:[
-            {
-              path:'/home/food/goodsDetail',
-              component:GoodsDetail
-            }
-          ]
-        },
+        
         
         {
           path:'/home/leisure',
@@ -65,20 +62,30 @@ export default new Router({
       ]
     },
     {
-        path:'/hotel',
-        component: Hotel,
-        children:[
-          {
-            path:'/hotel/hotelList',
-            component:HotelList,
-            children:[
-              {
-                path:'/hotel/hotelDetails',
-                component:HotelDetails
-              }
-            ]
-          }
-        ]
+      path:'/food',
+      component: Food,
+      children:[
+        {
+          path:'/food/goodsDetail',
+          component:GoodsDetail
+        }
+      ]
+    },
+    {
+      path:'/hotel',
+      component: Hotel,
+      children:[
+        {
+          path:'/hotel/hotelList',
+          component:HotelList,
+          children:[
+            {
+              path:'/hotel/hotelDetails',
+              component:HotelDetails
+            }
+          ]
+        }
+      ]
     },
     {
       path: '/shop',
@@ -94,17 +101,39 @@ export default new Router({
     },
     {
       path: '/user',
-      component: User
+      component: User,
     },
     {
-        path: '/city',
-        component: City,
-        meta: { keepAlive: true },
-     },
+      path:'/collection',
+      component:Collection,
+    },
     {
-        path: '/search',
-        component: Search,
-    }
+      path: '/city',
+      component: City,
+      meta: { keepAlive: true },
+    },
+    {
+      path: '/search',
+      component: Search,
+    },
+    {
+       path:'/login',
+       component: Login,
+    },
+    {
+       path:'/register',
+       component: Register,
+    },
+    {
+       path:'/refund',
+       component: Refund,
+    },
+    {
+      
+        path:'/refundDetails',
+        component: RefundDetails,
+      
+    },
 
   ],
   base:'meituan',

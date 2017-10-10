@@ -1,6 +1,5 @@
 body,
 html {
-  font-weight: 200;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #d7d7d7;
   height: 100%;
@@ -128,4 +127,12 @@ $defaultColor:#ff9d00;
       margin-left: -25px;
    
     }
+}
+
+.weui-dialog__btn_primary {
+  color: $defaultColor !important;
+  font-size: pxToRem(13)  !important;
+}
+.weui-dialog__bd{
+  font-size: pxToRem(13) !important;
 }

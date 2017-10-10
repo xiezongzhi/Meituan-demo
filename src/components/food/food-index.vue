@@ -59,10 +59,6 @@
               <div class="meal-select">
                 <span class="meal" v-for="(item,index) in dingTime" @click="selectDingType(index)"
                       :class="{'selected':index==dingTimeIndex}"><a href="javascript:">{{item.dingType}}</a></span>
-                <!--<span class="meal"><a href="#">早餐</a></span><span class="meal"><a-->
-                <!--href="">午餐</a></span><span-->
-                <!--class="meal"><a href="">下午茶</a></span><span class="meal"><a href="">晚餐</a></span><span class="meal"><a-->
-                <!--href="">夜宵</a></span>-->
               </div>
             </li>
             <li class="filter-item item-4">
@@ -92,7 +88,7 @@
           </div>
         </div>
       </listHeader>
-      <Scroll :data="goods" class="scroll" :listenScroll="true" @scroll="scroll">
+      <Scroll :data="goodsList" class="scroll" :listenScroll="true" @scroll="scroll">
         <div class="wrapper">
           <foodBanner></foodBanner>
           <split></split>
@@ -100,11 +96,12 @@
           <split></split>
           <foodActList></foodActList>
         </div>
-        <foodList @goTop="goTop" ref="foodListWrapper"></foodList>
+        <foodList @goTop="goTop" ref="foodListWrapper" :goodsList="goodsList"></foodList>
       </Scroll>
     </div>
     <transition name="slide">
       <router-view class="routerView"></router-view>
+
     </transition>
 
   </div>
@@ -122,10 +119,13 @@
   import foodList from "./food-list/food-list.vue";
   import {mapGetters} from 'vuex'
   import BScroll from 'better-scroll';
-  export default{
+  import {getGoodsListRound, getDistance, getFoodBanner, getGoodsListLocal} from "common/js/getData";
+
+  export default {
     computed: {
       ...mapGetters([
-        'goods'
+        'goods',
+        'currentCity'
       ])
     },
     data() {
@@ -133,6 +133,8 @@
         boxFlag_1: false,
         boxFlag_2: false,
         timer: '',
+        goodsList: [],
+        foodListHeight: '',
         flag: false,
         bizFlag: false,
         currentIndex: '',
@@ -150,62 +152,23 @@
             count: 1231
           },
           {
-            name: '生日蛋糕',
-            count: 1231
-          },
-          {
             name: '自助餐',
             count: 1231
           },
           {
-            name: '小吃快餐',
-            ount: 1231
-          }, {
-            name: '日韩料理',
-            count: 1231
-          },
-          {
-            name: '西餐',
-            count: 1231
-          }, {
-            name: '聚餐宴请',
-            count: 1231
-          },
-          {
-            name: '川湘菜',
-            count: 1231
-          }, {
-            name: '火锅',
-            count: 1231
-          },
-          {
-            name: '火锅',
-            count: 1231
-          }, {
-            name: '火锅',
-            count: 1231
-          },
-          {
-            name: '火锅',
+            name: '海鲜',
             ount: 1231
           }, {
             name: '火锅',
             count: 1231
           },
           {
-            name: '火锅',
+            name: '粤港菜',
             count: 1231
           }, {
-            name: '火锅',
+            name: '甜点饮品',
             count: 1231
-          },
-          {
-            name: '火锅',
-            ocount: 1231
-          }, {
-            name: '火锅',
-            count: 1231
-          },
+          }
         ],
         biz: {
           areaTitle: [
@@ -458,47 +421,64 @@
         ],
       }
     },
-    mounted(){
-      this.calculateHeight();
+    watch: {
+      goodsList() {
+        setTimeout(() => {
+          var wrapper = this.$refs.foodListWrapper.$el;
+          wrapper.style.height='auto';
+          this.foodListHeight = (wrapper.clientHeight-90)/37.5;
+          if (this.foodListHeight<window.screen.height/37.5) {
+            wrapper.style.height = window.screen.height+'px'
+          }
+        }, 50)
+      }
+
+    },
+    created() {
+
+      this._getGoodsListLocal();
+    },
+    mounted() {
+
     },
     methods: {
-      reset(){
+      reset() {
         this.dingTimeIndex = 0;
         this.dingPeopleIndex = 0;
         this.dingServiceIndex = 0;
       },
-      finish(){
+      finish() {
         this.$refs.listHeaderWrapper._hide();
       },
-      selectDingType(index){
+      selectDingType(index) {
         this.dingTimeIndex = index;
       },
-      selectDingService(index){
+      selectDingService(index) {
         this.dingServiceIndex = index;
       },
-      selectDingPeople(index){
+      selectDingPeople(index) {
         this.dingPeopleIndex = index;
       },
-      selectBox_1(){
+      selectBox_1() {
         this.boxFlag_1 = !this.boxFlag_1;
       },
-      selectBox_2(){
+      selectBox_2() {
         this.boxFlag_2 = !this.boxFlag_2;
       },
-      calculateHeight(){
+      calculateHeight() {
         let bizObj = this.$refs.bizListWrapper;
         let dropObj = this.$refs.dropDownListWrapper;
         bizObj.style.height = 44 * this.biz.areaTitle.length / 37.5 + 'rem';
         dropObj.style.height = 44 * this.biz.areaTitle.length / 37.5 + 'rem';
       },
-      selectSort(index, e){
+      selectSort(index, e) {
         let currentName = e.currentTarget.getElementsByClassName('name')[0].innerHTML;
         this.names[2] = currentName;
         this.currentSortIndex = index;
         this.commonChang(index);
         this.$refs.listHeaderWrapper._hide();
       },
-      selectBiz(index, e){
+      selectBiz(index, e) {
         let currentName = e.currentTarget.getElementsByClassName('name')[0].innerHTML;
         this.$refs.dropDownListWrapper.scrollTop = 0;
         this.currentBizIndex = index - 1;
@@ -514,39 +494,82 @@
         this.names[1] = currentName;
         this.commonChang(index);
       },
-      selectBizItem(index, e){
+      selectBizItem(index, e) {
         let currentName = e.currentTarget.getElementsByClassName('name')[0].innerHTML;
         this.names[1] = currentName;
         this.commonChang(index);
         this.$refs.listHeaderWrapper._hide();
       },
-      commonChang(index){
+      commonChang(index) {
         this.currentIndex = index;
         this.$refs.foodListWrapper.changName(this.names);
       },
-      selectCategory(index, e){
+      selectCategory(index, e) {
         let currentName = e.currentTarget.getElementsByClassName('name')[0].innerHTML;
         this.names[0] = currentName;
+        if (currentName == '全部') {
+          this._getGoodsListLocal();
+        }
+        else {
+          this._getGoodsListLocal({
+            tags: currentName
+          });
+        }
         this.commonChang(index);
         this.$refs.listHeaderWrapper._hide();
       },
-      refresh(){
+      refresh() {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
         }, 50)
       },
-      goTop(index){
+      goTop(index) {
         this.$refs.listHeaderWrapper.toggle(index);
         this.flag = true;
       },
-      scroll(pos){
+      scroll(pos) {
+        var pos = pos || 0;
         var wrapper = document.getElementsByClassName('wrapper')[0];
-        if ((Math.abs(pos.y) - wrapper.clientHeight) >0) {
+        if ((Math.abs(pos.y) - wrapper.clientHeight) > 0) {
           this.flag = true;
         }
         else {
           this.flag = false;
         }
+      },
+      _getGoodDetail(mer_id) {
+        if (!mer_id) {
+          this.$router.push('/food');
+          return
+        }
+        else {
+          this.$router.push({
+            path: `/food/goodsDetail/?mer_id=${mer_id}&cate_id= `
+          })
+        }
+      },
+//        _getGoodsListRound(){
+//          getGoodsListRound(
+//          ).then((data)=>{
+//            if(data.status===0){
+//              this.goodsList=data.body;
+//              this.setGoods(this.goodsList);
+//            }
+//          });
+//        },
+      _getGoodsListLocal(param) {
+        this.region = this.currentCity;
+        var paramObj = Object.assign({
+          region: this.region
+        }, param);
+        getGoodsListLocal(
+          paramObj
+        ).then((data) => {
+          if (data.flag === 1) {
+            this.goodsList = data.body;
+          }
+
+        });
       }
     },
     components: {
@@ -562,6 +585,7 @@
       BScroll
     }
   }
+
 </script>
 
 <style lang="scss" scoped>
@@ -812,7 +836,9 @@
       }
     }
   }
-  .wrapper{
+
+  .wrapper {
     padding-bottom: pxToRem(15);
   }
+
 </style>

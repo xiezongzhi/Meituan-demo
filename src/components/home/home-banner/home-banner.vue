@@ -48,11 +48,13 @@ import {getBanner} from 'common/js/getData'
 </script>
 
 <style lang="scss" scoped>
+  @import '../../../common/style/base.scss';
   .home-banner{
-
+    height:pxToRem(155); 
     img{
       display: block;
       width: 100%;
+      height:pxToRem(155);
     }
   }
 </style>

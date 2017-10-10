@@ -10,6 +10,8 @@ import 'common/style/index.scss';
 import 'common/js/htmlFont';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import jsonp from 'jsonp';
+import  { AlertPlugin } from 'vux';
+Vue.use(AlertPlugin);
 require('promise.prototype.finally').shim();
 Vue.use(VueAwesomeSwiper);
 Vue.prototype.$http = axios;

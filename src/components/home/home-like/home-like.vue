@@ -5,7 +5,7 @@
     </h3>
     <div class="like-content" v-if="shopList.length!==0">
 
-      <div class="like-list" v-for="shop in shopList" @click="">
+      <div class="like-list" v-for="shop in shopList" @click="goDetail(shop)">
         <div class="list-item">
           <div class="image-wrapper">
             <img :src="imgUrl+shop.img" alt="" >
@@ -49,18 +49,19 @@
       
     },
     methods:{
-     
-       
-      
+      goDetail(shop){
+          if(shop.parent_id===1){
+              this.$router.push({path:'/food/goodsDetail',query:{mer_id:shop.mer_id,cate_id:''}})
+          }else if(shop.parent_id===2){
+              this.$router.push({path:'/hotel/hotelDetails',query:{mer_id:shop.mer_id}})
+          }
+      }
     },
     computed:{
       ...mapGetters([
             'shopList'
 
         ]),
-
-    
-
     },
 
 
