@@ -11,6 +11,12 @@ import HotelList from 'components/hotel/hotel-list/index.vue';
 import HotelDetails from 'components/hotel/hotel-details/index.vue';
 import GoodsDetail from 'components/food/food-rating/index.vue';
 import City from 'base/city/city';
+import MyRating from 'components/user/my-rating/my-rating.vue';
+import MyShare from 'components/user/my-share/my-share.vue';
+import Setting from 'components/user/setting/setting.vue';
+import PersonalData from 'components/user/personal-data/personal-data.vue';
+import Invite from 'components/user/invite-friends/invite-friends.vue';
+import Login from 'components/login/login-index.vue';
 
 Vue.use(Router);
 export default new Router({
@@ -48,7 +54,6 @@ export default new Router({
             }
           ]
         },
-
       ]
     },
     {
@@ -71,8 +76,31 @@ export default new Router({
         path: '/city',
         component: City,
         meta: { keepAlive: true }
-     }
-
+     },
+    {
+      path: '/myRating',
+      component: MyRating,
+    },
+    {
+      path: '/myShare',
+      component: MyShare,
+    },
+    {
+      path: '/Setting',
+      component:Setting,
+    },
+    {
+      path: '/personalData',
+      component:PersonalData,
+    },
+    {
+      path: '/invite',
+      component:Invite,
+    },
+    {
+      path: '/login',
+      component:Login,
+    }
   ],
   base:'meituan',
   linkActiveClass: 'active'

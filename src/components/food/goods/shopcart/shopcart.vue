@@ -127,12 +127,12 @@
         return total;
       },
       payDesc() {
-          return '去结算'
+        return '去结算'
       },
       totalCount() {
         let count = 0;
         this.selectFoods.forEach((food) => {
-          count += food.count;
+          count += parseInt(food.count);
         });
         return count;
       },
@@ -238,10 +238,11 @@
         this.flod = true;
       },
       payMoney() {
-        addOrder(
-          this.orderData
-        ).then(()=>{
-          console.log(this.orderData)
+        addOrder({
+            mer_id: this.$route.query.mer_id
+          }
+        ).then((res)=>{
+          console.log(res)
         });
         if (this.totalPrice >= this.minPrice) {
           alert('需支付' + this.totalPrice + '元')

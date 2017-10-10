@@ -2,7 +2,8 @@ const state = {
   goods: [],
   city:'',
   shopList:[],
-  loginStatus:false
+  loginStatus:false,
+  foodActList:[]
 };
 
 export default state

@@ -12,13 +12,30 @@
     <!--<food></food>-->
     <!--<goods></goods>-->
     <!--<hotel></hotel>-->
-          <!--<login></login>-->
-    <register></register>
+    <!--<login></login>-->
+    <!--<register></register>-->
     <!--<user></user>-->
     <!--<leisure></leisure>-->
     <!--<leisureClass></leisureClass>-->
     <!--<order></order>-->
+    <!--<foodOrder></foodOrder>-->
+    <!--<orderDetail></orderDetail>-->
+    <!--<teamShopDetail></teamShopDetail>-->
+    <!--<forHereBalance></forHereBalance>-->
+    <!--<teamBalance></teamBalance>-->
+    <!--<rollNum></rollNum>-->
+    <!--<personalData></personalData>-->
+    <!--<setting></setting>-->
+    <!--<points></points>-->
+    <!--<otherLogin></otherLogin>-->
+    <!--<myShare></myShare>-->
+    <!--<resetPass></resetPass>-->
+    <!--<resetPhone></resetPhone>-->
+    <!--<myRating></myRating>-->
+    <!--<invite></invite>-->
+    <teamShopSub></teamShopSub>
   </div>
+
 
 </template>
 <script>
@@ -38,6 +55,23 @@ import leisureClass from "components/leisure/leisureFilter/leisureFilter-index.v
 import hotel from "components/hotel/hotel-booking-index/index.vue";
 import goods from "components/leisure/detail/detail-index.vue";
 import order from "components/order/order-index.vue";
+import teamShop from "components/food/teamShop/teamShop-index.vue";
+import foodOrder from "components/balance/forHere-balance/forHere-balance.vue";
+import orderDetail from "components/order-detail/teamOrder-detail/teamOrder-detail.vue";
+import teamShopDetail from "components/food/teamShop/teamShop-detail/teamShop-detail.vue";
+import teamBalance from "components/balance/teamShop-balance/teamShop-balance.vue"
+import forHereBalance from "components/balance/forHere-balance/forHere-balance.vue"
+import rollNum from "components/roll-num/roll-num.vue"
+import personalData from "components/user/personal-data/personal-data.vue"
+import setting from "components/user/setting/setting.vue"
+import points from "components/user/points/points.vue"
+import otherLogin from "components/user/other-login/other-login.vue"
+import myShare from "components/user/my-share/my-share.vue"
+import resetPass from "components/user/reset-pass/reset-pass.vue"
+import resetPhone from "components/user/reset-phone/reset-phone.vue"
+import myRating from "components/user/my-rating/my-rating.vue"
+import invite from "components/user/invite-friends/invite-friends.vue"
+import teamShopSub from "components/sub-order/teamShop-sub/teamShop-order.vue"
   export default{
     data(){
         return{
@@ -60,7 +94,24 @@ import order from "components/order/order-index.vue";
       user,
       leisure,
       leisureClass,
-      order
+      order,
+      teamShop,
+      foodOrder,
+      orderDetail,
+      teamShopDetail,
+      teamBalance,
+      forHereBalance,
+      rollNum,
+      personalData,
+      setting,
+      points,
+      otherLogin,
+      myShare,
+      resetPass,
+      resetPhone,
+      myRating,
+      invite,
+      teamShopSub
     }
   }
 </script>

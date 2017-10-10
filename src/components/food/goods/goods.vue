@@ -34,8 +34,9 @@
                     class="yuan">￥</i>{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-Wrapper">
-                    <cartcontrol :food="food"  :id="food.goods_id" :goods="goods" @add="addFood" @decreaseCart="decreaseFood" :fo="item"
-                                 :goodsArr="goodsArr"></cartcontrol>
+                    <cartcontrol :food="food" :id="food.goods_id" :goods="goods" @add="addFood"
+                                 @decreaseCart="decreaseFood" :fo="item"
+                                 :cartObj="cartObj"></cartcontrol>
                   </div>
                 </div>
               </li>
@@ -65,7 +66,6 @@
       return {
         imgUrl: root + '/Public/uploads/food_goods/',
         merchants: {},
-        selectFoods: [],
         arr: [],
         orderData: {},
         goods: [],
@@ -73,7 +73,7 @@
         good: [],
         listHeight: [],
         scrollY: 0,
-        selectedFood: {},
+        cartObj:'',
         seller: '',
         flag: true,
         cur: 0,
@@ -98,25 +98,18 @@
       }
     },
     computed: {
-//      selectFot() {
-//        let foods = [];
-//        this.goods.forEach((good) => {
-//          good.foods.forEach((food, index) => {
-//            if (food.count) {
-//              food.parent = good;
-//              foods.push(food);
-//            }
-//          });
-//        });
-//        return foods;
-//      },
-//        getShopCart({
-//          mer_id: this.$route.query
-//        }).then((res) => {
-//          console.log(res)
-//        });
-//        return foods;
-//      },
+      selectFoods() {
+        let foods = [];
+        this.goods.forEach((good) => {
+          good.foods.forEach((food, index) => {
+            if (food.count) {
+              food.parent = good;
+              foods.push(food);
+            }
+          });
+        });
+        return foods;
+      },
       selectFo() {
         let fo = [];
         this.goods.forEach((good) => {
@@ -128,7 +121,7 @@
       }
     },
     created() {
-      this._getCartList();
+      let _this = this;
       getGoodsDetail(this.$route.query).then((data) => {
         var arr = data.goods;
         var map = {};
@@ -154,6 +147,7 @@
           }
         }
         this.goods = dest;
+//        this._getCartList(this.goods);
         this.$nextTick(() => {
           this._initScroll();
           this.calculateHeight();
@@ -162,20 +156,6 @@
 
     },
     methods: {
-      _getCartList() {
-        let cartArray = [];
-        getShopCart({}).then((res) => {
-          for (var i in res) {
-            cartArray.push({
-              count: res[i].goods_num,
-              name: res[i].goods_name,
-              price: res[i].goods_price,
-              goods_id: res[i].goods_id
-            });
-          }
-          this.selectFoods = cartArray;
-        });
-      },
       _initScroll() {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
           click: true
@@ -226,9 +206,6 @@
         this.$nextTick(() => {
           this.$refs.shopcart.drop(target);
         })
-
-      },
-      selectFood(obj) {
 
       }
     },

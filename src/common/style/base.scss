@@ -4,6 +4,7 @@ html {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #d7d7d7;
   height: 100%;
+  background: #eee;
 }
 
 
@@ -17,6 +18,19 @@ $defaultColor:#ff9d00;
   width: pxToRem(6) !important;
   height:pxToRem(6) !important;
   border-radius: 50% !important;
+}
+
+.weui-actionsheet__cell{
+  padding: 0;
+}
+.weui-actionsheet__action{
+  margin-top: 0;
+  line-height: pxToRem(45);
+  text-align: center;
+  .weui-actionsheet__cell{
+    font-size: pxToRem(13);
+    color: #000;
+  }
 }
 
 .responsive{
@@ -61,7 +75,8 @@ $defaultColor:#ff9d00;
     transform: scale(0.5);
     -webkit-transform-origin: left top;
     transform-origin: left top;
-    pointer-events:none
+    pointer-events:none;
+    z-index: 9;
   }
 }
 @mixin border-none(){

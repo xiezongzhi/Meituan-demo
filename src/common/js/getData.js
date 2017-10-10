@@ -130,9 +130,11 @@ export const addOrder=(par)=>{
  * 获取购物车信息
  */
 export const getShopCart=(par)=>{
-  const url='/Home/shopCart/shop_cart?'+param(par);
+  const url='/Home/shopCart/shop_cart';
   return new Promise(function(resolve){
-    axios.get(url).then((res)=>{
+    axios.get(url,{
+      params:par
+    }).then((res)=>{
       resolve(res.data.body)
     })
   })

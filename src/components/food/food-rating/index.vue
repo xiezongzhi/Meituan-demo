@@ -1,6 +1,8 @@
 <template>
   <div class="food-rating">
-    <mHeader>美食</mHeader>
+    <div class="header">
+      <mHeader :isShareCollect="true"  @collect="collect">美食</mHeader>
+    </div>
     <div class="food-rating-img">
       <img src="./food-rating-img.jpg">
     </div>
@@ -8,9 +10,8 @@
     <tab :items="tabItem" @changeIndex="changeIndex" :nowIndex="nowIndex"></tab>
     <div class="tab-wrapper" >
       <goods v-show="nowIndex==0"></goods>
-
-      <ratingList v-show="nowIndex==1" ref="rating"></ratingList>
-
+      <teamShop  v-show="nowIndex==1"></teamShop>
+      <ratingList v-show="nowIndex==2" ref="rating"></ratingList>
     </div>
   </div>
 </template>
@@ -21,20 +22,23 @@
   import ratingList from './rating-list'
   import BScroll from 'better-scroll'
   import goods from '../goods/goods'
+  import teamShop from '../teamShop/teamShop-index.vue'
 
   export default{
     data(){
       return{
-        tabItem:['商品','评价'],
+        tabItem:['商品','团购','评价'],
         nowIndex:0
       }
     },
     methods:{
+      collect(flag){
+        console.log(flag)
+      },
       changeIndex(index){
         this.nowIndex = index;
         this.$refs.rating.refresh()
       },
-
     },
 
     components:{
@@ -43,7 +47,8 @@
       tab,
       ratingList,
       BScroll,
-      goods
+      goods,
+      teamShop
     }
   }
 </script>
@@ -51,6 +56,17 @@
   @import '../../../common/style/base.scss';
   .food-rating{
     background: #fff;
+    .mask{
+      position: fixed;
+      top:0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 98;
+    }
+    .header {
+      background: $defaultColor;
+    }
     .back{
       .content{
         background:#ffa71d;

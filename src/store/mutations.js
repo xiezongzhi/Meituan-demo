@@ -12,7 +12,10 @@ const mutations = {
   },
   [types.SET_LOGINSTAUTS](state, loginStatus){
     state.loginStatus = loginStatus;
-  }
+  },
+  [types.SET_FOODCARTLIST](state, foodCartList){
+    state.foodCartList = foodCartList;
+  },
 };
 
 export default mutations

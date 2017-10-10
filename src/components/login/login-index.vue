@@ -134,6 +134,7 @@
     justify-content: center;
     align-items: center;
     color: #9e9e9c;
+    background:#fff;
     .form {
       .form-item {
         display: flex;
@@ -154,6 +155,7 @@
           outline: none;
           border-bottom: 1px solid #ddd;
           color: #9e9e9c;
+          background: none;
           &::-webkit-input-placeholder {
             color: #9e9e9c;
             opacity: 1;

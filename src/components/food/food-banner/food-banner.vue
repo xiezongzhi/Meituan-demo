@@ -18,6 +18,7 @@
         swiperOption: {
           notNextTick: true,
           autoplay: 3000,
+          preloadImages:true,
           pagination: '.swiper-pagination',
         }
       }
@@ -39,10 +40,13 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '../../../common/style/base.scss';
   .food-banner{
+    height: pxToRem(155);
     img{
       display: block;
       width: 100%;
+      height: pxToRem(155);
     }
   }
 </style>
