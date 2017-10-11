@@ -101,7 +101,7 @@ export const initCity=()=> axios.get(root+'/Home/Index/glocate');
  * 获取美食首页轮播图
  */
 export const getFoodBanner=(typeNum)=>{
-	
+
   const url=root+'/Home/Food/getBanner?type='+typeNum;
   return new Promise(function(resolve){
     axios.get(url).then((res)=>{

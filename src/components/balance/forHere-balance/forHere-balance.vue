@@ -87,6 +87,8 @@
 <script>
   import mHeader from 'base/m-header/m-header';
   import subButton from 'base/sub-button/sub-button';
+  import {getGoodsDetail, getShopCart} from "common/js/getData";
+  import {mapGetters} from 'vuex';
 
   export default {
     data() {
@@ -95,7 +97,32 @@
         payType: ''
       }
     },
+    computed: {
+      ...mapGetters([
+        'goodList'
+      ])
+    },
+    created(){
+      this._getShopCart();
+      this._getGoodsDetail()
+    },
     methods: {
+      _getGoodsDetail(){
+        getGoodsDetail(this.$route.query).then((data) => {
+
+      })
+      },
+      _getShopCart(){
+          getShopCart().then((res) => {
+            for (var i in res) {
+//              for(var t=0,len=this.goodsList;t<len;t++){
+                if (this.$route.query.mer_id == res[i].mer_id) {
+                  console.log(res[i])
+                }
+//              }
+            }
+          });
+      },
       selectToggle(event) {
         let currentDom = event.currentTarget;
         if (currentDom.getAttribute('type') === 'bank') {

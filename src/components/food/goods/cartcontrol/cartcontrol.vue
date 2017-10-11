@@ -6,21 +6,25 @@
 
     </transition>
     <div class="cart-content" v-show="food.count">{{food.count}}</div>
-    <div class="cart-add  square" @click.stop.prevent="addCart($event)"><span class="iconfont icon-add"></span></div>
+    <div class="cart-add  square" @click.stop.prevent="addCart($event)"><span
+      class="iconfont icon-add"></span>
+    </div>
   </div>
 </template>
 
 <script>
   import Vue from 'vue';
   import {getGoodsDetail, getShopCart} from "common/js/getData";
+
   let arr = [];
   let flag = false;
-  let flag1=false;
+  let flag1 = false;
   export default {
     data() {
       return {
         cartData: [],
         foodsArr: [],
+        count: this.food.count
       }
     },
     props: {
@@ -28,20 +32,25 @@
         type: Object
       }
     },
+    watch: {
+      count() {
+        console.log('chang')
+      }
+    },
     created() {
       this._getCartList();
     },
     methods: {
-      addCart(event) {
-        this._setShopCart(1, this.id);
+      addCart() {
+        this._setShopCart(1);
       },
       decreaseCart(event) {
         this.$emit('decrease', event.target);
         this._setShopCart(0);
       },
       _setShopCart(type) {
-        if(!flag1) {
-          flag1=true;
+        if (!flag1) {
+          flag1 = true;
           getShopCart({
             mer_id: this.$route.query.mer_id,
             goods_id: this.food.goods_id,
@@ -49,13 +58,13 @@
           }).then((res) => {
             Vue.set(this.food, 'count', 0);
             for (var i in res) {
-              if (this.$route.query.mer_id === res[i].mer_id) {
-                if (res[i].goods_id === this.food.goods_id) {
+              if (this.$route.query.mer_id == res[i].mer_id) {
+                if (res[i].goods_id == this.food.goods_id) {
                   Vue.set(this.food, 'count', res[i].goods_num);
                 }
               }
             }
-            flag1=false;
+            flag1 = false;
           });
         }
       },
@@ -66,16 +75,16 @@
           getShopCart().then((res) => {
             for (var t in res) {
               for (var i = 0, len = arr.length; i < len; i++) {
-                if (t === arr[i].goods_id) {
-                  Vue.set(arr[i], 'count', res[t].goods_num);
+                if (this.$route.query.mer_id == res[t].mer_id) {
+                  if (t === arr[i].goods_id) {
+                    Vue.set(arr[i], 'count', res[t].goods_num);
+                  }
                 }
               }
             }
-            flag=false;
+            flag = false;
           });
-
         }
-
       },
     }
   }

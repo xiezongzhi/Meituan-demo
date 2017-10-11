@@ -58,7 +58,8 @@
   import shopcart from './shopcart/shopcart';
   import {getGoodsDetail, getShopCart} from "common/js/getData";
   import cartcontrol from './cartcontrol/cartcontrol';
-  import {root} from 'common/js/config'
+  import {root} from 'common/js/config';
+  import {mapMutations} from 'vuex';
 
   let FLAG = true;
   export default {
@@ -73,7 +74,7 @@
         good: [],
         listHeight: [],
         scrollY: 0,
-        cartObj:'',
+        cartObj: '',
         seller: '',
         flag: true,
         cur: 0,
@@ -147,7 +148,8 @@
           }
         }
         this.goods = dest;
-//        this._getCartList(this.goods);
+        console.log(data.goods)
+        this.setGoodList(data.goods);
         this.$nextTick(() => {
           this._initScroll();
           this.calculateHeight();
@@ -156,7 +158,10 @@
 
     },
     methods: {
-      _initScroll() {
+      ...mapMutations({
+        setGoodList:'SET_GOODLIST'
+      }),
+      _initScroll(){
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
           click: true
         });

@@ -14,12 +14,9 @@
           <div class="price" :class="{'highlight':totalPrice>0}">
             ￥{{totalPrice}}元
           </div>
-          <div class="desc">
-            另需配送费￥{{deliveryPrice}}元
-          </div>
         </div>
         <div class="content-right" @click="payMoney">
-          <div class="pay" :class="[isEnough ? 'enough' : 'not-enough']">{{payDesc}}</div>
+            <div class="pay" :class="[isEnough ? 'enough' : 'not-enough']">{{payDesc}}</div>
         </div>
       </div>
       <div class="ball-container">
@@ -238,11 +235,8 @@
         this.flod = true;
       },
       payMoney() {
-        addOrder({
-            mer_id: this.$route.query.mer_id
-          }
-        ).then((res)=>{
-          console.log(res)
+        this.$router.push({
+          path: `/forHereBalance/?mer_id=${this.$route.query.mer_id} `
         });
         if (this.totalPrice >= this.minPrice) {
           alert('需支付' + this.totalPrice + '元')
@@ -283,7 +277,7 @@
           top: pxToRem(-10);
           margin: 0px pxToRem(12);
           box-sizing: border-box;
-          z-index: 9;
+          z-index: 99;
           .logo {
             height: pxToRem(54);
             width: pxToRem(54);
