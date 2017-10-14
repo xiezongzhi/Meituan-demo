@@ -199,3 +199,10 @@ export const login=(par)=>{
   })
 };
 
+  /**
+ * 获取用户id
+ */
+  export const getuserId=()=> axios.get(root+'/Home/Member/ifSession');  /**
+ * 退出登录
+ */
+  export const logout=()=> axios.get(root+'/Home/Member/logout');

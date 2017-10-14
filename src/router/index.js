@@ -44,8 +44,8 @@ const myRating = r => require.ensure([], () => r(require('components/user/my-rat
 const myShare = r => require.ensure([], () => r(require('components/user/my-share/my-share')), 'myShare')
 const invite = r => require.ensure([], () => r(require('components/user/invite-friends/invite-friends')), 'invite')
 const setting  = r => require.ensure([], () => r(require('components/user/setting/setting')), 'setting')
-
-
+const security  = r => require.ensure([], () => r(require('components/user/security/security')), 'security')
+const personalData = r => require.ensure([], () => r(require('components/user/personal-data/personal-data')), 'personalData')
 
 Vue.use(Router);
 export default new Router({
@@ -79,13 +79,14 @@ export default new Router({
       children:[
         {
           path:'/food/goodsDetail',
-          component:GoodsDetail
+          component:GoodsDetail,
         }
       ]
     },
     {
       path:'/hotel',
       component: Hotel,
+      meta: {requireAuth:true},
       children:[
         {
           path:'/hotel/hotelList',
@@ -109,7 +110,8 @@ export default new Router({
     },
     {
       path: '/order',
-      component: Order
+      component: Order,
+      meta: {requireAuth:true},
     },
     {
       path: '/user',
@@ -118,6 +120,7 @@ export default new Router({
     {
       path:'/collection',
       component:Collection,
+      meta: {requireAuth:true},
     },
     {
       path: '/city',
@@ -139,28 +142,44 @@ export default new Router({
     {
        path:'/refund',
        component: Refund,
+       meta: {requireAuth:true},
     },
     {
       
       path:'/refundDetails',
       component: RefundDetails,
+      meta: {requireAuth:true},
       
     },
     {
       path:'/myRating',
-      component:myRating
+      component:myRating,
+      meta: {requireAuth:true},
     },
     {
       path:'/myShare',
-      component:myShare
+      component:myShare,
+      meta: {requireAuth:true},
     },
     {
       path:'/invite',
-      component:invite
+      component:invite,
+      meta: {requireAuth:true},
     },
     {
       path:'/setting',
-      component:setting
+      component:setting,
+      meta: {requireAuth:true},
+      children:[
+        {
+          path:'/security',
+          component:security
+        },
+        {
+          path:'/personalData',
+          component:personalData
+        }
+      ]
     },
 
   ],

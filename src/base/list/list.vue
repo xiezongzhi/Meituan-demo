@@ -1,9 +1,9 @@
 <template>
-  <div class="component-list">
+  <router-link :to="url" class="component-list">
     <div class="component-item">
       <div class="left">{{title}}</div><div class="right"><div class="spec"><div v-html="info"></div></div><span class="iconfont icon-right"></span></div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -14,7 +14,10 @@
         },
         info:{
           type:String
-        }
+        },
+        url:{
+          type:String
+        },
       },
     }
 </script>
@@ -23,6 +26,7 @@
   @import "~common/style/base";
   .component-list{
     position: relative;
+    display: block;
     @include border-1px(0,0,1px,0);
     background: #fff;
     .component-item{

@@ -2,11 +2,11 @@
   <div class="user-index">
     <div class="top">
       <div class="header">
-        <span class="back iconfont icon-left"></span>
+        <span class="back iconfont icon-left" @click="back"></span>
         <span class="msg iconfont icon-msg"></span>
       </div>
       <div class="user-info">
-        <div class="login-true" v-if="isLogin===true">
+        <div class="login-true" v-if="loginStatus===1">
           <div class="avatar">
             <img src="http://img1.2345.com/duoteimg/qqTxImg/11/2012091910313510745.jpg" alt="" >
           </div>
@@ -19,7 +19,7 @@
           </div>
         </div>
         <router-link to="login">
-        <div class="login-false" v-if="isLogin===false">
+        <div class="login-false" v-if="loginStatus===2">
           <div class="avatar">
             <span class="iconfont icon-user img"></span>
           </div>
@@ -102,15 +102,31 @@
         </div>
       </div>
     </div>
+    <mainFooter></mainFooter>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import mainFooter from "components/main-footer/main-footer.vue";
   export default {
     data(){
       return{
-        isLogin:false
+        
       }
+    },
+    methods:{
+      back(){
+        this.$router.go(-1)
+      }
+    },
+    computed:{
+      ...mapGetters([
+        'loginStatus'
+      ])
+    },
+    components:{
+      mainFooter
     }
   }
 </script>

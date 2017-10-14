@@ -30,7 +30,7 @@ module.exports = {
     proxyTable: {
       '/meituan':
         {
-          target: 'http://s-381329.gotocdn.com',
+          target: 'http://test6.gdkuaibo.com/',
           secure: false,
           changeOrigin: true,
         }

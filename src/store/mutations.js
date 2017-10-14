@@ -14,9 +14,6 @@ const mutations = {
   [types.GET_SHOPLIST_INDEX](state, SHOPLIST){
     state.shoplist = SHOPLIST
   },
-  [types.SET_LOGINSTAUTS](state, loginStatus){
-    state.loginStatus = loginStatus;
-  },
   [types.SET_FOODCARTLIST](state, foodCartList){
     state.foodCartList = foodCartList;
   },
@@ -35,6 +32,9 @@ const mutations = {
   },
   [types.SET_CONFIRMSTATUS](state) {
     state.confirmStatus = !state.confirmStatus
+  },
+  [types.SET_LOGIN](state,loginStatus) {
+    state.loginStatus = loginStatus
   },
 
   

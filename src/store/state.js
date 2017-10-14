@@ -2,7 +2,7 @@ const state = {
   goods: [],
   city:'',
   shopList:[],
-  loginStatus:false,
+  loginStatus:2,
   foodActList:[],
   currentCity:'',
   selectCity:'',

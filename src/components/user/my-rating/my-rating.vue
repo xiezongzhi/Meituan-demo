@@ -1,5 +1,5 @@
   <template>
-    <div class="my-rating">
+    <div class="my-rating" v-if="info.memberData">
       <div class="headerWrapper">
         <div class="header">
           <div class="back" @click="back">
@@ -7,163 +7,48 @@
           </div>
           <div class="user-info">
             <div class="avatar"><img
-              src="http://wx.qlogo.cn/mmhead/vPjficwtgTJDRRFibFSdfQ43A55noRelc5XaEbxSXFsreXGWHEkdriabw/132" alt=""></div>
+              :src="imgUrl+info.memberData[0].image"></div>
             <div class="name">{{info.memberData[0].username}}</div>
           </div>
         </div>
       </div>
-      <div class="content">
+      <div class="content" >
         <div class="rating-wrapper">
           <div class="titleWrapper">
             <div class="split"></div>
             <div class="title">评论（{{info.count.count}}）</div>
           </div>
-          <div class="rating-list">
-            <div class="rating-item">
+          <div class="rating-list" v-if="info">
+            <div class="rating-item" v-for="item in info.commList">
               <div class="spec">
                 <div class="avatar">
-                  <img src="http://wx.qlogo.cn/mmhead/vPjficwtgTJDRRFibFSdfQ43A55noRelc5XaEbxSXFsreXGWHEkdriabw/132"
+                  <img :src="imgUrl+info.memberData[0].image"
                        alt="">
                 </div>
                 <div class="con">
                   <div class="top">
-                    <span class="name">正</span><span class="time">2017-06-29 09:29</span>
+                    <span class="name">{{info.memberData[0].username}}</span><span class="time">{{item.ctime}}</span>
                   </div>
                   <div class="bottom">
                     打分
-                    <star class="star"></star>
-                    1分
+                    <star class="star" :score="Number(item.star_level)"></star>
+                    {{item.star_level}}分
                   </div>
-                  <p class="ratings">第一次去推拿，感觉还不错。</p>
+                  <p class="ratings">{{item.content}}</p>
                   <div class="seller">
                     <div class="imgWrapper">
-                      <img src="./rating-2.jpg" alt="" class="responsive">
+                      <img :src="imgUrl+item.mer_img" alt="" class="responsive">
                     </div>
                     <div class="right">
-                      <div class="store-name">XX推拿 <span class="text">（香洲店）</span></div>
-                      <div class="serve-name">推拿</div>
+                      <div class="store-name">{{item.mer_name}} <!-- <span class="text">（香洲店）</span> --></div>
+                      <div class="serve-name">{{item.goods_name}}</div>
                     </div>
                   </div>
                 </div>
 
               </div>
             </div>
-            <div class="rating-item">
-              <div class="spec">
-                <div class="avatar">
-                  <img src="http://wx.qlogo.cn/mmhead/vPjficwtgTJDRRFibFSdfQ43A55noRelc5XaEbxSXFsreXGWHEkdriabw/132"
-                       alt="">
-                </div>
-                <div class="con">
-                  <div class="top">
-                    <span class="name">正</span><span class="time">2017-06-29 09:29</span>
-                  </div>
-                  <div class="bottom">
-                    打分
-                    <star class="star"></star>
-                    1分
-                  </div>
-                  <p class="ratings">第一次去推拿，感觉还不错。</p>
-                  <div class="seller">
-                    <div class="imgWrapper">
-                      <img src="./rating-2.jpg" alt="" class="responsive">
-                    </div>
-                    <div class="right">
-                      <div class="store-name">XX推拿 <span class="text">（香洲店）</span></div>
-                      <div class="serve-name">推拿</div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <div class="rating-item">
-              <div class="spec">
-                <div class="avatar">
-                  <img src="http://wx.qlogo.cn/mmhead/vPjficwtgTJDRRFibFSdfQ43A55noRelc5XaEbxSXFsreXGWHEkdriabw/132"
-                       alt="">
-                </div>
-                <div class="con">
-                  <div class="top">
-                    <span class="name">正</span><span class="time">2017-06-29 09:29</span>
-                  </div>
-                  <div class="bottom">
-                    打分
-                    <star class="star"></star>
-                    1分
-                  </div>
-                  <p class="ratings">第一次去推拿，感觉还不错。</p>
-                  <div class="seller">
-                    <div class="imgWrapper">
-                      <img src="./rating-2.jpg" alt="" class="responsive">
-                    </div>
-                    <div class="right">
-                      <div class="store-name">XX推拿 <span class="text">（香洲店）</span></div>
-                      <div class="serve-name">推拿</div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <div class="rating-item">
-              <div class="spec">
-                <div class="avatar">
-                  <img src="http://wx.qlogo.cn/mmhead/vPjficwtgTJDRRFibFSdfQ43A55noRelc5XaEbxSXFsreXGWHEkdriabw/132"
-                       alt="">
-                </div>
-                <div class="con">
-                  <div class="top">
-                    <span class="name">正</span><span class="time">2017-06-29 09:29</span>
-                  </div>
-                  <div class="bottom">
-                    打分
-                    <star class="star"></star>
-                    1分
-                  </div>
-                  <p class="ratings">第一次去推拿，感觉还不错。</p>
-                  <div class="seller">
-                    <div class="imgWrapper">
-                      <img src="./rating-2.jpg" alt="" class="responsive">
-                    </div>
-                    <div class="right">
-                      <div class="store-name">XX推拿 <span class="text">（香洲店）</span></div>
-                      <div class="serve-name">推拿</div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <div class="rating-item">
-              <div class="spec">
-                <div class="avatar">
-                  <img src="http://wx.qlogo.cn/mmhead/vPjficwtgTJDRRFibFSdfQ43A55noRelc5XaEbxSXFsreXGWHEkdriabw/132"
-                       alt="">
-                </div>
-                <div class="con">
-                  <div class="top">
-                    <span class="name">正</span><span class="time">2017-06-29 09:29</span>
-                  </div>
-                  <div class="bottom">
-                    打分
-                    <star class="star"></star>
-                    1分
-                  </div>
-                  <p class="ratings">第一次去推拿，感觉还不错。</p>
-                  <div class="seller">
-                    <div class="imgWrapper">
-                      <img src="./rating-2.jpg" alt="" class="responsive">
-                    </div>
-                    <div class="right">
-                      <div class="store-name">XX推拿 <span class="text">（香洲店）</span></div>
-                      <div class="serve-name">推拿</div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -173,10 +58,12 @@
   <script>
     import star from 'base/star/star'
     import {getMyrating} from 'common/js/getData'
+    import {root} from 'common/js/config'
     export default {
       data(){
         return{
-          info:{}
+          info:{},
+          imgUrl:root+'/Public/uploads/food_merchants/',
         }
       },
       created(){

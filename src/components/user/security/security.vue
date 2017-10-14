@@ -1,70 +1,44 @@
 <template>
-  <div class="setting">
-    <mHeader>设置</mHeader>
+  <div class="security">
+    <mHeader>账户与安全</mHeader>
     <div class="content">
-      <div class="spec">
-        <router-link to="personalData">
-          <div class="spec-item">
-            <div class="left">
-              <div class="avatar"><img src="http://img1.2345.com/duoteimg/qqTxImg/11/2012091910313510745.jpg" alt="">
-              </div>
-              胖子的胖子
-            </div>
-            <div class="right">
-              <div class="spec"><span class="iconfont icon-right"></span></div>
-            </div>
-          </div>
-        </router-link>
-      </div>
-      <list :title="'我的收货地址'" :url="'/123123'" class="receive"></list>
-      <list :title="item.title" :url="item.url"  v-for="(item,index) in titles" :key="index"></list>
+      <list :title="item.title" :url="item.url" :info="item.info" v-for="(item,index) in titles" :key="index"></list>
     </div>
-    <div class="out-btn">
-      <button @click="checkout">退出当前账户</button>
-    </div>
-    <transition name="slide">
-      <router-view></router-view>
-    </transition>
-    
   </div>
 </template>
 
 <script>
   import mHeader from 'base/m-header/m-header';
   import list from 'base/list/list';
-  import {logout} from 'common/js/getData'
+
   export default {
     data() {
       return {
         titles: [
           {
-            title: '账户安全',
-            url:'security'
+            title: '会员名',
+            url:'/asdasd',
+            info:'奥术大师'
           },
           {
-            title: '关于我们',
-            url:'aboutus'
+            title: '性别',
+            url:'/asdasd',
+            info:'男'
           },
           {
-            title: '意见反馈',
-            url:'123'
+            title: '修改手机号码',
+            url:'/asdasd',
+            info:'110'
+          },
+          {
+            title: '修改登录密码',
+            url:'/asdasd'
+          },
+          {
+            title: '第三方账号绑定',
+            url:'/asdasd'
           },
         ]
-      }
-    },
-    methods:{
-      checkout(){
-        let _this = this;
-        logout().then((res)=>{
-            this.$vux.alert.show({
-              content:res.data.body,
-              onHide(){
-                _this.$router.push({ path: 'user' })
-              }
-          });
-          this.$store.commit('SET_LOGIN',2)
-
-        })
       }
     },
     components: {
@@ -77,9 +51,14 @@
 <style lang="scss" scoped>
   @import "~common/style/base";
 
-  .setting {
-    position: relative;
+  .security {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 888;
     height: 100%;
+    background:#eee;
     .content {
       .spec {
         .spec-item {

@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <list :title="item.title" :info="item.info" v-for="(item,index) in titles" :key="index">
+      <list :title="item.title" :info="item.info" :url="item.url" v-for="(item,index) in titles" :key="index">
       </list>
     </div>
   </div>
@@ -28,11 +28,13 @@
       return {
         titles: [{
           title: '会员名',
-          info: '胖子的胖子'
+          info: '胖子的胖子',
+          url:''
         }
           , {
             title: '性别',
-            info: '男'
+            info: '男',
+            url:''
           }
         ]
       }
@@ -49,6 +51,13 @@
   @import "~common/style/base";
 
   .personal-data {
+    position:fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 888;
+    background:#eee;
+    height: 100%;
     .spec {
       .spec-item {
         position: relative;

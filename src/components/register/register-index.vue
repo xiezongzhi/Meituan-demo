@@ -18,6 +18,7 @@
           <div class="right"><input type="text" class="wecode" placeholder="请输入邀请码（手机号）" v-model="inviteCode"
                                     ></div>
         </div>
+        
         <div class="form-item valiCodeWrapper">
           <div class="left"><span class="iconfont icon-valicode"></span></div>
           <div class="right"><input type="number" class="vali" placeholder="请输入验证码"> <span class="tips"

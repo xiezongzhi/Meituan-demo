@@ -185,6 +185,7 @@
       line-height: pxToRem(45);
       right: pxToRem(19);
       font-size: pxToRem(20);
+      z-index: 99;
       .collect {
         margin-right: pxToRem(10);
         &.icon-collect1 {

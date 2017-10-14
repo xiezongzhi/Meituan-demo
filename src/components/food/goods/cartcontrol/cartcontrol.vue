@@ -49,8 +49,8 @@
           }).then((res) => {
             Vue.set(this.food, 'count', 0);
             for (var i in res) {
-              if (this.$route.query.mer_id === res[i].mer_id) {
-                if (res[i].goods_id === this.food.goods_id) {
+              if (this.$route.query.mer_id ==res[i].mer_id) {
+                if (res[i].goods_id == this.food.goods_id) {
                   Vue.set(this.food, 'count', res[i].goods_num);
                 }
               }

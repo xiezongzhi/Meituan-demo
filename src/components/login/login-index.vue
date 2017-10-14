@@ -13,7 +13,10 @@
       </div>
       <div class="other-login">
         <span class="left">其他登陆方式</span>
-        <span class="right">注册 | 忘记密码</span>
+        <div class="right">
+          <router-link to="register">注册</router-link> |
+          <router-link to="register">忘记密码</router-link>
+        </div>
       </div>
       <div class="sub" @click="submit">
         <subButton>
@@ -39,7 +42,7 @@
 <script>
   import subButton from 'base/sub-button/sub-button.vue';
   import {trim, _mm} from 'common/js/util';
-  import {login} from 'common/js/getData';
+  import {login,getuserId} from 'common/js/getData';
   import {mapMutations} from 'vuex';
 
   export default {
@@ -52,10 +55,12 @@
         timer: ''
       }
     },
+   
     methods: {
       alert() {
         this.$vux.alert.show({
           content: this.formError,
+           
         });
       },
       submit() {
@@ -92,32 +97,38 @@
       _login(formData) {
         login(formData).then((res) => {
           if (res.flag === 1) {
-            if (res.body.username) {
-              this.setLoginStatus(true)
+            // if (res.body.username) {
+            //   this.setLoginStatus(true)
+            // }
+            this.$store.commit('SET_LOGIN',1)
+            if(this.$route.query.redirect){
+              this.$router.push({path:this.$route.query.redirect});
+            }else{
+              this.$router.go(-1);
             }
-            this.formError = '登录成功';
-            this.alert();
+            
+             
           }
           if (res.flag === 2) {
-            if (res.msg === 'e_100002') {
-              this.formError = '账号或密码有误！'
-            }
-            else if (res.msg === 'e_100007') {
+            if (res.msg === 'e_100007') {
               this.formError = '账号被禁用，请联系管理员！'
             }
-            else if (res.msg === 'e_100010') {
-              this.formError = '账号未激活！'
-            }
-            else {
-              this.formError = '服务器繁忙，请重新试下！'
+            else if (res.msg === 'e_100008') {
+              this.formError = '手机或密码错误'
             }
             this.alert();
           }
         })
       },
-      ...mapMutations({
-        setLoginStatus: 'SET_LOGINSTAUTS'
-      })
+      islogin(){
+        getuserId().then((res)=>{
+          console.log(res)
+          this.$store.commit('SET_LOGIN',res.data.flag)
+        })
+      }
+      // ...mapMutations({
+      //   setLoginStatus: 'SET_LOGINSTAUTS'
+      // })
     },
     components: {
       subButton
