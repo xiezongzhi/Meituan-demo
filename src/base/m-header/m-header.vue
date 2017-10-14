@@ -50,8 +50,8 @@
         type: Boolean,
         default: false
       },
-      name:{
-        type:String
+      name: {
+        type: String
       }
     },
     data() {
@@ -80,7 +80,7 @@
       back() {
         this.$router.back()
       },
-      deal(){
+      deal() {
         this.$emit('deal')
       }
     }
@@ -99,7 +99,7 @@
       top: 0;
       text-align: center;
       background: $defaultColor;
-      z-index:99;
+      z-index: 99;
       .icon {
         position: absolute;
         left: 0;

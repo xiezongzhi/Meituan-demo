@@ -9,3 +9,4 @@ export const hotelDate = state => state.hotelDate;
 export const filterId = state => state.filterId;
 export const selected_id = state => state.selected_id;
 export const confirmStatus = state => state.confirmStatus;
+export const goodList = state => state.goodList;

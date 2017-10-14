@@ -8,4 +8,6 @@ export const SET_LOADING = 'SET_LOADING'
 export const SET_HOTEL_DATE = 'SET_HOTEL_DATE'
 export const SET_FILTERID = 'SET_FILTERID'
 export const SET_CONFIRMSTATUS = 'SET_CONFIRMSTATUS'
+export const SET_GOODLIST = 'SET_GOODLIST'
+
 export const SET_LOGIN = 'SET_LOGIN'

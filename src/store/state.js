@@ -10,6 +10,7 @@ const state = {
   hotelDate:[],
   filterId:'',
   selected_id:'',
+  goodList:[],
   confirmStatus:false
 };
 

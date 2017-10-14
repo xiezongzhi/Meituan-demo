@@ -36,7 +36,6 @@ const City = r => require.ensure([], () => r(require('base/city/city')), 'City')
 const Search = r => require.ensure([], () => r(require('base/search/search')), 'Search')
 const Login = r => require.ensure([], () => r(require('components/login/login-index')), 'Login')
 const Register = r => require.ensure([], () => r(require('components/register/register-index')), 'Register')
-
 const Refund = r => require.ensure([], () => r(require('components/order/refund/refund-index')), 'Refund')
 const RefundDetails = r => require.ensure([], () => r(require('components/order/refund/refund-details')), 'RefundDetails')
 const Collection = r => require.ensure([], () => r(require('components/user/collection/index')), 'Collection')
@@ -44,6 +43,7 @@ const myRating = r => require.ensure([], () => r(require('components/user/my-rat
 const myShare = r => require.ensure([], () => r(require('components/user/my-share/my-share')), 'myShare')
 const invite = r => require.ensure([], () => r(require('components/user/invite-friends/invite-friends')), 'invite')
 const setting  = r => require.ensure([], () => r(require('components/user/setting/setting')), 'setting')
+const ForHereBalance=r=>require.ensure([], () => r(require('components/balance/forHere-balance/forHere-balance')), 'ForHereBalance')
 const security  = r => require.ensure([], () => r(require('components/user/security/security')), 'security')
 const personalData = r => require.ensure([], () => r(require('components/user/personal-data/personal-data')), 'personalData')
 
@@ -58,8 +58,8 @@ export default new Router({
       component: Home,
       meta: { keepAlive: true },
       children: [
-        
-        
+
+
         {
           path:'/home/leisure',
           component: Leisure,
@@ -145,7 +145,7 @@ export default new Router({
        meta: {requireAuth:true},
     },
     {
-      
+
       path:'/refundDetails',
       component: RefundDetails,
       meta: {requireAuth:true},
@@ -181,6 +181,10 @@ export default new Router({
         }
       ]
     },
+    {
+      path:'/forHereBalance',
+      component:ForHereBalance
+    }
 
   ],
   base:'meituan',

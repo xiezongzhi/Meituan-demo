@@ -33,11 +33,14 @@ const mutations = {
   [types.SET_CONFIRMSTATUS](state) {
     state.confirmStatus = !state.confirmStatus
   },
+  [types.SET_GOODLIST](state,goodList) {
+    state.goodList = goodList;
+  },
   [types.SET_LOGIN](state,loginStatus) {
     state.loginStatus = loginStatus
   },
 
-  
+
 
 };
 
